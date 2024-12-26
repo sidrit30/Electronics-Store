@@ -1,4 +1,4 @@
-package com.cen215.electronicsstore;
+package java;
 
 import javafx.application.Application;
 
