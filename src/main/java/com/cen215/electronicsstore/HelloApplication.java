@@ -10,8 +10,8 @@ import javafx.stage.Stage;
 public class HelloApplication extends Application {
     @Override
     public void start(Stage stage) {
-
-        Scene scene = new Scene(new Pane());
+        Pane pane = new Pane();
+        Scene scene = new Scene(pane);
         stage.setTitle("Hello!");
         stage.setScene(scene);
         stage.show();
