@@ -3,8 +3,8 @@ module com.cen.electronicsstore {
     requires javafx.fxml;
 
 
-    exports java;
-    opens java to javafx.fxml;
+    exports View;
+    opens View to javafx.fxml;
     exports Model;
     opens Model to javafx.fxml;
 }
