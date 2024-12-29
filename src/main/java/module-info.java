@@ -1,10 +1,10 @@
-module com.cen215.electronicsstore {
+module com.cen.electronicsstore {
     requires javafx.controls;
     requires javafx.fxml;
 
 
-    opens Staff to javafx.fxml;
-    exports Staff;
     exports java;
     opens java to javafx.fxml;
+    exports Model;
+    opens Model to javafx.fxml;
 }
