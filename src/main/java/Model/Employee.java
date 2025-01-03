@@ -1,7 +1,8 @@
 package Model;
 
 public abstract class Employee {
-    private final int id;
+    private static int nrEmployees;
+    private final String id;
     private final String lastName;
     private final String firstName;
     private String address;
@@ -13,17 +14,21 @@ public abstract class Employee {
     private String role;
     private String[] permissions;
 
-    public Employee(int id, String lastName, String firstName, String username, String password, double salary, String[] permissions) {
-        this.id = id;
+    public Employee(String lastName, String firstName, String username, String password, double salary) {
+        this.id = String.format("%03d", nrEmployees);
         this.lastName = lastName;
         this.firstName = firstName;
         this.username = username;
         this.password = password;
         this.salary = salary;
-        this.permissions = permissions;
     }
 
-    public int getId() {
+
+    public static int getNrEmployees() {
+        return nrEmployees;
+    }
+
+    public String getId() {
         return id;
     }
 
