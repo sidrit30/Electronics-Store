@@ -15,7 +15,7 @@ public abstract class Employee {
     private String[] permissions;
 
     public Employee(String lastName, String firstName, String username, String password, double salary) {
-        this.id = String.format("%03d", nrEmployees);
+        this.id = String.format("%03d", ++nrEmployees);
         this.lastName = lastName;
         this.firstName = firstName;
         this.username = username;
