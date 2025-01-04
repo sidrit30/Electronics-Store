@@ -12,9 +12,9 @@ public abstract class Employee {
     private String password;
     private double salary;
     private String role;
-    private String[] permissions;
 
     public Employee(String lastName, String firstName, String username, String password, double salary) {
+        //start from id 001
         this.id = String.format("%03d", ++nrEmployees);
         this.lastName = lastName;
         this.firstName = firstName;
@@ -98,14 +98,6 @@ public abstract class Employee {
 
     public void setRole(String role) {
         this.role = role;
-    }
-
-    public String[] getPermissions() {
-        return permissions;
-    }
-
-    public void setPermissions(String[] permissions) {
-        this.permissions = permissions;
     }
 
     @Override
