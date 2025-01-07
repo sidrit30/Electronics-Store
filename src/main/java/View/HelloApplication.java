@@ -19,7 +19,7 @@ import java.io.IOException;
 public class HelloApplication extends Application {
     @Override
     public void start(Stage primaryStage) throws IOException {
-        Image backgroundImage = new Image("C:/Users/jonid/OneDrive/Pictures/digital-art-sunset-mountains-landscape.jpg");
+        Image backgroundImage = new Image("digital-art-sunset-mountains-landscape.jpg");
 
         BackgroundSize backgroundSize = new BackgroundSize(100, 100, true, true, true, false);
         BackgroundImage bgImage = new BackgroundImage(backgroundImage, BackgroundRepeat.NO_REPEAT,
@@ -110,7 +110,7 @@ public class HelloApplication extends Application {
 
     }
     private void styleButton(Button button, Color backgroundColor, Color borderColor, double borderRadius) {
-        button.setStyle( "-fx-background-color: " + toRgbString(backgroundColor) + ";" + "-fx-text-fill: white;" + "-fx-background-radius: " + borderRadius + ";" +
+        button.setStyle( "-fx-background-color: " + toRgbString(backgroundColor) + ";" + "-fx-text-fill: black;" + "-fx-background-radius: " + borderRadius + ";" +
                 "-fx-border-radius: " + borderRadius + ";" + "-fx-border-color: " + toRgbString(borderColor) + ";" + "-fx-border-width: 2;" + "-fx-padding: 5 15 5 15;" );
     }
 
