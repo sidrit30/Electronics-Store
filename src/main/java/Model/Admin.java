@@ -1,8 +1,8 @@
 package Model;
 
-public class Admin extends Manager{
-    public Admin(String lastName, String firstName, String username, String password, double salary, String sector) {
-        super(lastName, firstName, username, password, salary, sector);
+public class Admin extends Employee{
+    public Admin(String lastName, String firstName, String username, String password, double salary) {
+        super(lastName, firstName, username, password, salary);
         this.setRole("Admin");
     }
 }
