@@ -1,6 +1,8 @@
 package Model;
 
-public abstract class Employee {
+import java.io.Serializable;
+
+public abstract class Employee implements Serializable {
     private static int nrEmployees;
     private final String id;
     private final String lastName;
@@ -26,6 +28,9 @@ public abstract class Employee {
 
     public static int getNrEmployees() {
         return nrEmployees;
+    }
+    public static void setNrEmployees(int nrEmployees) {
+        Employee.nrEmployees = nrEmployees;
     }
 
     public String getId() {

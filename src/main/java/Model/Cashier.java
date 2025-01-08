@@ -1,5 +1,7 @@
 package Model;
 
+import java.io.Serializable;
+
 public class Cashier extends Employee {
     private String sector;
     public Cashier(String lastName, String firstName, String username, String password, double salary, String sector) {

@@ -13,8 +13,8 @@ public class Staff {
         this.staff = staff;
     }
 
-    public ArrayList<Employee> getStaff() {
-        return staff;
+    public Employee[] getStaff() {
+        return staff.toArray(new Employee[staff.size()]);
     }
 
     public void addStaff(Employee emp) {
@@ -29,47 +29,51 @@ public class Staff {
         return staff.get(index);
     }
 
-    public ArrayList<Employee> getStaffByFirstName(String name) {
+    public Employee[] getStaffByFirstName(String name) {
         ArrayList<Employee> staff1 = new ArrayList<>();
         for (Employee emp : staff) {
             if(emp.getFirstName().equals(name)) {
                 staff1.add(emp);
             }
         }
-        return staff1;
+        return staff1.toArray(new Employee[staff1.size()]);
     }
 
-    public ArrayList<Employee> getStaffByLastName(String name) {
+    public Employee[] getStaffByLastName(String name) {
         ArrayList<Employee> staff1 = new ArrayList<>();
         for (Employee emp : staff) {
             if(emp.getLastName().equals(name)) {
                 staff1.add(emp);
             }
         }
-        return staff1;
+        return staff1.toArray(new Employee[staff1.size()]);
     }
 
-//    needs to be implemented
-//    public ArrayList<Employee> sortStaffById() {
-//
-//    }
-//    public ArrayList<Employee> sortStaffByLastName() {
-//
-//    }
+    public Employee[] sortStaffByLastName() {
+        ArrayList<Employee> staff1 = (ArrayList<Employee>) staff.clone();
+        staff1.sort(new Comparator<>() {
+            @Override
+            public int compare(Employee o1, Employee o2) {
+                return o2.getLastName().compareTo(o1.getLastName());
+            }
+        });
+        return staff1.toArray(new Employee[staff1.size()]);
+    }
 
 
-    public ArrayList<Employee> sortStaffBySalary() {
-        staff.sort(new Comparator<Employee>() {
+    public Employee[] sortStaffBySalary() {
+        ArrayList<Employee> staff1 = (ArrayList<Employee>) staff.clone();
+        staff1.sort(new Comparator<>() {
             @Override
             public int compare(Employee e1, Employee e2) {
                 double diff = e1.getSalary() - e2.getSalary();
-                if(diff == 0) {
+                if (diff == 0) {
                     return 0;
                 }
                 return diff > 0 ? 1 : -1;
             }
         });
-        return staff;
+        return staff1.toArray(new Employee[staff1.size()]);
     }
 
 

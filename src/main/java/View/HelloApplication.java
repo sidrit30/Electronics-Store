@@ -1,5 +1,8 @@
 package View;
 
+import Model.Admin;
+import Model.Cashier;
+import Model.Employee;
 import javafx.application.Application;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
@@ -13,9 +16,14 @@ import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 
-import java.io.IOException;
+import java.io.*;
 
 public class HelloApplication extends Application {
+    public static void main(String[] args) {
+
+        launch();
+    }
+
     @Override
     public void start(Stage primaryStage) throws IOException {
         Image backgroundImage = new Image("digital-art-sunset-mountains-landscape.jpg");
@@ -49,7 +57,7 @@ public class HelloApplication extends Application {
         styleTextField(passwordField);
 
         Button loginButton = new Button("Login");
-        styleButton(loginButton, Color.DARKORANGE,Color.BLACK,10);
+        styleButton(loginButton, Color.DARKORANGE, Color.BLACK, 10);
 
         gridPane.add(username, 0, 0);
         gridPane.add(textField, 1, 0);
@@ -97,7 +105,8 @@ public class HelloApplication extends Application {
         primaryStage.show();
 
     }
-    private void styleTextField(TextField textField){
+
+    private void styleTextField(TextField textField) {
         textField.setStyle(
                 "-fx-background-color: orange;" +
                         "-fx-text-fill: black;" +
@@ -108,17 +117,14 @@ public class HelloApplication extends Application {
                         "-fx-padding: 5 10 5 10;");
 
     }
+
     private void styleButton(Button button, Color backgroundColor, Color borderColor, double borderRadius) {
-        button.setStyle( "-fx-background-color: " + toRgbString(backgroundColor) + ";" + "-fx-text-fill: black;" + "-fx-background-radius: " + borderRadius + ";" +
-                "-fx-border-radius: " + borderRadius + ";" + "-fx-border-color: " + toRgbString(borderColor) + ";" + "-fx-border-width: 2;" + "-fx-padding: 5 15 5 15;" );
+        button.setStyle("-fx-background-color: " + toRgbString(backgroundColor) + ";" + "-fx-text-fill: black;" + "-fx-background-radius: " + borderRadius + ";" +
+                "-fx-border-radius: " + borderRadius + ";" + "-fx-border-color: " + toRgbString(borderColor) + ";" + "-fx-border-width: 2;" + "-fx-padding: 5 15 5 15;");
     }
 
     private String toRgbString(Color color) {
         return "rgb(" + (int) (color.getRed() * 255) + "," + (int) (color.getGreen() * 255) + "," + (int) (color.getBlue() * 255) + ")";
-    }
-    public static void main(String[] args) {
-
-        launch();
     }
 
 }
