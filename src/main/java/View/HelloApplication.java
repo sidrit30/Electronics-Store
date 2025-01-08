@@ -17,9 +17,24 @@ import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 
 import java.io.*;
+import java.util.ArrayList;
 
 public class HelloApplication extends Application {
     public static void main(String[] args) {
+        ArrayList<Employee> employees = new ArrayList<>();
+
+        try (
+                ObjectInputStream input = new ObjectInputStream(ClassLoader.getSystemClassLoader().getResourceAsStream("staff.dat"));
+        ) {
+            employees.add((Employee) input.readObject());
+            employees.add((Employee) input.readObject());
+
+        } catch (IOException | ClassNotFoundException e) {
+            e.printStackTrace();
+        }
+        System.out.println(employees);
+        System.out.println(employees.get(1) instanceof Admin);
+
 
         launch();
     }
