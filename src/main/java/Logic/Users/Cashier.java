@@ -1,13 +1,15 @@
-package Model;
+package Logic.Users;
 
-import java.io.Serializable;
+import java.io.Serial;
 
 public class Cashier extends Employee {
+    @Serial
+    private static final long serialVersionUID = 12L;
     private String sector;
     public Cashier(String lastName, String firstName, String username, String password, double salary, String sector) {
         super(lastName, firstName, username, password, salary);
         this.sector = sector;
-        this.setRole("Cashier");
+        this.setRole(Role.CASHIER);
     }
 
     public String getSector() {

@@ -1,15 +1,17 @@
-package Model;
+package Logic.Users;
 
+import java.io.Serial;
 import java.util.ArrayList;
 
 public class Manager extends Employee {
-
+    @Serial
+    private static final long serialVersionUID = 123L;
     private ArrayList<String> sectors;
 
     public Manager(String lastName, String firstName, String username, String password, double salary) {
         super(lastName, firstName, username, password, salary);
         this.sectors = new ArrayList<>();
-        this.setRole("Manager");
+        this.setRole(Role.MANAGER);
     }
 
 

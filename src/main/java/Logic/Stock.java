@@ -1,4 +1,4 @@
-package Model;
+package Logic;
 
 import java.util.ArrayList;
 

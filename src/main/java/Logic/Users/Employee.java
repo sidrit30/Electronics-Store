@@ -1,4 +1,4 @@
-package Model;
+package Logic.Users;
 
 import java.io.Serializable;
 
@@ -13,7 +13,7 @@ public abstract class Employee implements Serializable {
     private String username;
     private String password;
     private double salary;
-    private String role;
+    private Role role;
 
     public Employee(String lastName, String firstName, String username, String password, double salary) {
         //start from id 001
@@ -23,6 +23,12 @@ public abstract class Employee implements Serializable {
         this.username = username;
         this.password = password;
         this.salary = salary;
+    }
+
+    protected Employee() {
+        this.id = "-1";
+        this.firstName = "Admin";
+        this.lastName = "Admin";
     }
 
 
@@ -97,11 +103,11 @@ public abstract class Employee implements Serializable {
         this.salary = salary;
     }
 
-    public String getRole() {
+    public Role getRole() {
         return role;
     }
 
-    public void setRole(String role) {
+    public void setRole(Role role) {
         this.role = role;
     }
 

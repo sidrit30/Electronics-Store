@@ -1,0 +1,6 @@
+exceptions (incorrect username or password etc.)
+bill class
+deciding sectors and categories
+
+
+logs (bit later)

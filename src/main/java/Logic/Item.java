@@ -1,8 +1,12 @@
-package Model;
+package Logic;
 
+import java.io.Serial;
+import java.io.Serializable;
 import java.util.Date;
 
-public class Item {
+public class Item implements Serializable {
+    @Serial
+    private static final long serialVersionUID = 1234L;
     private static int nrItems;
     private final String itemId;
     private final String itemName;
