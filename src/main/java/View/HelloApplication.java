@@ -3,6 +3,7 @@ package View;
 import Model.Admin;
 import Model.Cashier;
 import Model.Employee;
+import Model.Staff;
 import javafx.application.Application;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
@@ -18,29 +19,37 @@ import javafx.stage.Stage;
 
 import java.io.*;
 import java.util.ArrayList;
+import java.util.Arrays;
 
 public class HelloApplication extends Application {
+    public static Staff staff;
     public static void main(String[] args) {
-        ArrayList<Employee> employees = new ArrayList<>();
-
-        try (
+        try(
                 ObjectInputStream input = new ObjectInputStream(ClassLoader.getSystemClassLoader().getResourceAsStream("staff.dat"));
-        ) {
-            employees.add((Employee) input.readObject());
-            employees.add((Employee) input.readObject());
-
-        } catch (IOException | ClassNotFoundException e) {
-            e.printStackTrace();
+        ){
+            staff = (Staff) input.readObject();
         }
-        System.out.println(employees);
-        System.out.println(employees.get(1) instanceof Admin);
-
+        catch(IOException e){
+            System.out.println("Trouble reading staff.dat");
+            System.out.println("Check resources directory and try again");
+        } catch (ClassNotFoundException e) {
+            System.out.println("Some fuckery");
+        }
 
         launch();
+        try (
+                ObjectOutputStream output = new ObjectOutputStream(new FileOutputStream("src/main/resources/staff.dat"));
+        ) {
+            output.writeObject(staff);
+            System.out.println("Saved staff");
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
     }
 
     @Override
-    public void start(Stage primaryStage) throws IOException {
+    public void start(Stage primaryStage) {
         Image backgroundImage = new Image("digital-art-sunset-mountains-landscape.jpg");
 
         BackgroundSize backgroundSize = new BackgroundSize(100, 100, true, true, true, false);
@@ -64,15 +73,32 @@ public class HelloApplication extends Application {
         Label username = new Label("Username");
         username.setStyle("-fx-text-fill: black; -fx-font-weight: bold;");
         TextField textField = new TextField();
+
         styleTextField(textField);
 
         Label password = new Label("Password");
         password.setStyle("-fx-text-fill: black; -fx-font-weight: bold;");
         PasswordField passwordField = new PasswordField();
+
         styleTextField(passwordField);
 
         Button loginButton = new Button("Login");
         styleButton(loginButton, Color.DARKORANGE, Color.BLACK, 10);
+        loginButton.setOnAction(e -> {
+            String uname = textField.getText();
+            String pass = staff.validateUsername(uname);
+            if(pass == null){
+                System.out.println("Invalid username");
+            }
+            String inputPass = passwordField.getText();
+            if(inputPass.equals(pass)){
+                System.out.println("Login successful");
+            }
+            else{
+                System.out.println("Invalid password");
+            }
+
+        });
 
         gridPane.add(username, 0, 0);
         gridPane.add(textField, 1, 0);
@@ -115,6 +141,7 @@ public class HelloApplication extends Application {
         HBox.setMargin(footerLabel, new Insets(10));
 
         Scene scene = new Scene(borderPane, 400, 300);
+        primaryStage.setResizable(false);
         primaryStage.setTitle("Background image example");
         primaryStage.setScene(scene);
         primaryStage.show();

@@ -1,16 +1,13 @@
 package Model;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Comparator;
 
-public class Staff {
+public class Staff implements Serializable {
     private ArrayList<Employee> staff;
     public Staff() {
         staff = new ArrayList<>();
-    }
-
-    public Staff(ArrayList<Employee> staff) {
-        this.staff = staff;
     }
 
     public Employee[] getStaff() {
@@ -49,33 +46,42 @@ public class Staff {
         return staff1.toArray(new Employee[staff1.size()]);
     }
 
-    public Employee[] sortStaffByLastName() {
-        ArrayList<Employee> staff1 = (ArrayList<Employee>) staff.clone();
-        staff1.sort(new Comparator<>() {
-            @Override
-            public int compare(Employee o1, Employee o2) {
-                return o2.getLastName().compareTo(o1.getLastName());
+//    I think these are not needed anymore, but I left them to be sure
+//    public Employee[] sortStaffByLastName() {
+//        ArrayList<Employee> staff1 = (ArrayList<Employee>) staff.clone();
+//        staff1.sort(new Comparator<>() {
+//            @Override
+//            public int compare(Employee o1, Employee o2) {
+//                return o2.getLastName().compareTo(o1.getLastName());
+//            }
+//        });
+//        return staff1.toArray(new Employee[staff1.size()]);
+//    }
+//
+//
+//    public Employee[] sortStaffBySalary() {
+//        ArrayList<Employee> staff1 = (ArrayList<Employee>) staff.clone();
+//        staff1.sort(new Comparator<>() {
+//            @Override
+//            public int compare(Employee e1, Employee e2) {
+//                double diff = e1.getSalary() - e2.getSalary();
+//                if (diff == 0) {
+//                    return 0;
+//                }
+//                return diff > 0 ? 1 : -1;
+//            }
+//        });
+//        return staff1.toArray(new Employee[staff1.size()]);
+//    }
+
+    public String validateUsername(String username) {
+        for (Employee emp : staff) {
+            if(emp.getUsername().equals(username)) {
+                return emp.getPassword();
             }
-        });
-        return staff1.toArray(new Employee[staff1.size()]);
+        }
+        return null;
     }
-
-
-    public Employee[] sortStaffBySalary() {
-        ArrayList<Employee> staff1 = (ArrayList<Employee>) staff.clone();
-        staff1.sort(new Comparator<>() {
-            @Override
-            public int compare(Employee e1, Employee e2) {
-                double diff = e1.getSalary() - e2.getSalary();
-                if (diff == 0) {
-                    return 0;
-                }
-                return diff > 0 ? 1 : -1;
-            }
-        });
-        return staff1.toArray(new Employee[staff1.size()]);
-    }
-
 
 
 
