@@ -8,13 +8,22 @@ import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 
+import java.util.Objects;
+
 public class LoginPage{
-    public void show(Stage primaryStage) {
-        Image backgroundImage = new Image("Images/digital-art-sunset-mountains-landscape.jpg");
+    Stage primaryStage;
+    public LoginPage(Stage primaryStage){
+        this.primaryStage = primaryStage;
+        show();
+    }
+    public void show() {
+
+        Image backgroundImage = new Image("file:src/main/resources/images/background.jpg");
 
         BackgroundSize backgroundSize = new BackgroundSize(100, 100, true, true, true, false);
         BackgroundImage bgImage = new BackgroundImage(backgroundImage, BackgroundRepeat.NO_REPEAT,
@@ -104,6 +113,7 @@ public class LoginPage{
         HBox.setMargin(footerLabel, new Insets(10));
 
         Scene scene = new Scene(borderPane, 400, 300);
+        assert primaryStage != null;
         primaryStage.setResizable(false);
         primaryStage.setTitle("Log-In");
         primaryStage.setScene(scene);
@@ -131,5 +141,6 @@ public class LoginPage{
     private String toRgbString(Color color) {
         return "rgb(" + (int) (color.getRed() * 255) + "," + (int) (color.getGreen() * 255) + "," + (int) (color.getBlue() * 255) + ")";
     }
+
 
 }
