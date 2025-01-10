@@ -1,5 +1,8 @@
 exceptions (incorrect username or password etc.)
+//duhet perdor regex
+
 bill class
+
 deciding sectors and categories
 
 
