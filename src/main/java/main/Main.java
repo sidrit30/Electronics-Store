@@ -1,8 +1,9 @@
-package View;
+package main;
 
+import Controller.LoginController;
+import View.LoginPage;
 import javafx.application.Application;
 import javafx.stage.Stage;
-import javafx.scene.Scene;
 
 public class Main extends Application {
     public static void main(String[] args) {
@@ -11,7 +12,6 @@ public class Main extends Application {
 
     @Override
     public void start(Stage primaryStage) {
-        new LoginPage(primaryStage).show();
-
+        new LoginController(primaryStage);
     }
 }

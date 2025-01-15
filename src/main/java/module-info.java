@@ -5,9 +5,11 @@ module com.cen.electronicsstore {
 
     exports View;
     opens View to javafx.fxml;
-    exports Logic;
-    opens Logic to javafx.fxml;
-    exports Logic.Users;
-    opens Logic.Users to javafx.fxml;
+    exports Model;
+    opens Model to javafx.fxml;
+    exports Model.Users;
+    opens Model.Users to javafx.fxml;
+    exports main;
+    opens main to javafx.fxml;
 
 }

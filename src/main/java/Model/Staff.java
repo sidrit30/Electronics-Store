@@ -1,6 +1,6 @@
-package Logic;
+package Model;
 
-import Logic.Users.Employee;
+import Model.Users.Employee;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 

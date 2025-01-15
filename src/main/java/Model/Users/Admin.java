@@ -1,4 +1,4 @@
-package Logic.Users;
+package Model.Users;
 
 import java.io.Serial;
 

@@ -14,6 +14,34 @@ import javafx.stage.Stage;
 
 public class LoginPage{
     Stage primaryStage;
+    private TextField textField = new TextField();
+    private PasswordField passwordField = new PasswordField();
+    private Button loginButton = new Button("Login");
+
+    public TextField getTextField() {
+        return textField;
+    }
+
+    public void setTextField(TextField textField) {
+        this.textField = textField;
+    }
+
+    public PasswordField getPasswordField() {
+        return passwordField;
+    }
+
+    public void setPasswordField(PasswordField passwordField) {
+        this.passwordField = passwordField;
+    }
+
+    public Button getLoginButton() {
+        return loginButton;
+    }
+
+    public void setLoginButton(Button loginButton) {
+        this.loginButton = loginButton;
+    }
+
     public LoginPage(Stage primaryStage){
         this.primaryStage = primaryStage;
         show();
@@ -42,32 +70,15 @@ public class LoginPage{
 
         Label username = new Label("Username");
         username.setStyle("-fx-text-fill: black; -fx-font-weight: bold;");
-        TextField textField = new TextField();
+
         styleTextField(textField);
 
         Label password = new Label("Password");
         password.setStyle("-fx-text-fill: black; -fx-font-weight: bold;");
-        PasswordField passwordField = new PasswordField();
         styleTextField(passwordField);
 
-        Button loginButton = new Button("Login");
         styleButton(loginButton, Color.DARKORANGE, Color.BLACK, 10);
-        //have to fix sth with the model before moving on to event handling
-//        loginButton.setOnAction(e -> {
-//            String uname = textField.getText();
-//            //String pass = staff.validateUsername(uname);
-//            if(pass == null){
-//                System.out.println("Invalid username");
-//            }
-//            String inputPass = passwordField.getText();
-//            if(inputPass.equals(pass)){
-//                System.out.println("Login successful");
-//            }
-//            else{
-//                System.out.println("Invalid password");
-//            }
-//
-//        });
+
 
         gridPane.add(username, 0, 0);
         gridPane.add(textField, 1, 0);

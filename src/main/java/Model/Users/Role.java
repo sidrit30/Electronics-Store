@@ -1,4 +1,4 @@
-package Logic.Users;
+package Model.Users;
 
 public enum Role {
     CASHIER,
