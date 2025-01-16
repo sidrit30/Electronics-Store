@@ -1,7 +1,6 @@
-package main;
+package Main;
 
 import Controller.LoginController;
-import View.LoginPage;
 import javafx.application.Application;
 import javafx.stage.Stage;
 

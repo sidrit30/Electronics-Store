@@ -16,8 +16,8 @@ public abstract class Employee implements Serializable {
     private Role role;
 
     public Employee(String lastName, String firstName, String username, String password, double salary) {
-        //start from id 001
-        this.id = String.format("%03d", ++nrEmployees);
+        //start from id 0001
+        this.id = String.format("%04d", ++nrEmployees);
         this.lastName = lastName;
         this.firstName = firstName;
         this.username = username;
@@ -26,7 +26,7 @@ public abstract class Employee implements Serializable {
     }
 
     protected Employee() {
-        this.id = "-1";
+        this.id = "000";
         this.firstName = "Admin";
         this.lastName = "Admin";
     }
@@ -111,17 +111,17 @@ public abstract class Employee implements Serializable {
         this.role = role;
     }
 
-    @Override
-    public String toString() {
-        return "Employee{" +
-                "lastName='" + lastName + '\'' +
-                ", firstName='" + firstName + '\'' +
-                ", address='" + address + '\'' +
-                ", phone='" + phone + '\'' +
-                ", email='" + email + '\'' +
-                ", username='" + username + '\'' +
-                ", salary=" + salary +
-                ", role='" + role + '\'' +
-                '}';
-    }
+//    @Override
+//    public String toString() {
+//        return "Employee{" +
+//                "lastName='" + lastName + '\'' +
+//                ", firstName='" + firstName + '\'' +
+//                ", address='" + address + '\'' +
+//                ", phone='" + phone + '\'' +
+//                ", email='" + email + '\'' +
+//                ", username='" + username + '\'' +
+//                ", salary=" + salary +
+//                ", role='" + role + '\'' +
+//                '}';
+//    }
 }

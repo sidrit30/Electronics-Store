@@ -9,7 +9,9 @@ module com.cen.electronicsstore {
     opens Model to javafx.fxml;
     exports Model.Users;
     opens Model.Users to javafx.fxml;
-    exports main;
-    opens main to javafx.fxml;
+    exports Main;
+    opens Main to javafx.fxml;
+    exports DAO;
+    opens DAO to javafx.fxml;
 
 }
