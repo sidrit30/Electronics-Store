@@ -8,7 +8,7 @@ public class LoginController {
     String uname;
     String pass;
     public LoginController(Stage stage) {
-        Admin admin = new Admin();
+        Admin admin = new Admin("admin", "admin", "admin", "admin", 3200);
         LoginPage login = new LoginPage(stage);
 
         login.getLoginButton().setOnAction(e -> {

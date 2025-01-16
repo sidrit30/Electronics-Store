@@ -3,7 +3,6 @@ package Model;
 import Model.Exceptions.InsufficientStockException;
 import Model.Items.Item;
 import Model.Users.Cashier;
-
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
@@ -13,8 +12,8 @@ import java.util.ArrayList;
 
 public class Bill {
     private final String billID;
-    private ArrayList<Item> itemList;
-    private ArrayList<Integer> quantities;
+    private final ArrayList<Item> itemList;
+    private final ArrayList<Integer> quantities;
     private final Cashier cashier;
     private final LocalDateTime billTime;
     DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss");
