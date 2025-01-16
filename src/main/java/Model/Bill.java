@@ -2,7 +2,7 @@ package Model;
 
 import Model.Exceptions.InsufficientStockException;
 import Model.Items.Item;
-import Model.Users.Cashier;
+import Model.Users.Employee;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
@@ -14,12 +14,12 @@ public class Bill {
     private final String billID;
     private final ArrayList<Item> itemList;
     private final ArrayList<Integer> quantities;
-    private final Cashier cashier;
+    private final Employee cashier;
     private final LocalDateTime billTime;
-    DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss");
+    DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm:ss");
     private double profit;
 
-    public Bill(Cashier cashier) {
+    public Bill(Employee cashier) {
         this.cashier = cashier;
         this.billTime = LocalDateTime.now();
         billID = UniqueIDGenerator.getUniqueId();
@@ -31,7 +31,7 @@ public class Bill {
         return billID;
     }
 
-    public Cashier getCashier() {
+    public Employee getCashier() {
         return cashier;
     }
 
@@ -56,14 +56,26 @@ public class Bill {
         this.itemList.remove(item);
     }
 
-    private double calculateTotalProfit() {
-        double totalProfit = 0.0;
+    private double calculateCost() {
+       double cost = 0;
         for (int i = 0; i < itemList.size(); i++) {
             Item item = itemList.get(i);
-            int quantity = quantities.get(i);
-            totalProfit += item.getProfit() * quantity;
+            cost += item.getPurchasePrice() * quantities.get(i);
         }
-        return totalProfit;
+        return cost;
+    }
+
+    private double calculateRevenue() {
+        double revenue = 0;
+        for (int i = 0; i < itemList.size(); i++) {
+            Item item = itemList.get(i);
+            revenue += item.getSellingPrice() * quantities.get(i);
+        }
+        return revenue;
+    }
+
+    private double calculateProfit() {
+        return calculateRevenue() - calculateCost();
     }
 
     public String printBill() {
@@ -71,16 +83,16 @@ public class Bill {
         bill.append("Bill Details:\n");
         bill.append("--------------------------------------------------\n");
         bill.append("Bill Date: ").append(billTime.format(formatter)).append("\n");
+        bill.append("Cashier: ").append(cashier.getFullName()).append("\n");
         bill.append("--------------------------------------------------\n");
         for (int i = 0; i < itemList.size(); i++) {
             Item item = itemList.get(i);
             int quantity = quantities.get(i);
-            bill.append(String.format("Item: %s\n Quantity: %d\n Selling Price: %.2f\n Total: %.2f\n",
+            bill.append(String.format("Item: %s\n Quantity: %d\n Item Price: %.2f\n Total: %.2f\n",
                     item.getItemName(), quantity, item.getSellingPrice(), item.getSellingPrice() * quantity));
         }
         bill.append("--------------------------------------------------\n");
-        bill.append(String.format("Total Profit: %.2f\n", calculateTotalProfit()));
-        bill.append(String.format("\nBill Time: %s\n", billTime));
+        bill.append(String.format("Total: %.2f\n", calculateRevenue()));
         return bill.toString();
     }
 

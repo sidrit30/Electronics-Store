@@ -1,23 +1,41 @@
 package Model.Users;
 
+import javafx.beans.property.SimpleStringProperty;
+import javafx.beans.property.StringProperty;
+
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.io.Serial;
 import java.util.EnumSet;
 
 public class Cashier extends Employee {
     @Serial
     private static final long serialVersionUID = 12L;
-    private String sector;
+    private StringProperty sectorName;
     public Cashier(String lastName, String firstName, String username, String password, double salary, String sector) {
         super(lastName, firstName, username, password, salary);
-        this.sector = sector;
+        this.sectorName = new SimpleStringProperty(sector);
         this.setPermissions(EnumSet.of(Permission.CREATE_BILL, Permission.VIEW_BILL));
     }
 
-    public String getSector() {
-        return sector;
+    public String getSectorName() {
+        return sectorName.get();
     }
 
-    public void setSector(String sector) {
-        this.sector = sector;
+    public void setSectorName(String sectorName) {
+        this.sectorName.set(sectorName);
+    }
+
+    @Override
+    protected void writeObject(ObjectOutputStream out) throws IOException {
+        super.writeObject(out);
+        out.writeUTF(sectorName.getValueSafe());
+    }
+
+    @Override
+    protected void readObject(ObjectInputStream in) throws IOException, ClassNotFoundException {
+        super.readObject(in);
+        this.sectorName = new SimpleStringProperty(in.readUTF());
     }
 }

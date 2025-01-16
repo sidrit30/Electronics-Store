@@ -5,23 +5,27 @@ import View.LoginPage;
 import javafx.stage.Stage;
 
 public class LoginController {
-    String uname;
-    String pass;
-    public LoginController(Stage stage) {
-        Admin admin = new Admin("admin", "admin", "admin", "admin", 3200);
-        LoginPage login = new LoginPage(stage);
+    private Admin userModel;
+    private LoginPage loginPage;
 
-        login.getLoginButton().setOnAction(e -> {
-            System.out.println("Login Button pressed");
-            uname = login.getTextField().getText();
-            System.out.println(uname);
-            pass = login.getPasswordField().getText();
-            System.out.println(pass);
-            if(admin.getUsername().equals(uname) && admin.getPassword().equals(pass)) {
-                System.out.println("Login Successful");
-                new AdminController(stage);
+    public LoginController(Stage primaryStage) {
+        this.userModel = new Admin("admin", "admin", "admin", "admin", 3200);
+        this.loginPage = new LoginPage(primaryStage);
+        addEventHandlers();
+    }
+
+    private void addEventHandlers() {
+        loginPage.getLoginButton().setOnAction(event -> {
+            String username = loginPage.getTextField().getText();
+            String password = loginPage.getPasswordField().getText();
+
+            if (userModel.getUsername().equals(username) && userModel.getPassword().equals(password)) {
+                System.out.println("Login successful");
+                // Handle successful login
+            } else {
+                System.out.println("Login failed");
+                // Handle login failure
             }
-            System.out.println("Login Failed");
         });
     }
 }

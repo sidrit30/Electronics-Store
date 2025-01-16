@@ -1,32 +1,44 @@
 package Model.Items;
 
 import Model.UniqueIDGenerator;
+import javafx.beans.property.*;
+import javafx.scene.image.ImageView;
 
-import java.io.Serial;
-import java.io.Serializable;
-import java.util.Date;
+import java.io.*;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 
 public class Item implements Serializable {
     @Serial
     private static final long serialVersionUID = 1234L;
+    //sth to look at in the end
+    //private ImageView imageView;
+
     private final String itemID;
     private final String itemName;
+    private final String itemCategory;
     private final double sellingPrice;
-    private double purchasePrice;
-    private int quantity;
-    private String supplier;
-    private String itemDescription;
-    private final Date purchaseDate;
 
-    public Item(String itemName, double salePrice, double purchasePrice, int quantity, String supplier, String itemDescription) {
+    private final LocalDateTime purchaseDate;
+    DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm:ss");
+
+    private DoubleProperty purchasePrice;
+    private IntegerProperty quantity;
+    private StringProperty supplier;
+    private StringProperty itemDescription;
+
+
+    public Item(String itemName, String itemCategory, double salePrice, double purchasePrice, int quantity, String supplier, String itemDescription) {
         itemID = UniqueIDGenerator.getUniqueId();
         this.itemName = itemName;
+        this.purchaseDate = LocalDateTime.now();
+        this.itemCategory = itemCategory;
         this.sellingPrice = salePrice;
-        this.purchasePrice = purchasePrice;
-        this.quantity = quantity;
-        this.supplier = supplier;
-        this.itemDescription = itemDescription;
-        this.purchaseDate = new Date();
+
+        this.purchasePrice = new SimpleDoubleProperty(purchasePrice);
+        this.quantity = new SimpleIntegerProperty(quantity);
+        this.supplier = new SimpleStringProperty(supplier);
+        this.itemDescription = new SimpleStringProperty(itemDescription);
     }
 
     public String getItemID() {
@@ -37,47 +49,69 @@ public class Item implements Serializable {
         return itemName;
     }
 
+    public String getItemCategory() {
+        return itemCategory;
+    }
+
     public double getSellingPrice() {
         return sellingPrice;
     }
 
-    public Date getPurchaseDate() {
-        return purchaseDate;
+    public String getPurchaseDate() {
+        return purchaseDate.format(formatter);
     }
 
     public double getPurchasePrice() {
-        return purchasePrice;
+        return purchasePrice.get();
     }
 
     public void setPurchasePrice(double purchasePrice) {
-        this.purchasePrice = purchasePrice;
+        this.purchasePrice.set(purchasePrice);
     }
 
     public int getQuantity() {
-        return quantity;
+        return quantity.get();
     }
 
     public void setQuantity(int quantity) {
-        this.quantity = quantity;
+        this.quantity.set(quantity);
     }
 
     public String getSupplier() {
-        return supplier;
+        return supplier.get();
     }
 
     public void setSupplier(String supplier) {
-        this.supplier = supplier;
+        this.supplier.set(supplier);
     }
 
     public String getItemDescription() {
-        return itemDescription;
+        return itemDescription.get();
     }
 
     public void setItemDescription(String itemDescription) {
-        this.itemDescription = itemDescription;
+        this.itemDescription.set(itemDescription);
     }
 
-    public double getProfit() {
-        return sellingPrice - purchasePrice;
+
+
+
+    @Serial
+    private void writeObject(ObjectOutputStream out) throws IOException {
+        out.defaultWriteObject();
+        out.writeDouble(purchasePrice.getValue());
+        out.writeInt(quantity.getValue());
+        out.writeUTF(supplier.getValueSafe());
+        out.writeUTF(itemDescription.getValueSafe());
     }
+
+    @Serial
+    private void readObject(ObjectInputStream in) throws IOException, ClassNotFoundException {
+        in.defaultReadObject();
+        purchasePrice = new SimpleDoubleProperty(in.readDouble());
+        quantity = new SimpleIntegerProperty(in.readInt());
+        supplier = new SimpleStringProperty(in.readUTF());
+        itemDescription = new SimpleStringProperty(in.readUTF());
+    }
+
 }
