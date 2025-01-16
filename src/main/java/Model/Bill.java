@@ -1,6 +1,8 @@
 package Model;
 
-import Model.Exceptions.InsufficientStock;
+import Model.Exceptions.InsufficientStockException;
+import Model.Items.Item;
+
 import java.util.ArrayList;
 
 public class Bill {
@@ -12,9 +14,9 @@ public class Bill {
         this.quantities = new ArrayList<>();
     }
 
-    public void addItem(Item item, int quantity) throws InsufficientStock {
+    public void addItem(Item item, int quantity) throws InsufficientStockException {
         if (item.getQuantity() < quantity) {
-            throw new InsufficientStock("Not enough stock for item: " + item.getItemName());
+            throw new InsufficientStockException("Not enough stock for item: " + item.getItemName());
         }
         this.itemList.add(item);
         this.quantities.add(quantity);

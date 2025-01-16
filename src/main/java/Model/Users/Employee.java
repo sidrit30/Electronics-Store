@@ -1,6 +1,7 @@
 package Model.Users;
 
 import java.io.Serializable;
+import java.util.EnumSet;
 
 public abstract class Employee implements Serializable {
     private static int nrEmployees;
@@ -13,7 +14,7 @@ public abstract class Employee implements Serializable {
     private String username;
     private String password;
     private double salary;
-    private Role role;
+    private EnumSet<Permission> permissions;
 
     public Employee(String lastName, String firstName, String username, String password, double salary) {
         //start from id 0001
@@ -23,12 +24,13 @@ public abstract class Employee implements Serializable {
         this.username = username;
         this.password = password;
         this.salary = salary;
+        this.permissions = EnumSet.noneOf(Permission.class);
     }
 
     protected Employee() {
         this.id = "000";
-        this.firstName = "Admin";
-        this.lastName = "Admin";
+        this.firstName = "a";
+        this.lastName = "a";
     }
 
 
@@ -103,15 +105,28 @@ public abstract class Employee implements Serializable {
         this.salary = salary;
     }
 
-    public Role getRole() {
-        return role;
+    public EnumSet<Permission> getPermissions() {
+        return permissions;
     }
 
-    public void setRole(Role role) {
-        this.role = role;
+    public void setPermissions(EnumSet<Permission> permissions) {
+        this.permissions = permissions;
     }
 
-//    @Override
+    public void addPermission(Permission permission) {
+        this.permissions.add(permission);
+    }
+
+    public void removePermission(Permission permission) {
+        this.permissions.remove(permission);
+    }
+
+    public boolean hasPermission(Permission permission) {
+        return this.permissions.contains(permission);
+    }
+
+
+    //    @Override
 //    public String toString() {
 //        return "Employee{" +
 //                "lastName='" + lastName + '\'' +

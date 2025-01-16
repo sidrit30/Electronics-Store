@@ -1,4 +1,4 @@
-package Model;
+package Model.Items;
 
 import java.io.Serial;
 import java.io.Serializable;
@@ -8,26 +8,22 @@ public class Item implements Serializable {
     @Serial
     private static final long serialVersionUID = 1234L;
     private static int nrItems;
-    private final String itemId;
     private final String itemName;
     private final double sellingPrice;
     private double purchasePrice;
-    //stock
     private int quantity;
     private String supplier;
     private String itemDescription;
-    private String itemCategory;
     private final Date purchaseDate;
 
-    public Item(String itemName, double salePrice, double purchasePrice, int quantity, String supplier, String itemDescription, String itemCategory) {
-        this.itemId = String.format("%03d", ++nrItems);
+    public Item(String itemName, double salePrice, double purchasePrice, int quantity, String supplier, String itemDescription) {
+        //this.itemId = String.format("%06d", ++nrItems);
         this.itemName = itemName;
         this.sellingPrice = salePrice;
         this.purchasePrice = purchasePrice;
         this.quantity = quantity;
         this.supplier = supplier;
         this.itemDescription = itemDescription;
-        this.itemCategory = itemCategory;
         this.purchaseDate = new Date();
     }
 
@@ -35,9 +31,6 @@ public class Item implements Serializable {
         return nrItems;
     }
 
-    public String getItemId() {
-        return itemId;
-    }
 
     public String getItemName() {
         return itemName;
@@ -81,14 +74,6 @@ public class Item implements Serializable {
 
     public void setItemDescription(String itemDescription) {
         this.itemDescription = itemDescription;
-    }
-
-    public String getItemCategory() {
-        return itemCategory;
-    }
-
-    public void setItemCategory(String itemCategory) {
-        this.itemCategory = itemCategory;
     }
 
     public double getProfit() {
