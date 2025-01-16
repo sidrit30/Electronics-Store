@@ -1,5 +1,7 @@
 package Model.Items;
 
+import Model.UniqueIDGenerator;
+
 import java.io.Serial;
 import java.io.Serializable;
 import java.util.Date;
@@ -7,7 +9,7 @@ import java.util.Date;
 public class Item implements Serializable {
     @Serial
     private static final long serialVersionUID = 1234L;
-    private static int nrItems;
+    private final String itemID;
     private final String itemName;
     private final double sellingPrice;
     private double purchasePrice;
@@ -17,7 +19,7 @@ public class Item implements Serializable {
     private final Date purchaseDate;
 
     public Item(String itemName, double salePrice, double purchasePrice, int quantity, String supplier, String itemDescription) {
-        //this.itemId = String.format("%06d", ++nrItems);
+        itemID = UniqueIDGenerator.getUniqueId();
         this.itemName = itemName;
         this.sellingPrice = salePrice;
         this.purchasePrice = purchasePrice;
@@ -27,10 +29,9 @@ public class Item implements Serializable {
         this.purchaseDate = new Date();
     }
 
-    public static int getNrItems() {
-        return nrItems;
+    public String getItemID() {
+        return itemID;
     }
-
 
     public String getItemName() {
         return itemName;

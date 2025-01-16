@@ -11,10 +11,10 @@ public class Admin extends Employee{
         this.setPermissions(EnumSet.allOf(Permission.class));
     }
 
-    //creates a basic admin for testing purposes
-    public Admin() {
-        this.setUsername("admin");
-        this.setPassword("admin");
-        this.setPermissions(EnumSet.allOf(Permission.class));
-    }
+//    //creates a basic admin for testing purposes
+//    public Admin() {
+//        this.setUsername("admin");
+//        this.setPassword("admin");
+//        this.setPermissions(EnumSet.allOf(Permission.class));
+//    }
 }

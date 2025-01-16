@@ -1,10 +1,11 @@
 package Model.Users;
 
+import Model.UniqueIDGenerator;
+
 import java.io.Serializable;
 import java.util.EnumSet;
 
 public abstract class Employee implements Serializable {
-    private static int nrEmployees;
     private final String id;
     private final String lastName;
     private final String firstName;
@@ -17,28 +18,13 @@ public abstract class Employee implements Serializable {
     private EnumSet<Permission> permissions;
 
     public Employee(String lastName, String firstName, String username, String password, double salary) {
-        //start from id 0001
-        this.id = String.format("%04d", ++nrEmployees);
+        this.id = UniqueIDGenerator.getUniqueId();
         this.lastName = lastName;
         this.firstName = firstName;
         this.username = username;
         this.password = password;
         this.salary = salary;
         this.permissions = EnumSet.noneOf(Permission.class);
-    }
-
-    protected Employee() {
-        this.id = "000";
-        this.firstName = "a";
-        this.lastName = "a";
-    }
-
-
-    public static int getNrEmployees() {
-        return nrEmployees;
-    }
-    public static void setNrEmployees(int nrEmployees) {
-        Employee.nrEmployees = nrEmployees;
     }
 
     public String getId() {
