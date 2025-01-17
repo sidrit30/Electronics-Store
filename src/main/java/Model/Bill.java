@@ -3,21 +3,24 @@ package Model;
 import Model.Exceptions.InsufficientStockException;
 import Model.Items.Item;
 import Model.Users.Employee;
-import java.io.File;
-import java.io.FileWriter;
-import java.io.IOException;
+
+import java.io.*;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 
-public class Bill {
+public class Bill implements Serializable {
+    @Serial
+    private static final long serialVersionUID = 132L;
+
     private final String billID;
     private final ArrayList<Item> itemList;
     private final ArrayList<Integer> quantities;
     private final Employee cashier;
     private final LocalDateTime billTime;
-    DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm:ss");
-    private double profit;
+    private static final DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm:ss");
+    private double cost;
+    private double revenue;
 
     public Bill(Employee cashier) {
         this.cashier = cashier;
@@ -74,8 +77,8 @@ public class Bill {
         return revenue;
     }
 
-    private double calculateProfit() {
-        return calculateRevenue() - calculateCost();
+    public double calculateProfit() {
+        return revenue - cost;
     }
 
     public String printBill() {
@@ -92,11 +95,15 @@ public class Bill {
                     item.getItemName(), quantity, item.getSellingPrice(), item.getSellingPrice() * quantity));
         }
         bill.append("--------------------------------------------------\n");
-        bill.append(String.format("Total: %.2f\n", calculateRevenue()));
+        bill.append(String.format("Total: %.2f\n", revenue));
+
         return bill.toString();
     }
 
     public void saveBillToFile() {
+        //when bill is finished calculate revenue and cost
+        cost = calculateCost();
+        revenue = calculateRevenue();
         File file = new File("file:src/main/resources/Bills/bill" + billID + ".txt");
         try (FileWriter writer = new FileWriter(file)) {
             writer.write(printBill());

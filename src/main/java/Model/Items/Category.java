@@ -23,9 +23,9 @@ public class Category implements Serializable {
         return items;
     }
 
-    public void addItem(Item item) throws ExistingItemException {
-        if (searchItems(item.getItemName()) == null) {
-            items.add(item);
+    public void addItem(String itemName, double salePrice, double purchasePrice, int quantity, String supplier, String itemDescription) throws ExistingItemException {
+        if (searchItems(itemName) == null) {
+            items.add(new Item(itemName, categoryName, salePrice, purchasePrice, quantity, supplier, itemDescription));
         }
         else {
             throw new ExistingItemException("Item already exists");
