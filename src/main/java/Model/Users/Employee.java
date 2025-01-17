@@ -5,7 +5,6 @@ import javafx.beans.property.DoubleProperty;
 import javafx.beans.property.SimpleDoubleProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
-
 import java.io.*;
 import java.util.EnumSet;
 
@@ -134,6 +133,7 @@ public abstract class Employee implements Serializable {
 
     @Serial
     protected void readObject(ObjectInputStream in) throws IOException, ClassNotFoundException {
+        in.defaultReadObject();
         this.address = new SimpleStringProperty(in.readUTF());
         this.phone = new SimpleStringProperty(in.readUTF());
         this.email = new SimpleStringProperty(in.readUTF());

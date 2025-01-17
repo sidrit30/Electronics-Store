@@ -11,7 +11,8 @@ public class Sector implements Serializable {
     @Serial
     private static final long serialVersionUID = 111L;
     private final String sectorName;
-    private ArrayList<Category> categories;
+    private ObservableList<String> categories;
+    private ObservableList<Item> items;
     public Sector(String sectorName) {
         this.sectorName = sectorName;
     }
@@ -20,39 +21,27 @@ public class Sector implements Serializable {
         return sectorName;
     }
 
-    public ArrayList<Category> getCategories() {
+    public ObservableList<String> getCategories() {
         return categories;
     }
 
-    public void setCategories(ArrayList<Category> categories) {
-        this.categories = categories;
+    public ObservableList<Item> getItems() {
+        return items;
     }
 
-    public void addCategory(Category category) {
+    public void add(Item item) {
+        items.add(item);
+    }
+    public void remove(Item item) {
+        items.remove(item);
+    }
+
+    public void addCategory(String category) {
         categories.add(category);
     }
-
-    public void removeCategory(Category category) {
+    public void removeCategory(String category) {
         categories.remove(category);
     }
 
-    public boolean containsCategory(Category category) {
-        return categories.contains(category);
-    }
 
-    public ObservableList<Category> getCategoriesObservableList() {
-        ObservableList<Category> categoryObservableList = FXCollections.observableArrayList();
-        categoryObservableList.addAll(categories);
-        return categoryObservableList;
-    }
-
-    public ObservableList<Category> searchCategory(String keyword) {
-        ObservableList<Category> categoryObservableList = FXCollections.observableArrayList();
-        for (Category category : categories) {
-            if(category.getCategoryName().toLowerCase().contains(keyword.toLowerCase())) {
-                categoryObservableList.add(category);
-            }
-        }
-        return categoryObservableList;
-    }
 }

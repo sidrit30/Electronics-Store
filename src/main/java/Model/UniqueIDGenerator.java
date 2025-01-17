@@ -23,6 +23,9 @@ public class UniqueIDGenerator {
         } else {
             lastSeq++;
         }
+        if(lastSeq > MAX_SEQ) {
+            lastSeq = 0;
+        }
         return lastTime.format(formatter) + String.format("%02d", lastSeq);
     }
 
