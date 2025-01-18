@@ -1,11 +1,12 @@
 package Model.Items;
 
-import javafx.collections.FXCollections;
+import Model.Exceptions.AlreadyExistingException;
 import javafx.collections.ObservableList;
 
+import java.io.IOException;
+import java.io.ObjectOutputStream;
 import java.io.Serial;
 import java.io.Serializable;
-import java.util.ArrayList;
 
 public class Sector implements Serializable {
     @Serial
@@ -29,18 +30,39 @@ public class Sector implements Serializable {
         return items;
     }
 
-    public void add(Item item) {
+    public void add(Item item) throws AlreadyExistingException {
+        for (Item i : items) {
+            if (i.getItemName().equals(item.getItemName())) {
+                throw new AlreadyExistingException("Item: " + item.getItemName() + " already exists");
+            }
+        }
         items.add(item);
     }
-    public void remove(Item item) {
-        items.remove(item);
+
+    public boolean remove(Item item) {
+        try {
+            items.remove(item);
+            return true;
+        } catch(Exception e) {
+            return false;
+        }
     }
 
-    public void addCategory(String category) {
+    public void addCategory(String category) throws AlreadyExistingException {
+        if (categories.contains(category)) {
+            throw new AlreadyExistingException("Category: " + category + " already exists");
+        }
         categories.add(category);
+
     }
     public void removeCategory(String category) {
         categories.remove(category);
+    }
+
+    @Serial
+    private void writeObject(ObjectOutputStream out) throws IOException {
+        out.defaultWriteObject();
+        out.writeObject(categories.stream().toList());
     }
 
 

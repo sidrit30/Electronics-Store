@@ -1,6 +1,7 @@
 module com.cen.electronicsstore {
     requires javafx.controls;
     requires javafx.fxml;
+    requires java.desktop;
 
 
     exports View;

@@ -27,4 +27,5 @@ public class Cashier extends Employee {
         this.sectorName = sectorName;
     }
 
+
 }

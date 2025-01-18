@@ -12,12 +12,12 @@ public abstract class Employee implements Serializable {
     private final String id;
     private final String lastName;
     private final String firstName;
-    private StringProperty address;
-    private StringProperty phone;
-    private StringProperty email;
-    private StringProperty username;
-    private StringProperty password;
-    private DoubleProperty salary;
+    private transient StringProperty address;
+    private transient StringProperty phone;
+    private transient StringProperty email;
+    private transient StringProperty username;
+    private transient StringProperty password;
+    private transient DoubleProperty salary;
     private EnumSet<Permission> permissions;
 
     public Employee(String lastName, String firstName, String username, String password, double salary) {
@@ -121,7 +121,7 @@ public abstract class Employee implements Serializable {
     }
 
     @Serial
-    protected void writeObject(ObjectOutputStream out) throws IOException {
+    private void writeObject(ObjectOutputStream out) throws IOException {
         out.defaultWriteObject();
         out.writeUTF(this.address.getValueSafe());
         out.writeUTF(this.phone.getValueSafe());
@@ -132,7 +132,7 @@ public abstract class Employee implements Serializable {
     }
 
     @Serial
-    protected void readObject(ObjectInputStream in) throws IOException, ClassNotFoundException {
+    private void readObject(ObjectInputStream in) throws IOException, ClassNotFoundException {
         in.defaultReadObject();
         this.address = new SimpleStringProperty(in.readUTF());
         this.phone = new SimpleStringProperty(in.readUTF());
@@ -141,6 +141,4 @@ public abstract class Employee implements Serializable {
         this.password = new SimpleStringProperty(in.readUTF());
         this.salary = new SimpleDoubleProperty(in.readDouble());
     }
-
-
 }

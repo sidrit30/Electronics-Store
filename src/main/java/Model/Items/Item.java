@@ -17,24 +17,24 @@ public class Item implements Serializable {
     private final String itemID;
     private final String itemName;
     private final String itemCategory;
-    private final double sellingPrice;
 
     private final LocalDateTime purchaseDate;
-    DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm:ss");
+    private transient final DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm:ss");
 
-    private DoubleProperty purchasePrice;
-    private IntegerProperty quantity;
-    private StringProperty supplier;
-    private StringProperty itemDescription;
+    private transient DoubleProperty sellingPrice;
+    private transient DoubleProperty purchasePrice;
+    private transient IntegerProperty quantity;
+    private transient StringProperty supplier;
+    private transient StringProperty itemDescription;
 
 
     public Item(String itemName, String itemCategory, double salePrice, double purchasePrice, int quantity, String supplier, String itemDescription) {
-        itemID = UniqueIDGenerator.getUniqueId();
+        this.itemID = UniqueIDGenerator.getUniqueId();
         this.itemName = itemName;
         this.purchaseDate = LocalDateTime.now();
         this.itemCategory = itemCategory;
-        this.sellingPrice = salePrice;
 
+        this.sellingPrice = new SimpleDoubleProperty(salePrice);
         this.purchasePrice = new SimpleDoubleProperty(purchasePrice);
         this.quantity = new SimpleIntegerProperty(quantity);
         this.supplier = new SimpleStringProperty(supplier);
@@ -54,7 +54,11 @@ public class Item implements Serializable {
     }
 
     public double getSellingPrice() {
-        return sellingPrice;
+        return sellingPrice.get();
+    }
+
+    public void setSellingPrice(double sellingPrice) {
+        this.sellingPrice.set(sellingPrice);
     }
 
     public String getPurchaseDate() {
@@ -99,6 +103,7 @@ public class Item implements Serializable {
     @Serial
     private void writeObject(ObjectOutputStream out) throws IOException {
         out.defaultWriteObject();
+        out.writeDouble(sellingPrice.getValue());
         out.writeDouble(purchasePrice.getValue());
         out.writeInt(quantity.getValue());
         out.writeUTF(supplier.getValueSafe());
@@ -108,6 +113,7 @@ public class Item implements Serializable {
     @Serial
     private void readObject(ObjectInputStream in) throws IOException, ClassNotFoundException {
         in.defaultReadObject();
+        sellingPrice = new SimpleDoubleProperty(in.readDouble());
         purchasePrice = new SimpleDoubleProperty(in.readDouble());
         quantity = new SimpleIntegerProperty(in.readInt());
         supplier = new SimpleStringProperty(in.readUTF());

@@ -9,7 +9,7 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 
-public class Bill implements Serializable {
+public class Sector implements Serializable {
     @Serial
     private static final long serialVersionUID = 132L;
 
@@ -22,7 +22,7 @@ public class Bill implements Serializable {
     private double cost;
     private double revenue;
 
-    public Bill(Employee cashier) {
+    public Sector(Employee cashier) {
         this.cashier = cashier;
         this.billTime = LocalDateTime.now();
         billID = UniqueIDGenerator.getUniqueId();
