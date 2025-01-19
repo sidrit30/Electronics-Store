@@ -23,9 +23,12 @@ public class EmployeeDAO {
     private void loadEmployees() {
         try(ObjectInputStream input = new ObjectInputStream(new FileInputStream(EMPLOYEES_FILE))) {
             while (true) {
-                employees.add((Employee) input.readObject());
+                Employee employee = (Employee) input.readObject();
+                System.out.println(employee.getFullName());
+                employees.add(employee);
             }
         } catch (EOFException ignored) {
+            System.out.println("yeeeee");
         } catch (IOException | ClassNotFoundException e) {
             System.out.println(e.getMessage());
         }
@@ -97,11 +100,11 @@ public class EmployeeDAO {
             }
         }
         if(employee == null) {
-            throw new InvalidUsernameException("User doesn't exist");
+            throw new InvalidUsernameException("Invalid Username");
         }
         if(employee.getPassword().equals(password)) {
             return employee;
         }
-        throw new InvalidPasswordException("Wrong password");
+        throw new InvalidPasswordException("Incorrect Password");
     }
 }

@@ -27,6 +27,9 @@ public abstract class Employee implements Serializable {
         this.username = new SimpleStringProperty(username);
         this.password = new SimpleStringProperty(password);
         this.salary = new SimpleDoubleProperty(salary);
+        this.address = new SimpleStringProperty();
+        this.phone = new SimpleStringProperty();
+        this.email = new SimpleStringProperty();
         this.permissions = EnumSet.noneOf(Permission.class);
     }
 
@@ -123,9 +126,9 @@ public abstract class Employee implements Serializable {
     @Serial
     private void writeObject(ObjectOutputStream out) throws IOException {
         out.defaultWriteObject();
-        if(address != null) out.writeUTF(this.address.getValueSafe());
-        if(phone!=null) out.writeUTF(this.phone.getValueSafe());
-        if(email!=null) out.writeUTF(this.email.getValueSafe());
+        out.writeUTF(this.address.getValueSafe());
+        out.writeUTF(this.phone.getValueSafe());
+        out.writeUTF(this.email.getValueSafe());
         out.writeUTF(this.username.getValueSafe());
         out.writeUTF(this.password.getValueSafe());
         out.writeDouble(this.salary.getValue());

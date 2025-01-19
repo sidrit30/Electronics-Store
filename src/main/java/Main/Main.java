@@ -3,14 +3,13 @@ package Main;
 import Controller.LoginController;
 import DAO.EmployeeDAO;
 import Model.Users.Admin;
+import Model.Users.Employee;
 import javafx.application.Application;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 
 public class Main extends Application {
     public static void main(String[] args) {
-        EmployeeDAO employeeDAO = new EmployeeDAO();
-        System.out.println(employeeDAO.getEmployees());
         launch(args);
     }
 

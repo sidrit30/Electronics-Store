@@ -58,7 +58,7 @@ public class LoginPage extends BorderPane {
 
 
         GridPane gridPane = new GridPane();
-        gridPane.setPadding(new Insets(10, 10, 10, 10));
+        gridPane.setPadding(new Insets(20, 20, 20, 20));
         gridPane.setHgap(10);
         gridPane.setVgap(10);
 
@@ -87,8 +87,9 @@ public class LoginPage extends BorderPane {
         gridPane.add(textField, 1, 0);
         gridPane.add(password, 0, 1);
         gridPane.add(passwordField, 1, 1);
-        gridPane.add(loginButton, 1, 2);
-        gridPane.add(errorLabel, 1, 3);
+        gridPane.add(errorLabel, 1, 2);
+        gridPane.add(loginButton, 1, 3);
+
 
         Label titleLabel = new Label("Welcome to our application");
         titleLabel.setStyle("-fx-text-fill: black; -fx-font-weight: bold;");
