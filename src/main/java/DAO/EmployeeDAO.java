@@ -2,6 +2,7 @@ package DAO;
 
 import Model.Exceptions.InvalidPasswordException;
 import Model.Exceptions.InvalidUsernameException;
+import Model.Users.Cashier;
 import Model.Users.Employee;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -18,6 +19,18 @@ public class EmployeeDAO {
             loadEmployees();
         }
         return employees;
+    }
+
+    public ObservableList<Cashier> getCashiers(ArrayList<String> sectors) {
+        getEmployees();
+        ObservableList<Cashier> cashiers = FXCollections.observableArrayList();
+        for (Employee employee : employees) {
+            if(employee instanceof Cashier){
+                if(sectors.contains(((Cashier) employee).getSectorName()))
+                    cashiers.add((Cashier) employee);
+            }
+        }
+        return cashiers;
     }
 
     private void loadEmployees() {

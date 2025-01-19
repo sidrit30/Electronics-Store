@@ -22,7 +22,8 @@ public class Manager extends Employee {
         super(lastName, firstName, username, password, salary);
         this.sectors = new ArrayList<>();
         this.setPermissions(EnumSet.of(Permission.VIEW_INVENTORY, Permission.MANAGE_INVENTORY,
-                Permission.VIEW_ALL_SECTORS, Permission.MANAGE_SECTORS));
+                Permission.VIEW_ALL_SECTORS, Permission.MANAGE_SECTORS, Permission.CREATE_CATEGORY,
+                Permission.DELETE_CATEGORY, Permission.CREATE_ITEM, Permission.DELETE_ITEM));
     }
 
 

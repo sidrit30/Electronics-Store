@@ -30,7 +30,7 @@ public class Sector implements Serializable {
         return items;
     }
 
-    public void add(Item item) throws AlreadyExistingException {
+    public void addItem(Item item) throws AlreadyExistingException {
         for (Item i : items) {
             if (i.getItemName().equals(item.getItemName())) {
                 throw new AlreadyExistingException("Item: " + item.getItemName() + " already exists");
@@ -39,7 +39,7 @@ public class Sector implements Serializable {
         items.add(item);
     }
 
-    public boolean remove(Item item) {
+    public boolean removeItem(Item item) {
         try {
             items.remove(item);
             return true;
@@ -55,6 +55,7 @@ public class Sector implements Serializable {
         categories.add(category);
 
     }
+
     public void removeCategory(String category) {
         categories.remove(category);
     }

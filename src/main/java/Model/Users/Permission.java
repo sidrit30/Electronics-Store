@@ -9,5 +9,7 @@ public enum Permission {
     MANAGE_SECTORS,
     CREATE_SECTOR,
     CREATE_CATEGORY,
-    DELETE_CATEGORY
+    DELETE_CATEGORY,
+    CREATE_ITEM,
+    DELETE_ITEM
 }

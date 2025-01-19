@@ -112,8 +112,7 @@ public class Bill implements Serializable {
     }
 
     public void saveBillToFile() {
-        //when bill is finished calculate revenue and cost
-        File file = new File("file:src/main/resources/Bills/bill" + billID + ".txt");
+        File file = new File("src/main/resources/Bills/bill" + billID + ".txt");
         try (FileWriter writer = new FileWriter(file)) {
             writer.write(printBill());
             System.out.println("Bill saved to " + file);
