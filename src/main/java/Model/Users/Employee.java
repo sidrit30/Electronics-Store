@@ -123,9 +123,9 @@ public abstract class Employee implements Serializable {
     @Serial
     private void writeObject(ObjectOutputStream out) throws IOException {
         out.defaultWriteObject();
-        out.writeUTF(this.address.getValueSafe());
-        out.writeUTF(this.phone.getValueSafe());
-        out.writeUTF(this.email.getValueSafe());
+        if(address != null) out.writeUTF(this.address.getValueSafe());
+        if(phone!=null) out.writeUTF(this.phone.getValueSafe());
+        if(email!=null) out.writeUTF(this.email.getValueSafe());
         out.writeUTF(this.username.getValueSafe());
         out.writeUTF(this.password.getValueSafe());
         out.writeDouble(this.salary.getValue());

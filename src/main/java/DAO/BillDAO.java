@@ -1,6 +1,6 @@
 package DAO;
 
-import Model.Sector;
+import Model.Bill;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 
@@ -8,10 +8,10 @@ import java.io.*;
 import java.util.List;
 
 public class BillDAO {
-    private static final File BILL_FILE = new File("file:src/main/resources/data/bills.dat");
-    private static final ObservableList<Sector> bills = FXCollections.observableArrayList();
+    private static final File BILL_FILE = new File("src/main/resources/data/bills.dat");
+    private static final ObservableList<Bill> bills = FXCollections.observableArrayList();
 
-    public ObservableList<Sector> getBills() {
+    public ObservableList<Bill> getBills() {
         if (bills.isEmpty()) {
             loadBills();
         }
@@ -21,7 +21,7 @@ public class BillDAO {
     public void loadBills() {
         try(ObjectInputStream input = new ObjectInputStream(new FileInputStream(BILL_FILE))) {
             while (true) {
-                bills.add((Sector) input.readObject());
+                bills.add((Bill) input.readObject());
             }
         } catch (EOFException ignored) {
         } catch (IOException | ClassNotFoundException e) {
@@ -29,7 +29,7 @@ public class BillDAO {
         }
     }
 
-    public boolean createBill(Sector bill) {
+    public boolean createBill(Bill bill) {
         try (FileOutputStream outputStream = new FileOutputStream(BILL_FILE, true)) {
             ObjectOutputStream writer;
 
@@ -47,9 +47,9 @@ public class BillDAO {
         }
     }
 
-    public boolean deleteBill(Sector bill) {
+    public boolean deleteBill(Bill bill) {
         try (ObjectOutputStream output = new ObjectOutputStream(new FileOutputStream(BILL_FILE))) {
-            for(Sector b : bills) {
+            for(Bill b : bills) {
                 if(!b.equals(bill)) {
                     output.writeObject(b);
                 }
@@ -61,9 +61,9 @@ public class BillDAO {
         }
     }
 
-    public boolean deleteList(List<Sector> list) {
+    public boolean deleteList(List<Bill> list) {
         try(ObjectOutputStream output = new ObjectOutputStream(new FileOutputStream(BILL_FILE))) {
-            for (Sector b : bills) {
+            for (Bill b : bills) {
                 if(!list.contains(b))
                     output.writeObject(b);
             }
@@ -76,7 +76,7 @@ public class BillDAO {
 
     public boolean UpdateAll() {
         try(ObjectOutputStream output = new ObjectOutputStream(new FileOutputStream(BILL_FILE))) {
-            for (Sector b : bills) {
+            for (Bill b : bills) {
                 output.writeObject(b);
             }
             return true;

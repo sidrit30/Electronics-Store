@@ -24,11 +24,12 @@ import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 
-public class LoginPage {
+public class LoginPage extends BorderPane {
     private Stage primaryStage;
     private TextField textField = new TextField();
     private PasswordField passwordField = new PasswordField();
     private Button loginButton = new Button("Login");
+    Label errorLabel = new Label();
 
     public TextField getTextField() {
         return textField;
@@ -42,20 +43,18 @@ public class LoginPage {
         return loginButton;
     }
 
-    public LoginPage(Stage primaryStage) {
-        this.primaryStage = primaryStage;
-        show();
+    public Label getErrorLabel() {
+        return errorLabel;
     }
 
-    public void show() {
+    public LoginPage() {
         Image backgroundImage = new Image("file:src/main/resources/images/background.jpg");
 
         BackgroundSize backgroundSize = new BackgroundSize(100, 100, true, true, true, false);
         BackgroundImage bgImage = new BackgroundImage(backgroundImage, BackgroundRepeat.NO_REPEAT,
                 BackgroundRepeat.NO_REPEAT, BackgroundPosition.CENTER, backgroundSize);
 
-        BorderPane borderPane = new BorderPane();
-        borderPane.setBackground(new Background(bgImage));
+        this.setBackground(new Background(bgImage));
 
 
         GridPane gridPane = new GridPane();
@@ -77,6 +76,10 @@ public class LoginPage {
         password.setStyle("-fx-text-fill: black; -fx-font-weight: bold;");
         styleTextField(passwordField);
 
+        errorLabel.setStyle("-fx-text-fill: red; -fx-font-weight: bold;");
+        errorLabel.setVisible(false);
+
+
         styleButton(loginButton, Color.DARKORANGE, Color.BLACK, 10);
         loginButton.disableProperty().bind(textField.textProperty().isEmpty().or(passwordField.textProperty().isEmpty()));
 
@@ -85,6 +88,7 @@ public class LoginPage {
         gridPane.add(password, 0, 1);
         gridPane.add(passwordField, 1, 1);
         gridPane.add(loginButton, 1, 2);
+        gridPane.add(errorLabel, 1, 3);
 
         Label titleLabel = new Label("Welcome to our application");
         titleLabel.setStyle("-fx-text-fill: black; -fx-font-weight: bold;");
@@ -100,17 +104,10 @@ public class LoginPage {
         vBox.getChildren().addAll(titleLabel, centerPane, footerLabel);
         vBox.setAlignment(Pos.CENTER);
 
-        borderPane.setCenter(vBox);
+        this.setCenter(vBox);
 
         HBox.setMargin(titleLabel, new Insets(10));
         HBox.setMargin(footerLabel, new Insets(10));
-
-        Scene scene = new Scene(borderPane, 400, 300);
-        assert primaryStage != null;
-        primaryStage.setResizable(false);
-        primaryStage.setTitle("Log-In");
-        primaryStage.setScene(scene);
-        primaryStage.show();
     }
 
     private void styleTextField(TextField textField) {

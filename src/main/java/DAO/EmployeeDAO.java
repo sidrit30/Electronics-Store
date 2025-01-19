@@ -1,5 +1,7 @@
 package DAO;
 
+import Model.Exceptions.InvalidPasswordException;
+import Model.Exceptions.InvalidUsernameException;
 import Model.Users.Employee;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -8,7 +10,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class EmployeeDAO {
-    private static final File EMPLOYEES_FILE = new File("file:src/main/resources/data/staff.dat");
+    private static final File EMPLOYEES_FILE = new File("src/main/resources/data/staff.dat");
     private static final ObservableList<Employee> employees = FXCollections.observableArrayList();
 
     public ObservableList<Employee> getEmployees() {
@@ -18,7 +20,7 @@ public class EmployeeDAO {
         return employees;
     }
 
-    public void loadEmployees() {
+    private void loadEmployees() {
         try(ObjectInputStream input = new ObjectInputStream(new FileInputStream(EMPLOYEES_FILE))) {
             while (true) {
                 employees.add((Employee) input.readObject());
@@ -83,5 +85,23 @@ public class EmployeeDAO {
         } catch (IOException e) {
             return false;
         }
+    }
+
+    public Employee authLogin(String username, String password) {
+        loadEmployees();
+        Employee employee = null;
+        for(Employee e : employees) {
+            if(e.getUsername().equals(username)) {
+                employee = e;
+                break;
+            }
+        }
+        if(employee == null) {
+            throw new InvalidUsernameException("User doesn't exist");
+        }
+        if(employee.getPassword().equals(password)) {
+            return employee;
+        }
+        throw new InvalidPasswordException("Wrong password");
     }
 }

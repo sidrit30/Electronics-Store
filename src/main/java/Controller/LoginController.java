@@ -1,31 +1,50 @@
 package Controller;
 
+import DAO.EmployeeDAO;
+import Model.Exceptions.InvalidPasswordException;
+import Model.Exceptions.InvalidUsernameException;
 import Model.Users.Admin;
+import Model.Users.Employee;
 import View.LoginPage;
+import javafx.event.ActionEvent;
+import javafx.scene.paint.Color;
+import javafx.scene.text.Text;
 import javafx.stage.Stage;
 
 public class LoginController {
-    private Admin userModel;
+    private EmployeeDAO employeeDAO;
     private LoginPage loginPage;
 
-    public LoginController(Stage primaryStage) {
-        this.userModel = new Admin("admin", "admin", "admin", "admin", 3200);
-        this.loginPage = new LoginPage(primaryStage);
-        addEventHandlers();
+    public LoginPage getLoginPage() {
+        return loginPage;
     }
 
-    private void addEventHandlers() {
-        loginPage.getLoginButton().setOnAction(event -> {
-            String username = loginPage.getTextField().getText();
-            String password = loginPage.getPasswordField().getText();
+    public LoginController() {
+        loginPage = new LoginPage();
+        employeeDAO = new EmployeeDAO();
 
-            if (userModel.getUsername().equals(username) && userModel.getPassword().equals(password)) {
-                System.out.println("Login successful");
-                // Handle successful login
-            } else {
-                System.out.println("Login failed");
-                // Handle login failure
-            }
-        });
+        loginPage.getLoginButton().setOnAction(e -> onLoginButton(e));
+
+
+
     }
+
+    private void onLoginButton(ActionEvent e) {
+        String username = loginPage.getTextField().getText();
+        String password = loginPage.getPasswordField().getText();
+        Employee emp;
+
+        try {
+            emp = employeeDAO.authLogin(username, password);
+            System.out.println("Login Successful");
+
+        }
+        catch (InvalidUsernameException | InvalidPasswordException e1) {
+            loginPage.getErrorLabel().setVisible(true);
+            loginPage.getErrorLabel().setText(e1.getMessage());
+
+        }
+
+    }
+
 }

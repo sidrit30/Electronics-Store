@@ -1,6 +1,6 @@
 package DAO;
 
-import Model.Sector;
+import Model.Bill;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 
@@ -8,10 +8,10 @@ import java.io.*;
 import java.util.List;
 
 public class SectorDAO {
-    private static final File SECTOR_FILE = new File("file:src/main/resources/data/sectors.dat");
-    private static final ObservableList<Sector> sectors = FXCollections.observableArrayList();
+    private static final File SECTOR_FILE = new File("src/main/resources/data/sectors.dat");
+    private static final ObservableList<Bill> sectors = FXCollections.observableArrayList();
 
-    public ObservableList<Sector> getSectors() {
+    public ObservableList<Bill> getSectors() {
         if (sectors.isEmpty()) {
             loadSectors();
         }
@@ -21,7 +21,7 @@ public class SectorDAO {
     public void loadSectors() {
         try(ObjectInputStream input = new ObjectInputStream(new FileInputStream(SECTOR_FILE))) {
             while (true) {
-                sectors.add((Sector) input.readObject());
+                sectors.add((Bill) input.readObject());
             }
         } catch (EOFException ignored) {
         } catch (IOException | ClassNotFoundException e) {
@@ -29,7 +29,7 @@ public class SectorDAO {
         }
     }
 
-    public boolean createSector(Sector sector) {
+    public boolean createSector(Bill sector) {
         try (FileOutputStream outputStream = new FileOutputStream(SECTOR_FILE, true)) {
             ObjectOutputStream writer;
 
@@ -47,9 +47,9 @@ public class SectorDAO {
         }
     }
 
-    public boolean deleteSector(Sector sector) {
+    public boolean deleteSector(Bill sector) {
         try (ObjectOutputStream output = new ObjectOutputStream(new FileOutputStream(SECTOR_FILE))) {
-            for(Sector s : sectors) {
+            for(Bill s : sectors) {
                 if(!s.equals(sector)) {
                     output.writeObject(s);
                 }
@@ -61,9 +61,9 @@ public class SectorDAO {
         }
     }
 
-    public boolean deleteList(List<Sector> list) {
+    public boolean deleteList(List<Bill> list) {
         try(ObjectOutputStream output = new ObjectOutputStream(new FileOutputStream(SECTOR_FILE))) {
-            for (Sector s : sectors) {
+            for (Bill s : sectors) {
                 if(!list.contains(s))
                     output.writeObject(s);
             }
@@ -76,7 +76,7 @@ public class SectorDAO {
 
     public boolean UpdateAll() {
         try(ObjectOutputStream output = new ObjectOutputStream(new FileOutputStream(SECTOR_FILE))) {
-            for (Sector s : sectors) {
+            for (Bill s : sectors) {
                 output.writeObject(s);
             }
             return true;

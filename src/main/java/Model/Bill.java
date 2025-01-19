@@ -9,7 +9,7 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 
-public class Sector implements Serializable {
+public class Bill implements Serializable {
     @Serial
     private static final long serialVersionUID = 132L;
 
@@ -22,7 +22,7 @@ public class Sector implements Serializable {
     private double cost;
     private double revenue;
 
-    public Sector(Employee cashier) {
+    public Bill(Employee cashier) {
         this.cashier = cashier;
         this.billTime = LocalDateTime.now();
         billID = UniqueIDGenerator.getUniqueId();
@@ -44,6 +44,15 @@ public class Sector implements Serializable {
 
     public LocalDateTime getBillTime() {
         return billTime;
+    }
+
+    public double getCost() {
+        cost = calculateCost();
+        return cost;
+    }
+    public double getRevenue() {
+        revenue = calculateRevenue();
+        return revenue;
     }
 
     public void addItem(Item item, int quantity) throws InsufficientStockException {
@@ -82,6 +91,8 @@ public class Sector implements Serializable {
     }
 
     public String printBill() {
+        cost = getCost();
+        revenue = getRevenue();
         StringBuilder bill = new StringBuilder();
         bill.append("Bill Details:\n");
         bill.append("--------------------------------------------------\n");
@@ -102,8 +113,6 @@ public class Sector implements Serializable {
 
     public void saveBillToFile() {
         //when bill is finished calculate revenue and cost
-        cost = calculateCost();
-        revenue = calculateRevenue();
         File file = new File("file:src/main/resources/Bills/bill" + billID + ".txt");
         try (FileWriter writer = new FileWriter(file)) {
             writer.write(printBill());
