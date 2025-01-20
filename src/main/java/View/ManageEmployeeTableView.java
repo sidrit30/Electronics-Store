@@ -48,6 +48,7 @@ public class ManageEmployeeTableView extends BorderPane {
     private final Button addNewEmployeeButton;
     private final Button saveButton;
     private final Button homeButton = new Button("Home");
+    private final Button editPermissionsButton = new Button("Edit Permissions");
 
     private final TextField searchField = new TextField();
 
@@ -100,7 +101,6 @@ public class ManageEmployeeTableView extends BorderPane {
 
         permissionCol = new TableColumn<>("Permissions");
         permissionCol.setCellValueFactory(new PropertyValueFactory<>("permissions"));
-        //permissionCol.setCellFactory();
         permissionCol.setStyle("-fx-alignment: CENTER;");
         permissionCol.setMaxWidth(200);
 
@@ -155,7 +155,7 @@ public class ManageEmployeeTableView extends BorderPane {
         HBox buttonBox = new HBox();
         buttonBox.setSpacing(10);
         buttonBox.setPadding(new Insets(10));
-        buttonBox.getChildren().addAll(addNewEmployeeButton, deleteButton, saveButton);
+        buttonBox.getChildren().addAll(addNewEmployeeButton, deleteButton, saveButton, editPermissionsButton);
 
         VBox mainVBox = new VBox();
         mainVBox.setSpacing(10);
@@ -309,6 +309,10 @@ public class ManageEmployeeTableView extends BorderPane {
         return saveButton;
     }
 
+    public Button getEditPermissionsButton() {
+        return editPermissionsButton;
+    }
+
     public Button getHomeButton() {
         return homeButton;
     }
@@ -319,5 +323,9 @@ public class ManageEmployeeTableView extends BorderPane {
 
     public ListView<Permission> getPermissionList() {
         return permissionList;
+    }
+
+    public TableColumn<Employee, EnumSet<Permission>> getPermissionCol() {
+        return permissionCol;
     }
 }

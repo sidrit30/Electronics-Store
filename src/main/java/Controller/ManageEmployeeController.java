@@ -5,9 +5,12 @@ import Model.Users.*;
 import View.ManageEmployeeTableView;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import javafx.scene.control.Alert;
-import javafx.scene.control.ButtonType;
+import javafx.geometry.Insets;
+import javafx.scene.Scene;
+import javafx.scene.control.*;
 import javafx.scene.input.KeyCode;
+import javafx.scene.layout.GridPane;
+import javafx.stage.Stage;
 
 import java.util.EnumSet;
 import java.util.Optional;
@@ -43,6 +46,7 @@ public class ManageEmployeeController {
                     alert.show();
                 }
             });
+            employeeTableView.getEditPermissionsButton().setOnAction(e -> editPermissions());
         }
     }
 
@@ -238,5 +242,55 @@ public class ManageEmployeeController {
         this.employeeTableView.getTable().getSelectionModel().clearSelection();
         this.employeeTableView.getTable().setItems(filteredEmployees);
         this.employeeTableView.getSearchField().clear();
+    }
+
+    private void editPermissions() {
+        Employee emp = employeeTableView.getTable().getSelectionModel().getSelectedItem();
+        if(emp == null) {
+            Alert alert = new Alert(Alert.AlertType.WARNING);
+            alert.setTitle("Permissions");
+            alert.setHeaderText("Select An Employee First!");
+            return;
+        }
+        if(emp.equals(selectedEmployee)) {
+            Alert alert = new Alert(Alert.AlertType.WARNING);
+            alert.setTitle("Permissions");
+            alert.setHeaderText("You Cannot Edit Your Own Permissions!");
+            return;
+        }
+
+        Stage popup = new Stage();
+        ListView<Permission> permissions = new ListView<>();
+        permissions.getItems().setAll(EnumSet.allOf(Permission.class));
+        permissions.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
+        Label perm = new Label("Select Permission");
+        Button submit = new Button("Submit");
+        Button cancel = new Button("Cancel");
+        GridPane grid = new GridPane();
+        grid.add(perm, 0, 0);
+        grid.add(permissions,0, 1);
+        grid.add(submit, 1, 2);
+        grid.add(cancel, 0, 2);
+        grid.setHgap(10);
+        grid.setVgap(10);
+        grid.setPadding(new Insets(20, 10, 10, 10));
+        popup.setTitle("Permissions");
+        popup.setResizable(false);
+        popup.setScene(new Scene(grid));
+        popup.show();
+
+        submit.setOnAction(e -> {
+            EnumSet<Permission> perms = EnumSet.copyOf(permissions.getSelectionModel().getSelectedItems());
+            if(perms == null || perms.isEmpty()) {
+                perms = EnumSet.noneOf(Permission.class);
+            }
+            EnumSet<Permission> finalPerms = perms;
+            emp.setPermissions(finalPerms);
+            popup.close();
+        });
+
+        cancel.setOnAction(e -> {
+            popup.close();
+        });
     }
 }
