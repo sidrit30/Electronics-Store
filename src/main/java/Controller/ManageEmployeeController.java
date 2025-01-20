@@ -3,9 +3,11 @@ package Controller;
 import DAO.EmployeeDAO;
 import Model.Users.*;
 import View.ManageEmployeeTableView;
+import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.scene.control.Alert;
 import javafx.scene.control.ButtonType;
+import javafx.scene.input.KeyCode;
 
 import java.util.EnumSet;
 import java.util.Optional;
@@ -25,18 +27,23 @@ public class ManageEmployeeController {
         selectedEmployee = employee;
         //employeeDAO.getEmployees().remove(employee);
         employeeTableView.getTable().setItems(employeeDAO.getEmployees());
-
-        employeeTableView.getAddNewEmployeeButton().setOnAction(e -> onEmployeeAdd());
-        employeeTableView.getDeleteButton().setOnAction(e -> onEmployeeDelete());
-        employeeTableView.getSaveButton().setOnAction(e -> {
-            boolean flag = employeeDAO.UpdateAll();
-            if (flag) {
-                Alert alert = new Alert(Alert.AlertType.INFORMATION);
-                alert.setTitle("Success");
-                alert.setHeaderText("Employees Updated");
-                alert.show();
-            }
-        });
+        System.out.println(selectedEmployee.hasPermission(Permission.EDIT_SECTOR));
+        if(selectedEmployee.hasPermission(Permission.EDIT_SECTOR)) {
+            employeeTableView.getTable().setEditable(true);
+            setEditListeners();
+            setSearchListener();
+            employeeTableView.getAddNewEmployeeButton().setOnAction(e -> onEmployeeAdd());
+            employeeTableView.getDeleteButton().setOnAction(e -> onEmployeeDelete());
+            employeeTableView.getSaveButton().setOnAction(e -> {
+                boolean flag = employeeDAO.UpdateAll();
+                if (flag) {
+                    Alert alert = new Alert(Alert.AlertType.INFORMATION);
+                    alert.setTitle("Success");
+                    alert.setHeaderText("Employees Updated");
+                    alert.show();
+                }
+            });
+        }
     }
 
     private void onEmployeeAdd() {
@@ -163,8 +170,8 @@ public class ManageEmployeeController {
             alert.show();
         }
         else {
-            alert = new Alert(Alert.AlertType.WARNING);
-            alert.setTitle("Delete Employee");
+            alert = new Alert(Alert.AlertType.WARNING, "Confirm Deletion", ButtonType.OK, ButtonType.CANCEL);
+            alert.setTitle("Confirm Deletion");
             alert.setHeaderText("Are you sure you want to delete employee " + toDelete +"?");
 
             Optional<ButtonType> result = alert.showAndWait();
@@ -188,5 +195,48 @@ public class ManageEmployeeController {
             }
 
         }
+    }
+
+    private void setEditListeners() {
+        this.employeeTableView.getUsernameCol().setOnEditCommit(e -> {
+            employeeDAO.getEmployees().get(e.getTablePosition().getRow()).setUsername(e.getNewValue());
+        });
+        this.employeeTableView.getPasswordCol().setOnEditCommit(e -> {
+            employeeDAO.getEmployees().get(e.getTablePosition().getRow()).setPassword(e.getNewValue());
+        });
+        this.employeeTableView.getEmailCol().setOnEditCommit(e -> {
+            employeeDAO.getEmployees().get(e.getTablePosition().getRow()).setEmail(e.getNewValue());
+        });
+        this.employeeTableView.getAddressCol().setOnEditCommit(e -> {
+            employeeDAO.getEmployees().get(e.getTablePosition().getRow()).setAddress(e.getNewValue());
+        });
+        this.employeeTableView.getPhoneNumberCol().setOnEditCommit(e -> {
+            employeeDAO.getEmployees().get(e.getTablePosition().getRow()).setPhone(e.getNewValue());
+        });
+        this.employeeTableView.getSalaryCol().setOnEditCommit(e -> {
+            employeeDAO.getEmployees().get(e.getTablePosition().getRow()).setSalary(e.getNewValue());
+        });
+    }
+
+    private void setSearchListener() {
+        this.employeeTableView.getSearchButton().setOnAction(e -> searchEmployee());
+        this.employeeTableView.getSearchField().setOnKeyReleased(e -> {
+            if(e.getCode() == KeyCode.ENTER) {
+                searchEmployee();
+            }
+        });
+    }
+
+    private void searchEmployee() {
+        String fullName = employeeTableView.getSearchField().getText();
+        ObservableList<Employee> filteredEmployees = FXCollections.observableArrayList();
+        for(Employee employee : employeeDAO.getEmployees()) {
+            if(employee.getFullName().toLowerCase().contains(fullName.toLowerCase())) {
+                filteredEmployees.add(employee);
+            }
+        }
+        this.employeeTableView.getTable().getSelectionModel().clearSelection();
+        this.employeeTableView.getTable().setItems(filteredEmployees);
+        this.employeeTableView.getSearchField().clear();
     }
 }

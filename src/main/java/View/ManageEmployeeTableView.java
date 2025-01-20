@@ -8,9 +8,12 @@ import javafx.scene.control.TextField;
 import javafx.geometry.Insets;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.control.cell.TextFieldListCell;
+import javafx.scene.control.cell.TextFieldTableCell;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.*;
+import javafx.util.converter.DoubleStringConverter;
 
 import java.util.EnumSet;
 
@@ -19,8 +22,7 @@ public class ManageEmployeeTableView extends BorderPane {
 
     private final TableView<Employee> table = new TableView<>();
     private final TableColumn<Employee, String> employeeIDCol;
-    private final TableColumn<Employee, String> firstNameCol;
-    private final TableColumn<Employee, String> lastNameCol;
+    private final TableColumn<Employee, String> fullNameCol;
     private final TableColumn<Employee, String> emailCol;
     private final TableColumn<Employee, String> usernameCol;
     private final TableColumn<Employee, String> passwordCol;
@@ -41,6 +43,7 @@ public class ManageEmployeeTableView extends BorderPane {
     private final PasswordField addPassword = new PasswordField();// New field for password
     private final ListView<Permission> permissionList = new ListView<>();
 
+    private final Button searchButton = new Button("Search");
     private final Button deleteButton;
     private final Button addNewEmployeeButton;
     private final Button saveButton;
@@ -52,22 +55,19 @@ public class ManageEmployeeTableView extends BorderPane {
     public ManageEmployeeTableView() {
 
         table.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
-        table.setEditable(true);
+        table.setEditable(false);
 
         employeeIDCol = new TableColumn<>("Employee ID");
         employeeIDCol.setCellValueFactory(new PropertyValueFactory<>("id"));
         employeeIDCol.setStyle("-fx-alignment: CENTER;");
 
-        firstNameCol = new TableColumn<>("First Name");
-        firstNameCol.setCellValueFactory(new PropertyValueFactory<>("firstName"));
-        firstNameCol.setStyle("-fx-alignment: CENTER;");
-
-        lastNameCol = new TableColumn<>("Last Name");
-        lastNameCol.setCellValueFactory(new PropertyValueFactory<>("lastName"));
-        lastNameCol.setStyle("-fx-alignment: CENTER;");
+        fullNameCol = new TableColumn<>("First Name");
+        fullNameCol.setCellValueFactory(new PropertyValueFactory<>("fullName"));
+        fullNameCol.setStyle("-fx-alignment: CENTER;");
 
         emailCol = new TableColumn<>("Email");
         emailCol.setCellValueFactory(new PropertyValueFactory<>("email"));
+        emailCol.setCellFactory(TextFieldTableCell.forTableColumn());
         emailCol.setStyle("-fx-alignment: CENTER;");
 
         roleCol = new TableColumn<>("Role");
@@ -75,32 +75,38 @@ public class ManageEmployeeTableView extends BorderPane {
 
         addressCol = new TableColumn<>("Address");
         addressCol.setCellValueFactory(new PropertyValueFactory<>("address"));
+        addressCol.setCellFactory(TextFieldTableCell.forTableColumn());
         addressCol.setStyle("-fx-alignment: CENTER;");
 
         salaryCol = new TableColumn<>("Salary");
         salaryCol.setCellValueFactory(new PropertyValueFactory<>("salary"));
+        salaryCol.setCellFactory(TextFieldTableCell.forTableColumn(new DoubleStringConverter()));
         salaryCol.setStyle("-fx-alignment: CENTER;");
 
         phoneNumberCol = new TableColumn<>("Phone Number");
         phoneNumberCol.setCellValueFactory(new PropertyValueFactory<>("phone"));
+        phoneNumberCol.setCellFactory(TextFieldTableCell.forTableColumn());
         phoneNumberCol.setStyle("-fx-alignment: CENTER;");
 
         usernameCol = new TableColumn<>("Username");
         usernameCol.setCellValueFactory(new PropertyValueFactory<>("username"));
+        usernameCol.setCellFactory(TextFieldTableCell.forTableColumn());
         usernameCol.setStyle("-fx-alignment: CENTER;");
 
         passwordCol = new TableColumn<>("Password");
         passwordCol.setCellValueFactory(new PropertyValueFactory<>("password"));
+        passwordCol.setCellFactory(TextFieldTableCell.forTableColumn());
         passwordCol.setStyle("-fx-alignment: CENTER;");
 
         permissionCol = new TableColumn<>("Permissions");
         permissionCol.setCellValueFactory(new PropertyValueFactory<>("permissions"));
+        //permissionCol.setCellFactory();
         permissionCol.setStyle("-fx-alignment: CENTER;");
         permissionCol.setMaxWidth(200);
 
+
         table.getColumns().add(employeeIDCol);
-        table.getColumns().add(firstNameCol);
-        table.getColumns().add(lastNameCol);
+        table.getColumns().add(fullNameCol);
         table.getColumns().add(emailCol);
         table.getColumns().add(usernameCol);
         table.getColumns().add(passwordCol);
@@ -163,7 +169,7 @@ public class ManageEmployeeTableView extends BorderPane {
         HBox searchBox = new HBox();
         searchBox.setSpacing(10);
         searchBox.setPadding(new Insets(10));
-        searchBox.getChildren().addAll(new Label("Search:"), searchField);
+        searchBox.getChildren().addAll(searchButton, searchField);
 
         // Adding left sidebar with navigation buttons
         VBox leftSidebar = new VBox();
@@ -223,12 +229,8 @@ public class ManageEmployeeTableView extends BorderPane {
         return employeeIDCol;
     }
 
-    public TableColumn<Employee, String> getFirstNameCol() {
-        return firstNameCol;
-    }
-
-    public TableColumn<Employee, String> getLastNameCol() {
-        return lastNameCol;
+    public TableColumn<Employee, String> getFullNameCol() {
+        return fullNameCol;
     }
 
     public TableColumn<Employee, String> getEmailCol() {
@@ -289,6 +291,10 @@ public class ManageEmployeeTableView extends BorderPane {
 
     public PasswordField getAddPassword() {
         return addPassword;
+    }
+
+    public Button getSearchButton(){
+        return searchButton;
     }
 
     public Button getDeleteButton() {
