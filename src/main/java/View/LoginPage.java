@@ -58,7 +58,7 @@ public class LoginPage extends BorderPane {
 
 
         GridPane gridPane = new GridPane();
-        gridPane.setPadding(new Insets(20, 20, 20, 20));
+        gridPane.setPadding(new Insets(5, 20, 20, 20));
         gridPane.setHgap(10);
         gridPane.setVgap(10);
 
@@ -83,17 +83,17 @@ public class LoginPage extends BorderPane {
         styleButton(loginButton, Color.DARKORANGE, Color.BLACK, 10);
         loginButton.disableProperty().bind(textField.textProperty().isEmpty().or(passwordField.textProperty().isEmpty()));
 
-        gridPane.add(username, 0, 0);
-        gridPane.add(textField, 1, 0);
-        gridPane.add(password, 0, 1);
-        gridPane.add(passwordField, 1, 1);
-        gridPane.add(errorLabel, 1, 2);
+        gridPane.add(errorLabel, 1, 0);
+        gridPane.add(username, 0, 1);
+        gridPane.add(textField, 1, 1);
+        gridPane.add(password, 0, 2);
+        gridPane.add(passwordField, 1, 2);
         gridPane.add(loginButton, 1, 3);
 
 
-        Label titleLabel = new Label("Welcome to our application");
+        Label titleLabel = new Label("Welcome to Jupiter");
         titleLabel.setStyle("-fx-text-fill: black; -fx-font-weight: bold;");
-        Label footerLabel = new Label("@ 2025 our Company");
+        Label footerLabel = new Label("@ 2025 Jupiter Electronics");
         footerLabel.setStyle("-fx-text-fill: black; -fx-font-weight: bold;");
 
         StackPane centerPane = new StackPane(gridPane);

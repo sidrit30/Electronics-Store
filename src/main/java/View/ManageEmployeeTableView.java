@@ -202,7 +202,8 @@ public class ManageEmployeeTableView extends BorderPane {
 
     public void showAlert(String message) {
         Alert alert = new Alert(Alert.AlertType.ERROR);
-        alert.setContentText(message);
+        alert.setHeaderText(message);
+        alert.setTitle("Error");
         alert.showAndWait();
     }
 

@@ -1,6 +1,6 @@
 package DAO;
 
-import Model.Exceptions.AlreadyExistingException;
+
 import Model.Exceptions.InvalidPasswordException;
 import Model.Exceptions.InvalidUsernameException;
 import Model.Users.Cashier;
@@ -22,11 +22,6 @@ public class EmployeeDAO {
         return employees;
     }
 
-    public ObservableList<Employee> getExcluded(Employee employee) {
-        ObservableList<Employee> excluded = getEmployees();
-        excluded.remove(employee);
-        return excluded;
-    }
 
     public ObservableList<Cashier> getCashiers(ArrayList<String> sectors) {
         ObservableList<Cashier> cashiers = FXCollections.observableArrayList();
@@ -78,13 +73,12 @@ public class EmployeeDAO {
     }
 
     public boolean deleteEmployee(Employee employee) {
+        getEmployees().remove(employee);
         try (ObjectOutputStream output = new ObjectOutputStream(new FileOutputStream(EMPLOYEES_FILE))) {
             for(Employee emp : employees) {
-                if(!emp.equals(employee)) {
-                    output.writeObject(emp);
-                }
+                output.writeObject(emp);
+                System.out.println(emp.toString());
             }
-            employees.remove(employee);
             return true;
         } catch (IOException e) {
             return false;

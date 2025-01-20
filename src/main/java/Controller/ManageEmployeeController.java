@@ -5,12 +5,15 @@ import Model.Users.*;
 import View.ManageEmployeeTableView;
 import javafx.collections.ObservableList;
 import javafx.scene.control.Alert;
+import javafx.scene.control.ButtonType;
 
 import java.util.EnumSet;
+import java.util.Optional;
 
 public class ManageEmployeeController {
     private EmployeeDAO employeeDAO;
     private ManageEmployeeTableView employeeTableView;
+    private Employee selectedEmployee;
 
     public ManageEmployeeTableView getManageEmployeeTableView() {
         return employeeTableView;
@@ -19,13 +22,21 @@ public class ManageEmployeeController {
     public ManageEmployeeController(Employee employee) {
         employeeDAO = new EmployeeDAO();
         employeeTableView = new ManageEmployeeTableView();
-        employeeTableView.getTable().setItems(employeeDAO.getExcluded(employee));
+        selectedEmployee = employee;
+        //employeeDAO.getEmployees().remove(employee);
+        employeeTableView.getTable().setItems(employeeDAO.getEmployees());
 
         employeeTableView.getAddNewEmployeeButton().setOnAction(e -> onEmployeeAdd());
-//        employeeTableView.getDeleteButton().setOnAction(e -> onEmployeeDelete());
-//        employeeTableView.getSaveButton().setOnAction(e -> {
-//            employeeDAO.UpdateAll();
-//        });
+        employeeTableView.getDeleteButton().setOnAction(e -> onEmployeeDelete());
+        employeeTableView.getSaveButton().setOnAction(e -> {
+            boolean flag = employeeDAO.UpdateAll();
+            if (flag) {
+                Alert alert = new Alert(Alert.AlertType.INFORMATION);
+                alert.setTitle("Success");
+                alert.setHeaderText("Employees Updated");
+                alert.show();
+            }
+        });
     }
 
     private void onEmployeeAdd() {
@@ -141,18 +152,41 @@ public class ManageEmployeeController {
     }
 
     private void onEmployeeDelete() {
+
         Employee toDelete = employeeTableView.getTable().getSelectionModel().getSelectedItem();
-        System.out.println(toDelete);
         Alert alert;
-        if(employeeDAO.deleteEmployee(toDelete)) {
-            alert = new Alert(Alert.AlertType.CONFIRMATION);
-            alert.setTitle("Deleted Employee");
-            alert.setHeaderText("Employee Deleted Successfully!");
+
+        if(toDelete.equals(selectedEmployee)) {
+            alert = new Alert(Alert.AlertType.ERROR);
+            alert.setTitle("Delete Employee");
+            alert.setHeaderText("You Cannot Delete Yourself.");
+            alert.show();
         }
         else {
-            alert = new Alert(Alert.AlertType.ERROR);
-            alert.setTitle("Error");
-            alert.setHeaderText("Error while deleting Employee!");
+            alert = new Alert(Alert.AlertType.WARNING);
+            alert.setTitle("Delete Employee");
+            alert.setHeaderText("Are you sure you want to delete employee " + toDelete +"?");
+
+            Optional<ButtonType> result = alert.showAndWait();
+            if (result.isPresent() && result.get() == ButtonType.OK) {
+                if (employeeDAO.deleteEmployee(toDelete)) {
+                    alert = new Alert(Alert.AlertType.CONFIRMATION);
+                    alert.setTitle("Deleted Employee");
+                    alert.setHeaderText("Employee Deleted Successfully!");
+                    alert.show();
+                } else {
+                    alert = new Alert(Alert.AlertType.ERROR);
+                    alert.setTitle("Error");
+                    alert.setHeaderText("Error while deleting Employee!");
+                    alert.show();
+                }
+            }
+            else {
+                alert = new Alert(Alert.AlertType.CONFIRMATION);
+                alert.setTitle("Confirmation");
+                alert.setHeaderText("Employee Deletion Cancelled!");
+            }
+
         }
     }
 }
