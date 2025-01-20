@@ -7,10 +7,13 @@ import Model.Users.Admin;
 import Model.Users.Employee;
 import View.LoginPage;
 import javafx.event.ActionEvent;
+import javafx.geometry.Rectangle2D;
+import javafx.scene.Scene;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
+import javafx.stage.Screen;
 import javafx.stage.Stage;
 
 public class LoginController {
@@ -37,6 +40,11 @@ public class LoginController {
         try {
             emp = employeeDAO.authLogin(username, password);
             System.out.println("Login Successful");
+            Scene homeScene = new Scene(new HomePageController(emp).getHomePage(), 1500, 700);
+            Stage primaryStage = (Stage) loginPage.getLoginButton().getScene().getWindow();
+            primaryStage.setScene(homeScene);
+            primaryStage.setMaximized(true);
+
         }
         catch (InvalidUsernameException | InvalidPasswordException e1) {
             loginPage.getErrorLabel().setVisible(true);
@@ -52,11 +60,22 @@ public class LoginController {
             String password = loginPage.getPasswordField().getText();
             Employee emp;
 
+
             try {
                 emp = employeeDAO.authLogin(username, password);
                 System.out.println("Login Successful");
+                Scene homeScene = new Scene(new HomePageController(emp).getHomePage());
+                Stage primaryStage = (Stage) loginPage.getLoginButton().getScene().getWindow();
+                primaryStage.setScene(homeScene);
+                Screen screen = Screen.getPrimary();
+                Rectangle2D bounds = screen.getVisualBounds();
 
-
+                primaryStage.setX(bounds.getMinX());
+                primaryStage.setY(bounds.getMinY());
+                primaryStage.setWidth(bounds.getWidth());
+                primaryStage.setHeight(bounds.getHeight());
+                //primaryStage.setMaximized(true);
+                //primaryStage.centerOnScreen();
             }
             catch (InvalidUsernameException | InvalidPasswordException e1) {
                 loginPage.getErrorLabel().setVisible(true);

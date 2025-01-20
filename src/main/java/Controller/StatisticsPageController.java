@@ -6,25 +6,27 @@ import Model.Users.Employee;
 import Model.Users.Manager;
 import View.LoginPage;
 import View.StatisticsPage;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 
 import java.util.List;
 import java.util.stream.Collectors;
 
 public class StatisticsPageController {
     private StatisticsPage view;
-    private List<Bill> allBills;
-    private StatisticsPage statisticsPage;
+    private ObservableList<Bill> allBills;
 
-    public StatisticsPageController() {}
+    public StatisticsPageController() {
+        view = new StatisticsPage();
+        allBills = FXCollections.observableArrayList();
+
+    }
 
     public StatisticsPage getStatisticsPage() {
-        return statisticsPage;
+        return view;
     }
     
-    public StatisticsPageController(StatisticsPage view, List<Bill> allBills) {
-        this.view = view;
-        this.allBills = allBills;
-    }
+
 
     public void loadStatistics(Employee user) {
         view.clearBills();
