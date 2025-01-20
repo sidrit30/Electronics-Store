@@ -12,6 +12,7 @@ public abstract class Employee implements Serializable {
     private final String id;
     private final String lastName;
     private final String firstName;
+    private Role role;
     private transient StringProperty address;
     private transient StringProperty phone;
     private transient StringProperty email;
@@ -47,6 +48,14 @@ public abstract class Employee implements Serializable {
 
     public String getFullName() {
         return firstName + " " + lastName;
+    }
+
+    public Role getRole() {
+        return role;
+    }
+
+    public void setRole(Role role) {
+        this.role = role;
     }
 
     public String getAddress() {

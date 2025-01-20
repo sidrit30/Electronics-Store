@@ -16,6 +16,7 @@ public class Cashier extends Employee {
 
     public Cashier(String lastName, String firstName, String username, String password, double salary) {
         super(lastName, firstName, username, password, salary);
+        this.setRole(Role.CASHIER);
         this.setPermissions(EnumSet.of(Permission.CREATE_BILL, Permission.VIEW_BILL));
     }
 

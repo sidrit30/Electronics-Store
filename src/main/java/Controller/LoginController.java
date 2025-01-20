@@ -64,9 +64,10 @@ public class LoginController {
             try {
                 emp = employeeDAO.authLogin(username, password);
                 System.out.println("Login Successful");
-                Scene homeScene = new Scene(new HomePageController(emp).getHomePage());
+                //Scene homeScene = new Scene(new HomePageController(emp).getHomePage());
+                Scene test = new Scene(new ManageEmployeeController(emp).getManageEmployeeTableView());
                 Stage primaryStage = (Stage) loginPage.getLoginButton().getScene().getWindow();
-                primaryStage.setScene(homeScene);
+                primaryStage.setScene(test);
                 Screen screen = Screen.getPrimary();
                 Rectangle2D bounds = screen.getVisualBounds();
 

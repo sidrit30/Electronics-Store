@@ -16,14 +16,13 @@ import java.util.List;
 public class Manager extends Employee {
     @Serial
     private static final long serialVersionUID = 123L;
-    private List<String> sectors;
+    private ArrayList<String> sectors;
 
     public Manager(String lastName, String firstName, String username, String password, double salary) {
         super(lastName, firstName, username, password, salary);
         this.sectors = new ArrayList<>();
-        this.setPermissions(EnumSet.of(Permission.VIEW_INVENTORY, Permission.MANAGE_INVENTORY,
-                Permission.VIEW_ALL_SECTORS, Permission.MANAGE_SECTORS, Permission.CREATE_CATEGORY,
-                Permission.DELETE_CATEGORY, Permission.CREATE_ITEM, Permission.DELETE_ITEM));
+        this.setRole(Role.MANAGER);
+        this.setPermissions(EnumSet.of(Permission.EDIT_ITEM, Permission.VIEW_ITEM, Permission.PERFORMANCE_SECTOR, Permission.VIEW_SECTOR));
     }
 
 
@@ -32,7 +31,7 @@ public class Manager extends Employee {
     }
 
     public void setSectors(ObservableList<String> sectors) {
-        this.sectors = sectors.stream().toList();
+        this.sectors = new ArrayList<>(sectors);
     }
 
     public void addSector(String sector) {

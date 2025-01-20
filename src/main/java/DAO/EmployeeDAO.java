@@ -22,10 +22,15 @@ public class EmployeeDAO {
         return employees;
     }
 
+    public ObservableList<Employee> getExcluded(Employee employee) {
+        ObservableList<Employee> excluded = getEmployees();
+        excluded.remove(employee);
+        return excluded;
+    }
+
     public ObservableList<Cashier> getCashiers(ArrayList<String> sectors) {
-        getEmployees();
         ObservableList<Cashier> cashiers = FXCollections.observableArrayList();
-        for (Employee employee : employees) {
+        for (Employee employee : getEmployees()) {
             if(employee instanceof Cashier){
                 if(sectors.contains(((Cashier) employee).getSectorName()))
                     cashiers.add((Cashier) employee);
@@ -38,19 +43,16 @@ public class EmployeeDAO {
         try(ObjectInputStream input = new ObjectInputStream(new FileInputStream(EMPLOYEES_FILE))) {
             while (true) {
                 Employee employee = (Employee) input.readObject();
-                System.out.println(employee.getFullName());
                 employees.add(employee);
             }
         } catch (EOFException ignored) {
-            System.out.println("yeeeee");
         } catch (IOException | ClassNotFoundException e) {
             System.out.println(e.getMessage());
         }
     }
 
     public boolean createEmployee(Employee employee) throws AlreadyExistingException {
-        loadEmployees();
-        for (Employee emp : employees) {
+        for (Employee emp : getEmployees()) {
             if (emp.getUsername().equals(employee.getUsername()))
                 throw new AlreadyExistingException("Username taken");
         }
@@ -110,9 +112,8 @@ public class EmployeeDAO {
     }
 
     public Employee authLogin(String username, String password) {
-        loadEmployees();
         Employee employee = null;
-        for(Employee e : employees) {
+        for(Employee e : getEmployees()) {
             if(e.getUsername().equals(username)) {
                 employee = e;
                 break;
