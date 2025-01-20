@@ -41,8 +41,9 @@ public class ManageEmployeeTableView extends BorderPane {
     private final PasswordField addPassword = new PasswordField();// New field for password
     private final ListView<Permission> permissionList = new ListView<>();
 
-    private final Button editButton;
+    private final Button deleteButton;
     private final Button addNewEmployeeButton;
+    private final Button saveButton;
     private final Button homeButton = new Button("Home");
 
     private final TextField searchField = new TextField();
@@ -115,7 +116,7 @@ public class ManageEmployeeTableView extends BorderPane {
         addEmail.setPromptText("Email");
         addAddress.setPromptText("Address");
 
-        roleComboBox.getItems().setAll(Role.values());
+        roleComboBox.getItems().setAll(EnumSet.allOf(Role.class));
         roleComboBox.setPromptText("Select Role");
         roleComboBox.setMinWidth(100);
 
@@ -139,14 +140,16 @@ public class ManageEmployeeTableView extends BorderPane {
         addNewEmployeeButton = new Button("Add New Employee");
 
 
-        // Button for editing employee information
-        editButton = new Button("Edit");
+        // Button for deleting employees
+        deleteButton = new Button("Delete");
+
+        saveButton = new Button("Save");
 
 
         HBox buttonBox = new HBox();
         buttonBox.setSpacing(10);
         buttonBox.setPadding(new Insets(10));
-        buttonBox.getChildren().addAll(addNewEmployeeButton, editButton);
+        buttonBox.getChildren().addAll(addNewEmployeeButton, deleteButton, saveButton);
 
         VBox mainVBox = new VBox();
         mainVBox.setSpacing(10);
@@ -197,7 +200,7 @@ public class ManageEmployeeTableView extends BorderPane {
         addPassword.clear(); // Clear password
     }
 
-    private void showAlert(String message) {
+    public void showAlert(String message) {
         Alert alert = new Alert(Alert.AlertType.ERROR);
         alert.setContentText(message);
         alert.showAndWait();
@@ -279,12 +282,16 @@ public class ManageEmployeeTableView extends BorderPane {
         return addPassword;
     }
 
-    public Button getEditButton() {
-        return editButton;
+    public Button getDeleteButton() {
+        return deleteButton;
     }
 
     public Button getAddNewEmployeeButton() {
         return addNewEmployeeButton;
+    }
+
+    public Button getSaveButton() {
+        return saveButton;
     }
 
     public Button getHomeButton() {

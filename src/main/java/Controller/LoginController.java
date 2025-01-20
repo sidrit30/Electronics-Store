@@ -33,6 +33,17 @@ public class LoginController {
     }
 
     private void onLoginButton(ActionEvent e) {
+        login();
+
+    }
+
+    private void onLoginEnter(KeyEvent e) {
+        if(e.getCode() == KeyCode.ENTER) {
+            login();
+        }
+    }
+
+    private void login() {
         String username = loginPage.getTextField().getText();
         String password = loginPage.getPasswordField().getText();
         Employee emp;
@@ -40,50 +51,24 @@ public class LoginController {
         try {
             emp = employeeDAO.authLogin(username, password);
             System.out.println("Login Successful");
-            Scene homeScene = new Scene(new HomePageController(emp).getHomePage(), 1500, 700);
+            //Scene homeScene = new Scene(new HomePageController(emp).getHomePage());
+            Scene test = new Scene(new ManageEmployeeController(emp).getManageEmployeeTableView());
             Stage primaryStage = (Stage) loginPage.getLoginButton().getScene().getWindow();
-            primaryStage.setScene(homeScene);
-            primaryStage.setMaximized(true);
+            primaryStage.setScene(test);
+            Screen screen = Screen.getPrimary();
+            Rectangle2D bounds = screen.getVisualBounds();
 
+            primaryStage.setX(bounds.getMinX());
+            primaryStage.setY(bounds.getMinY());
+            primaryStage.setWidth(bounds.getWidth());
+            primaryStage.setHeight(bounds.getHeight());
         }
         catch (InvalidUsernameException | InvalidPasswordException e1) {
             loginPage.getErrorLabel().setVisible(true);
             loginPage.getErrorLabel().setText(e1.getMessage());
 
         }
-
     }
 
-    private void onLoginEnter(KeyEvent e) {
-        if(e.getCode() == KeyCode.ENTER) {
-            String username = loginPage.getTextField().getText();
-            String password = loginPage.getPasswordField().getText();
-            Employee emp;
-
-
-            try {
-                emp = employeeDAO.authLogin(username, password);
-                System.out.println("Login Successful");
-                //Scene homeScene = new Scene(new HomePageController(emp).getHomePage());
-                Scene test = new Scene(new ManageEmployeeController(emp).getManageEmployeeTableView());
-                Stage primaryStage = (Stage) loginPage.getLoginButton().getScene().getWindow();
-                primaryStage.setScene(test);
-                Screen screen = Screen.getPrimary();
-                Rectangle2D bounds = screen.getVisualBounds();
-
-                primaryStage.setX(bounds.getMinX());
-                primaryStage.setY(bounds.getMinY());
-                primaryStage.setWidth(bounds.getWidth());
-                primaryStage.setHeight(bounds.getHeight());
-                //primaryStage.setMaximized(true);
-                //primaryStage.centerOnScreen();
-            }
-            catch (InvalidUsernameException | InvalidPasswordException e1) {
-                loginPage.getErrorLabel().setVisible(true);
-                loginPage.getErrorLabel().setText(e1.getMessage());
-
-            }
-        }
-    }
 
 }

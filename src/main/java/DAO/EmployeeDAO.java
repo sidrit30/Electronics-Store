@@ -51,11 +51,7 @@ public class EmployeeDAO {
         }
     }
 
-    public boolean createEmployee(Employee employee) throws AlreadyExistingException {
-        for (Employee emp : getEmployees()) {
-            if (emp.getUsername().equals(employee.getUsername()))
-                throw new AlreadyExistingException("Username taken");
-        }
+    public boolean createEmployee(Employee employee){
         try (FileOutputStream outputStream = new FileOutputStream(EMPLOYEES_FILE, true)) {
             ObjectOutputStream writer;
 
@@ -73,6 +69,14 @@ public class EmployeeDAO {
         }
     }
 
+    public boolean validUsername(String username) {
+        for (Employee emp : getEmployees()) {
+            if (emp.getUsername().equals(username))
+                return false;
+        }
+        return true;
+    }
+
     public boolean deleteEmployee(Employee employee) {
         try (ObjectOutputStream output = new ObjectOutputStream(new FileOutputStream(EMPLOYEES_FILE))) {
             for(Employee emp : employees) {
@@ -87,18 +91,6 @@ public class EmployeeDAO {
         }
     }
 
-    public boolean deleteList(List<Employee> list) {
-        try(ObjectOutputStream output = new ObjectOutputStream(new FileOutputStream(EMPLOYEES_FILE))) {
-            for (Employee e : employees) {
-                if(!list.contains(e))
-                    output.writeObject(e);
-            }
-            employees.remove(list);
-            return true;
-        } catch (IOException e) {
-            return false;
-        }
-    }
 
     public boolean UpdateAll() {
         try(ObjectOutputStream output = new ObjectOutputStream(new FileOutputStream(EMPLOYEES_FILE))) {

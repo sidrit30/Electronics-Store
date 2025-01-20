@@ -59,23 +59,5 @@ public class TempController {
 //        }
 //    });
 
-//    private boolean isValidInput() {
-//        try {
-//            Double.parseDouble(addSalary.getText());
-//        } catch (NumberFormatException e) {
-//            showAlert("Salary must be a number.");
-//            return false;
-//        }
-//        if (!addEmail.getText().contains("@")) {
-//            showAlert("Invalid email format.");
-//            return false;
-//        }
-//        if (addFirstName.getText().isEmpty() || addLastName.getText().isEmpty() || addEmail.getText().isEmpty() ||
-//                addAddress.getText().isEmpty() || roleComboBox.getValue() == null || addPhoneNumber.getText().isEmpty() ||
-//                addUsername.getText().isEmpty() || addPassword.getText().isEmpty()) { // Check for username and password
-//            showAlert("All fields must be filled.");
-//            return false;
-//        }
-//        return true;
-//    }
+//
 }
