@@ -178,7 +178,15 @@ public class ManageEmployeeTableView extends BorderPane {
         homeButton.setGraphic(homeIcon);
         homeButton.setPrefWidth(150); // Set the same width for all buttons
 
+
+
         leftSidebar.getChildren().add(homeButton);
+        leftSidebar.setStyle("-fx-background-color: #90614d;");
+
+        table.setStyle("-fx-background-color: #D2CFDA; -fx-text-fill: #404436;");
+        addBox.setStyle("-fx-background-color: #A79C86;");
+        mainVBox.setStyle("-fx-background-color: #D39C7E;");
+        searchBox.setStyle("-fx-background-color: #C88B3A; -fx-text-fill: white;");
 
 
         this.setTop(searchBox);
