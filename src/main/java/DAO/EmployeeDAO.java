@@ -1,5 +1,6 @@
 package DAO;
 
+import Model.Exceptions.AlreadyExistingException;
 import Model.Exceptions.InvalidPasswordException;
 import Model.Exceptions.InvalidUsernameException;
 import Model.Users.Cashier;
@@ -47,7 +48,12 @@ public class EmployeeDAO {
         }
     }
 
-    public boolean createEmployee(Employee employee) {
+    public boolean createEmployee(Employee employee) throws AlreadyExistingException {
+        loadEmployees();
+        for (Employee emp : employees) {
+            if (emp.getUsername().equals(employee.getUsername()))
+                throw new AlreadyExistingException("Username taken");
+        }
         try (FileOutputStream outputStream = new FileOutputStream(EMPLOYEES_FILE, true)) {
             ObjectOutputStream writer;
 
