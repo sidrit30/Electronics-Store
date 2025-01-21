@@ -3,10 +3,9 @@ package Controller;
 import Model.Users.Employee;
 import View.Buttons;
 import View.HomePage;
-import javafx.scene.Parent;
-import javafx.scene.Scene;
+import View.WelcomeView;
 import javafx.scene.control.Button;
-import javafx.stage.Stage;
+import javafx.scene.layout.VBox;
 
 public class HomePageController {
     private Employee employee;
@@ -16,6 +15,7 @@ public class HomePageController {
     HomePageController(Employee employee) {
         this.employee = employee;
         this.homePage = new HomePage(employee);
+        this.homePage.setCenter(new WelcomeView(employee));
 
         buttons = new Buttons();
         for(Button button : buttons.getButtons()) {
@@ -32,10 +32,10 @@ public class HomePageController {
     }
 
     private void employeeManagement() {
-        Scene scene = new Scene(new ManageEmployeeController(employee).getManageEmployeeTableView());
-        Stage stage = (Stage) homePage.getScene().getWindow();
-        stage.setScene(scene);
+        VBox employeManagement = new ManageEmployeeController(employee).getManageEmployeeTableView();
+        homePage.setCenter(employeManagement);
     }
+
 
     public HomePage getHomePage() {
         return homePage;

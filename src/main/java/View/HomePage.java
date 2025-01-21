@@ -57,32 +57,18 @@ public class HomePage extends BorderPane {
 
         sidebarHome.setPadding(new Insets(40));
         sidebarHome.setSpacing(25);
-        sidebarHome.setStyle("-fx-background-color: #d39c7e;");
-        sidebarHome.setPrefWidth(250);
+        sidebarHome.setStyle("-fx-background-color: #90614d;");
+        sidebarHome.setPrefWidth(200);
 
         Label titleLabel = new Label("Hello, " + employee.getFullName() + "!");
         titleLabel.setFont(new Font("Verdana", 28));
         titleLabel.setStyle("-fx-font-weight: bold; -fx-text-fill: #404436;");
 
-        VBox centerContent = new VBox();
-        centerContent.setSpacing(20);
-        centerContent.setAlignment(Pos.TOP_CENTER);
-        centerContent.setPadding(new Insets(80, 0, 0, 0));
 
-        Label titleLabel1 = new Label("Welcome to Jupiter");
-        titleLabel1.setFont(new Font("Verdana", 28));
-        titleLabel1.setStyle("-fx-font-weight: bold; -fx-text-fill: #404436;");
-
-        // Placeholder for Logo
-        ImageView logoView = new ImageView(new Image("file:src/main/resources/images/jupiterLogo.png"));
-        logoView.setFitWidth(180);
-        logoView.setPreserveRatio(true);
-
-        centerContent.getChildren().addAll(titleLabel, logoView, titleLabel1);
 
         // Update the root layout with Home Page content
         this.setLeft(sidebarHome);
-        this.setCenter(centerContent);
+
 
     }
     // Method to create a styled menu

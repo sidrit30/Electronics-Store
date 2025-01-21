@@ -88,6 +88,7 @@ public class ManageEmployeeController {
 
 
             Employee newEmp = null;
+
             switch (role) {
                 case CASHIER:
                     newEmp = new Cashier(employeeSurname, employeeName,
@@ -134,21 +135,35 @@ public class ManageEmployeeController {
                 employeeTableView.getAddUsername().getText().isEmpty() ||
                 employeeTableView.getAddPassword().getText().isEmpty() ||
                 getManageEmployeeTableView().getRoleComboBox().getValue() == null) { // Check for username and password
-            employeeTableView.showAlert("All fields must be filled.");
+            employeeTableView.showErrorAlert("Employee full name, role, username and password are required.");
+            return false;
+        }
+
+        //check username
+        if(employeeTableView.getAddUsername().getText().length() < 4 || employeeTableView.getAddUsername().getText().length() > 20) {
+            employeeTableView.showErrorAlert("Username must be between 4 and 20 characters.");
             return false;
         }
         if(!employeeDAO.validUsername(employeeTableView.getAddUsername().getText())) {
-            employeeTableView.showAlert("Username is already taken.");
+            employeeTableView.showErrorAlert("Username is already taken.");
             return false;
         }
+
+        //check password
+        if(employeeTableView.getAddPassword().getText().length() < 4 || employeeTableView.getAddPassword().getText().length() > 20) {
+            employeeTableView.showErrorAlert("Password must be between 4 and 20 characters.");
+            return false;
+        }
+
+        //check salary
         try {
             Double.parseDouble(employeeTableView.getAddSalary().getText());
         } catch (NumberFormatException e) {
-            employeeTableView.showAlert("Salary must be a number.");
+            employeeTableView.showErrorAlert("Salary must be a positive number.");
             return false;
         }
         if(Double.parseDouble(employeeTableView.getAddSalary().getText())<=0) {
-            employeeTableView.showAlert("Salary must be a number.");
+            employeeTableView.showErrorAlert("Salary must be a positive number.");
             return false;
         }
 
@@ -211,11 +226,27 @@ public class ManageEmployeeController {
     }
 
     private void setEditListeners() {
+
         this.employeeTableView.getUsernameCol().setOnEditCommit(e -> {
-            employeeDAO.getEmployees().get(e.getTablePosition().getRow()).setUsername(e.getNewValue());
+            String username = e.getNewValue();
+            if(username == null || username.length() < 4 || username.length() > 20) {
+                this.employeeTableView.showErrorAlert("Username must be between 4 and 20 characters.");
+                return;
+            }
+            if (!employeeDAO.validUsername(username)) {
+                this.employeeTableView.showErrorAlert(username+" is not an available username.");
+                return;
+            }
+
+            employeeDAO.getEmployees().get(e.getTablePosition().getRow()).setUsername(username);
         });
         this.employeeTableView.getPasswordCol().setOnEditCommit(e -> {
-            employeeDAO.getEmployees().get(e.getTablePosition().getRow()).setPassword(e.getNewValue());
+            String password = e.getNewValue();
+            if(password == null || password.length() < 4 || password.length() > 20) {
+                employeeTableView.showErrorAlert("Password must be between 4 and 20 characters.");
+                return;
+            }
+            employeeDAO.getEmployees().get(e.getTablePosition().getRow()).setPassword(password);
         });
         this.employeeTableView.getEmailCol().setOnEditCommit(e -> {
             employeeDAO.getEmployees().get(e.getTablePosition().getRow()).setEmail(e.getNewValue());

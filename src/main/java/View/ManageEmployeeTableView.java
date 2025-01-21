@@ -3,6 +3,7 @@ package View;
 import Model.Users.Employee;
 import Model.Users.Permission;
 import Model.Users.Role;
+import javafx.scene.Scene;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.TextField;
 import javafx.geometry.Insets;
@@ -10,15 +11,17 @@ import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.control.cell.TextFieldListCell;
 import javafx.scene.control.cell.TextFieldTableCell;
+import javafx.scene.effect.BlendMode;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.*;
+import javafx.stage.Stage;
 import javafx.util.converter.DoubleStringConverter;
 
 import java.util.EnumSet;
 
 
-public class ManageEmployeeTableView extends BorderPane {
+public class ManageEmployeeTableView extends VBox {
 
     private final TableView<Employee> table = new TableView<>();
     private final TableColumn<Employee, String> employeeIDCol;
@@ -131,9 +134,11 @@ public class ManageEmployeeTableView extends BorderPane {
         addUsername.setPromptText("Username"); // Prompt for username
         addPassword.setPromptText("Password");// Prompt for password
 
-        Label permission = new Label("Permissions");
+        Label permission = new Label("Permissions: ");
+        permission.setStyle("-fx-font-size: 14 px;");
         permissionList.getItems().addAll(EnumSet.allOf(Permission.class));
-        permissionList.setMaxHeight(60);
+        permissionList.setMinWidth(80);
+        permissionList.setMaxHeight(100);
         permissionList.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
 
         HBox addBox1 = new HBox();
@@ -175,10 +180,10 @@ public class ManageEmployeeTableView extends BorderPane {
         searchBox.setPadding(new Insets(10));
         searchBox.getChildren().addAll(searchField, searchButton);
 
-        // Adding left sidebar with navigation buttons
-        VBox leftSidebar = new VBox();
-        leftSidebar.setSpacing(10);
-        leftSidebar.setPadding(new Insets(10));
+        // Old version
+//        VBox leftSidebar = new VBox();
+//        leftSidebar.setSpacing(10);
+//        leftSidebar.setPadding(new Insets(10));
 
         // Home button with icon
         ImageView homeIcon = new ImageView(new Image("file:src/main/resources/images/home_icon.png"));
@@ -190,21 +195,21 @@ public class ManageEmployeeTableView extends BorderPane {
 
 
 
-        leftSidebar.getChildren().add(homeButton);
-        leftSidebar.setStyle("-fx-background-color: #90614d;");
+//        leftSidebar.getChildren().add(homeButton);
+//        leftSidebar.setStyle("-fx-background-color: #90614d;");
 
-        table.setStyle("-fx-background-color: #D2CFDA; -fx-text-fill: #404436;");
-        addBox1.setStyle("-fx-background-color: #A79C86;");
-        addBox2.setStyle("-fx-background-color: #A79C86;");
+        table.setStyle("-fx-background-color: #D2CFDA; -fx-text-fill: #884135;");
+        addBox1.setStyle("-fx-background-color: #c9af7b;");
+        addBox2.setStyle("-fx-background-color: #C9AF7BFF;");
         mainVBox.setStyle("-fx-background-color: #D39C7E;");
-        searchBox.setStyle("-fx-background-color: #C88B3A; -fx-text-fill: white;");
+        searchBox.setStyle("-fx-background-color: #9c2929; -fx-text-fill: white;");
 
 
-        this.setTop(searchBox);
-        this.setLeft(leftSidebar);
-        this.setCenter(table);
-        this.setBottom(mainVBox);
+        this.getChildren().addAll(searchBox, table, mainVBox);
         this.setPadding(new Insets(10));
+        this.setSpacing(10);
+        //this.setStyle("-fx-background-color: #90614d;");
+
     }
 
     private void clearFormFields() {
@@ -219,12 +224,13 @@ public class ManageEmployeeTableView extends BorderPane {
         addPassword.clear(); // Clear password
     }
 
-    public void showAlert(String message) {
-        Alert alert = new Alert(Alert.AlertType.ERROR);
+    public void showErrorAlert(String message) {
+        Alert alert = new Alert(Alert.AlertType.ERROR, message, ButtonType.OK);
         alert.setHeaderText(message);
         alert.setTitle("Error");
         alert.showAndWait();
     }
+
 
     public TableView<Employee> getTable() {
         return table;
