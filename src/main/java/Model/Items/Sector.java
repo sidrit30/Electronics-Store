@@ -1,21 +1,26 @@
 package Model.Items;
 
 import Model.Exceptions.AlreadyExistingException;
+import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 
 import java.io.IOException;
 import java.io.ObjectOutputStream;
 import java.io.Serial;
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
 
 public class Sector implements Serializable {
     @Serial
     private static final long serialVersionUID = 111L;
     private final String sectorName;
-    private ObservableList<String> categories;
-    private ObservableList<Item> items;
+    private ArrayList<String> categories;
+    private ArrayList<Item> items;
     public Sector(String sectorName) {
         this.sectorName = sectorName;
+        this.categories = new ArrayList<>();
+        this.items = new ArrayList<>();
     }
 
     public String getSectorName() {
@@ -23,10 +28,14 @@ public class Sector implements Serializable {
     }
 
     public ObservableList<String> getCategories() {
+        ObservableList<String> categories = FXCollections.observableArrayList();
+        categories.addAll(this.categories);
         return categories;
     }
 
     public ObservableList<Item> getItems() {
+        ObservableList<Item> items = FXCollections.observableArrayList();
+        items.addAll(this.items);
         return items;
     }
 
@@ -59,12 +68,4 @@ public class Sector implements Serializable {
     public void removeCategory(String category) {
         categories.remove(category);
     }
-
-    @Serial
-    private void writeObject(ObjectOutputStream out) throws IOException {
-        out.defaultWriteObject();
-        out.writeObject(categories.stream().toList());
-    }
-
-
 }

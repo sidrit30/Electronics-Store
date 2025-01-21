@@ -138,9 +138,10 @@ public class ManageEmployeeTableView extends VBox {
 
         sectorLabel.setStyle("-fx-font-weight: bold; -fx-text-fill: white; -fx-alignment: CENTER; -fx-font-size: 14 px;");
         sectorList.getItems().setAll(new SectorDAO().getSectorNames());
-        sectorList.setMaxHeight(100);
-        sectorList.setMaxWidth(150);
+        //sectorList.setMaxHeight(100);
+        sectorList.setMinWidth(150);
         sectorBox.getChildren().addAll(sectorLabel, sectorList);
+        sectorBox.setMaxHeight(150);
 
         addSalary.setPromptText("Salary");
         addPhoneNumber.setPromptText("Phone Number");

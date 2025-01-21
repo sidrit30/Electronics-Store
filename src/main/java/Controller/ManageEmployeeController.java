@@ -63,7 +63,7 @@ public class ManageEmployeeController {
         Employee emp = employeeTableView.getTable().getSelectionModel().getSelectedItem();
         if(emp == null) {
             Alert alert = new Alert(Alert.AlertType.WARNING);
-            alert.setTitle("Permissions");
+            alert.setTitle("Sector");
             alert.setHeaderText("Select An Employee First!");
             alert.show();
             return;
@@ -71,7 +71,7 @@ public class ManageEmployeeController {
 
         if(emp.equals(selectedEmployee)) {
             Alert alert = new Alert(Alert.AlertType.WARNING);
-            alert.setTitle("Permissions");
+            alert.setTitle("Sector");
             alert.setHeaderText("You Cannot Edit Your Own Sectors!");
             alert.show();
             return;
