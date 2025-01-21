@@ -32,13 +32,6 @@ public class ManageEmployeeController {
 
         //employeeDAO.getEmployees().remove(employee);
         employeeTableView.getTable().setItems(employeeDAO.getEmployees());
-
-        employeeTableView.getHomeButton().setOnAction(e -> {
-            Scene scene = new Scene(new HomePageController(employee).getHomePage());
-            Stage stage = (Stage) employeeTableView.getScene().getWindow();
-            stage.setScene(scene);
-        });
-
         setSearchListener();
 
         if(selectedEmployee.hasPermission(Permission.EDIT_SECTOR)) {
@@ -56,6 +49,8 @@ public class ManageEmployeeController {
                 }
             });
             employeeTableView.getEditPermissionsButton().setOnAction(e -> editPermissions());
+        } else {
+            this.getManageEmployeeTableView().getMainVBox().setVisible(false);
         }
     }
 

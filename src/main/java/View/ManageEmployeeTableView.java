@@ -50,8 +50,9 @@ public class ManageEmployeeTableView extends VBox {
     private final Button deleteButton;
     private final Button addNewEmployeeButton;
     private final Button saveButton;
-    private final Button homeButton = new Button("Home");
     private final Button editPermissionsButton = new Button("Edit Permissions");
+
+    private VBox mainVBox;
 
     private final TextField searchField = new TextField();
 
@@ -76,6 +77,7 @@ public class ManageEmployeeTableView extends VBox {
 
         roleCol = new TableColumn<>("Role");
         roleCol.setCellValueFactory(new PropertyValueFactory<>("role"));
+        roleCol.setStyle("-fx-alignment: CENTER;");
 
         addressCol = new TableColumn<>("Address");
         addressCol.setCellValueFactory(new PropertyValueFactory<>("address"));
@@ -166,7 +168,7 @@ public class ManageEmployeeTableView extends VBox {
         buttonBox.setPadding(new Insets(10));
         buttonBox.getChildren().addAll(addNewEmployeeButton, deleteButton, saveButton, editPermissionsButton);
 
-        VBox mainVBox = new VBox();
+        mainVBox = new VBox();
         mainVBox.setSpacing(15);
         mainVBox.setPadding(new Insets(10));
         mainVBox.getChildren().addAll(addBox1, addBox2, buttonBox);
@@ -185,24 +187,12 @@ public class ManageEmployeeTableView extends VBox {
 //        leftSidebar.setSpacing(10);
 //        leftSidebar.setPadding(new Insets(10));
 
-        // Home button with icon
-        ImageView homeIcon = new ImageView(new Image("file:src/main/resources/images/home_icon.png"));
-        homeIcon.setFitHeight(16);
-        homeIcon.setFitWidth(16);
-
-        homeButton.setGraphic(homeIcon);
-        homeButton.setPrefWidth(150); // Set the same width for all buttons
-
-
-
 //        leftSidebar.getChildren().add(homeButton);
 //        leftSidebar.setStyle("-fx-background-color: #90614d;");
 
         table.setStyle("-fx-background-color: #D2CFDA; -fx-text-fill: #884135;");
-        addBox1.setStyle("-fx-background-color: #c9af7b;");
-        addBox2.setStyle("-fx-background-color: #C9AF7BFF;");
         mainVBox.setStyle("-fx-background-color: #D39C7E;");
-        searchBox.setStyle("-fx-background-color: #9c2929; -fx-text-fill: white;");
+        searchBox.setStyle("-fx-background-color: #916449; -fx-text-fill: white;");
 
 
         this.getChildren().addAll(searchBox, table, mainVBox);
@@ -324,10 +314,6 @@ public class ManageEmployeeTableView extends VBox {
         return editPermissionsButton;
     }
 
-    public Button getHomeButton() {
-        return homeButton;
-    }
-
     public TextField getSearchField() {
         return searchField;
     }
@@ -338,5 +324,9 @@ public class ManageEmployeeTableView extends VBox {
 
     public TableColumn<Employee, EnumSet<Permission>> getPermissionCol() {
         return permissionCol;
+    }
+
+    public VBox getMainVBox() {
+        return mainVBox;
     }
 }

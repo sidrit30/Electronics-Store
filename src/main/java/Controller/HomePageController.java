@@ -15,14 +15,16 @@ public class HomePageController {
     HomePageController(Employee employee) {
         this.employee = employee;
         this.homePage = new HomePage(employee);
-        this.homePage.setCenter(new WelcomeView(employee));
-
         buttons = new Buttons();
+        welcomeView();
+
         for(Button button : buttons.getButtons()) {
             if(employee.getPermissions().toString().toLowerCase().contains(button.getId())) {
                 homePage.getSidebarHome().getChildren().add(button);
             }
         }
+
+        homePage.getSidebarHome().getChildren().add(buttons.getHomeButton());
 
         setEventHandlers();
     }
@@ -32,8 +34,16 @@ public class HomePageController {
     }
 
     private void employeeManagement() {
-        VBox employeManagement = new ManageEmployeeController(employee).getManageEmployeeTableView();
-        homePage.setCenter(employeManagement);
+        VBox employeeManagement = new ManageEmployeeController(employee).getManageEmployeeTableView();
+        homePage.setCenter(employeeManagement);
+        buttons.getHomeButton().setVisible(true);
+        buttons.getHomeButton().setOnAction(e -> welcomeView());
+
+    }
+
+    private void welcomeView() {
+        this.homePage.setCenter(new WelcomeView(employee));
+        buttons.getHomeButton().setVisible(false);
     }
 
 

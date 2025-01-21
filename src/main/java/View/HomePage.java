@@ -32,33 +32,31 @@ public class HomePage extends BorderPane {
         menuBar.setStyle("-fx-background-color: #d2cfda; -fx-text-fill: #000000;");
 
         // Menu Items for Statistics, Profile, and Log Out
-        Menu homeMenu = createStyledMenu("Home");
         Menu profileMenu = createStyledMenu("User Profile");
         Menu aboutMenu = createStyledMenu("About");
         Menu logoutMenu = createStyledMenu("Log Out");
 
         // MenuItems
-        homeMenuItem = createStyledMenuItem("Home");
         profileItem = createStyledMenuItem("User Profile");
         aboutItem = createStyledMenuItem("About");
         logoutItem = createStyledMenuItem("Log Out");
 
 
         // Add MenuItems to Menus
-        homeMenu.getItems().add(homeMenuItem);
         profileMenu.getItems().add(profileItem);
         aboutMenu.getItems().add(aboutItem);
         logoutMenu.getItems().add(logoutItem);
 
         // Add Menus to the MenuBar
-        menuBar.getMenus().addAll(homeMenu, profileMenu, aboutMenu, logoutMenu);
+        menuBar.getMenus().addAll(profileMenu, aboutMenu, logoutMenu);
 
         this.setTop(menuBar);
+        this.setStyle("-fx-background-color: #fcf2d8;");
 
         sidebarHome.setPadding(new Insets(40));
         sidebarHome.setSpacing(25);
         sidebarHome.setStyle("-fx-background-color: #90614d;");
-        sidebarHome.setPrefWidth(200);
+        sidebarHome.setPrefWidth(220);
 
         Label titleLabel = new Label("Hello, " + employee.getFullName() + "!");
         titleLabel.setFont(new Font("Verdana", 28));
