@@ -15,8 +15,6 @@ public class HomePage extends BorderPane {
     private MenuBar menuBar;       // Shared MenuBar
     private Employee employee;
 
-    private MenuItem homeMenuItem;
-    private MenuItem statsItem;
     private MenuItem profileItem;
     private MenuItem aboutItem;
     private MenuItem logoutItem;
@@ -78,14 +76,6 @@ public class HomePage extends BorderPane {
         MenuItem menuItem = new MenuItem(text);
         menuItem.setStyle("-fx-background-color: transparent; -fx-text-fill: #404436; -fx-font-size: 14px;");
         return menuItem;
-    }
-
-    public MenuItem getHomeMenuItem() {
-        return homeMenuItem;
-    }
-
-    public MenuItem getStatsItem() {
-        return statsItem;
     }
 
     public MenuItem getProfileItem() {

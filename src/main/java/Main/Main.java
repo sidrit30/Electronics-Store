@@ -25,7 +25,7 @@ public class Main extends Application {
     public void start(Stage primaryStage) {
         LoginController loginController = new LoginController();
         Scene scene = new Scene(loginController.getLoginPage(), 800, 600);
-        primaryStage.setResizable(true);
+        primaryStage.setResizable(false);
         primaryStage.setScene(scene);
         primaryStage.setTitle("Jupiter Electronics");
         primaryStage.show();

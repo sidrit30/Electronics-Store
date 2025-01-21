@@ -1,11 +1,13 @@
 package Controller;
 
+import Main.Main;
 import Model.Users.Employee;
 import View.Buttons;
 import View.HomePage;
 import View.WelcomeView;
 import javafx.scene.control.Button;
 import javafx.scene.layout.VBox;
+import javafx.stage.Stage;
 
 public class HomePageController {
     private Employee employee;
@@ -25,8 +27,18 @@ public class HomePageController {
         }
 
         homePage.getSidebarHome().getChildren().add(buttons.getHomeButton());
+        homePage.getLogoutItem().setOnAction(event -> logout());
 
         setEventHandlers();
+    }
+
+    private void logout() {
+        Stage oldStage = (Stage) homePage.getScene().getWindow();
+        oldStage.close();
+        Main main = new Main();
+        Stage stage = new Stage();
+        main.start(stage);
+
     }
 
     private void setEventHandlers() {
