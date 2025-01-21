@@ -11,8 +11,8 @@ public class Buttons {
     private final Button[] buttons = {
             new Button("Create Bill"),
             new Button("View Bills"),
-            new Button("Inventory Management"),
-            new Button("Employee Management"),
+            new Button("Manage Inventory"),
+            new Button("Manage Staff"),
             new Button("View Statistics"),
             new Button("Home")
     };

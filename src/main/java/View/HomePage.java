@@ -72,7 +72,7 @@ public class HomePage extends BorderPane {
     // Method to create a styled menu
     private Menu createStyledMenu(String text) {
         Menu menu = new Menu(text);
-        menu.setStyle("-fx-text-fill: #404436; -fx-font-size: 14px;");
+        menu.setStyle("-fx-text-fill: #D2BD96; -fx-font-size: 14px;");
         return menu;
     }
 

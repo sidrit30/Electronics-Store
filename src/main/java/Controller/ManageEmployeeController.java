@@ -297,16 +297,16 @@ public class ManageEmployeeController {
         }
 
         Stage popup = new Stage();
-        ListView<Permission> permissions = new ListView<>();
-        permissions.getItems().setAll(EnumSet.allOf(Permission.class));
-        permissions.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
-        permissions.setMaxHeight(120);
+        ListView<Permission> permissionsListView = new ListView<>();
+        permissionsListView.getItems().setAll(EnumSet.allOf(Permission.class));
+        permissionsListView.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
+        permissionsListView.setMaxHeight(120);
         Label perm = new Label("Select Permission");
         Button submit = new Button("Submit");
         Button cancel = new Button("Cancel");
         GridPane grid = new GridPane();
         grid.add(perm, 0, 0);
-        grid.add(permissions,0, 1);
+        grid.add(permissionsListView,0, 1);
         grid.add(submit, 1, 2);
         grid.add(cancel, 0, 2);
         grid.setHgap(10);
@@ -318,12 +318,18 @@ public class ManageEmployeeController {
         popup.show();
 
         submit.setOnAction(e -> {
-            EnumSet<Permission> perms = EnumSet.copyOf(permissions.getSelectionModel().getSelectedItems());
-            if(perms == null || perms.isEmpty()) {
-                perms = EnumSet.noneOf(Permission.class);
+            ObservableList<Permission> permissionsList
+                    = permissionsListView.getSelectionModel().getSelectedItems();
+            EnumSet<Permission> permissions;
+
+            //if permissions are left default
+            try {
+                permissions = EnumSet.copyOf(permissionsList);
+            } catch (IllegalArgumentException ev) {
+                permissions = EnumSet.noneOf(Permission.class);
             }
-            EnumSet<Permission> finalPerms = perms;
-            emp.setPermissions(finalPerms);
+
+            emp.setPermissions(permissions);
             popup.close();
         });
 

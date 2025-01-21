@@ -25,7 +25,6 @@ import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 
 public class LoginPage extends BorderPane {
-    private Stage primaryStage;
     private TextField textField = new TextField();
     private PasswordField passwordField = new PasswordField();
     private Button loginButton = new Button("Login");
