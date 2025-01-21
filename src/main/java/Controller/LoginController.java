@@ -3,18 +3,15 @@ package Controller;
 import DAO.EmployeeDAO;
 import Model.Exceptions.InvalidPasswordException;
 import Model.Exceptions.InvalidUsernameException;
-import Model.Users.Admin;
 import Model.Users.Employee;
 import View.LoginPage;
 import javafx.event.ActionEvent;
-import javafx.geometry.Rectangle2D;
 import javafx.scene.Scene;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
-import javafx.scene.paint.Color;
-import javafx.scene.text.Text;
-import javafx.stage.Screen;
 import javafx.stage.Stage;
+
+import static Main.Main.VISUAL_BOUNDS;
 
 public class LoginController {
     private EmployeeDAO employeeDAO;
@@ -51,17 +48,18 @@ public class LoginController {
         try {
             emp = employeeDAO.authLogin(username, password);
             System.out.println("Login Successful");
-            //Scene homeScene = new Scene(new HomePageController(emp).getHomePage());
-            Scene test = new Scene(new ManageEmployeeController(emp).getManageEmployeeTableView());
-            Stage primaryStage = (Stage) loginPage.getLoginButton().getScene().getWindow();
-            primaryStage.setScene(test);
-            Screen screen = Screen.getPrimary();
-            Rectangle2D bounds = screen.getVisualBounds();
-
-            primaryStage.setX(bounds.getMinX());
-            primaryStage.setY(bounds.getMinY());
-            primaryStage.setWidth(bounds.getWidth());
-            primaryStage.setHeight(bounds.getHeight());
+            Scene homeScene = new Scene(new HomePageController(emp).getHomePage());
+            //Scene test = new Scene(new ManageEmployeeController(emp).getManageEmployeeTableView());
+            Stage oldStage = (Stage) loginPage.getScene().getWindow();
+            oldStage.close();
+            Stage primaryStage = new Stage();
+            primaryStage.setScene(homeScene);
+            primaryStage.setTitle("Jupiter Electronics");
+            primaryStage.setX(VISUAL_BOUNDS.getMinX());
+            primaryStage.setY(VISUAL_BOUNDS.getMinY());
+            primaryStage.setWidth(VISUAL_BOUNDS.getWidth());
+            primaryStage.setHeight(VISUAL_BOUNDS.getHeight());
+            primaryStage.show();
         }
         catch (InvalidUsernameException | InvalidPasswordException e1) {
             loginPage.getErrorLabel().setVisible(true);

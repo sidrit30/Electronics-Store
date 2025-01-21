@@ -1,6 +1,7 @@
 package DAO;
 
-import Model.Bill;
+
+import Model.Items.Sector;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 
@@ -9,9 +10,9 @@ import java.util.List;
 
 public class SectorDAO {
     private static final File SECTOR_FILE = new File("src/main/resources/data/sectors.dat");
-    private static final ObservableList<Bill> sectors = FXCollections.observableArrayList();
+    private static final ObservableList<Sector> sectors = FXCollections.observableArrayList();
 
-    public ObservableList<Bill> getSectors() {
+    public ObservableList<Sector> getSectors() {
         if (sectors.isEmpty()) {
             loadSectors();
         }
@@ -21,7 +22,7 @@ public class SectorDAO {
     public void loadSectors() {
         try(ObjectInputStream input = new ObjectInputStream(new FileInputStream(SECTOR_FILE))) {
             while (true) {
-                sectors.add((Bill) input.readObject());
+                sectors.add((Sector) input.readObject());
             }
         } catch (EOFException ignored) {
         } catch (IOException | ClassNotFoundException e) {
@@ -29,7 +30,7 @@ public class SectorDAO {
         }
     }
 
-    public boolean createSector(Bill sector) {
+    public boolean createSector(Sector sector) {
         try (FileOutputStream outputStream = new FileOutputStream(SECTOR_FILE, true)) {
             ObjectOutputStream writer;
 
@@ -47,9 +48,9 @@ public class SectorDAO {
         }
     }
 
-    public boolean deleteSector(Bill sector) {
+    public boolean deleteSector(Sector sector) {
         try (ObjectOutputStream output = new ObjectOutputStream(new FileOutputStream(SECTOR_FILE))) {
-            for(Bill s : sectors) {
+            for(Sector s : sectors) {
                 if(!s.equals(sector)) {
                     output.writeObject(s);
                 }
@@ -61,27 +62,24 @@ public class SectorDAO {
         }
     }
 
-    public boolean deleteList(List<Bill> list) {
-        try(ObjectOutputStream output = new ObjectOutputStream(new FileOutputStream(SECTOR_FILE))) {
-            for (Bill s : sectors) {
-                if(!list.contains(s))
-                    output.writeObject(s);
-            }
-            sectors.remove(list);
-            return true;
-        } catch (IOException e) {
-            return false;
-        }
-    }
+
 
     public boolean UpdateAll() {
         try(ObjectOutputStream output = new ObjectOutputStream(new FileOutputStream(SECTOR_FILE))) {
-            for (Bill s : sectors) {
+            for (Sector s : sectors) {
                 output.writeObject(s);
             }
             return true;
         } catch (IOException e) {
             return false;
         }
+    }
+
+    public ObservableList<String> getSectorNames() {
+        ObservableList<String> names = FXCollections.observableArrayList();
+        for(Sector s : getSectors()) {
+            names.add(s.getSectorName());
+        }
+        return names;
     }
 }

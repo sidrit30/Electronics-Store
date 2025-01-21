@@ -133,14 +133,18 @@ public class ManageEmployeeTableView extends BorderPane {
 
         Label permission = new Label("Permissions");
         permissionList.getItems().addAll(EnumSet.allOf(Permission.class));
-        permissionList.setMaxHeight(100);
+        permissionList.setMaxHeight(60);
         permissionList.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
 
-        HBox addBox = new HBox();
-        addBox.setSpacing(10);
-        addBox.setPadding(new Insets(10));
-        addBox.getChildren().addAll(addFirstName, addLastName, addEmail, addAddress, roleComboBox, addSalary,
-                addPhoneNumber, addUsername, addPassword, permission, permissionList);
+        HBox addBox1 = new HBox();
+        addBox1.setSpacing(30);
+        addBox1.setPadding(new Insets(10));
+        addBox1.getChildren().addAll(addFirstName, addLastName, addEmail, addAddress, roleComboBox);
+
+        HBox addBox2 = new HBox();
+        addBox2.setSpacing(30);
+        addBox2.setPadding(new Insets(10));
+        addBox2.getChildren().addAll(addSalary, addPhoneNumber, addUsername, addPassword, permission, permissionList);
 
         // Button for adding new employees
         addNewEmployeeButton = new Button("Add New Employee");
@@ -158,9 +162,9 @@ public class ManageEmployeeTableView extends BorderPane {
         buttonBox.getChildren().addAll(addNewEmployeeButton, deleteButton, saveButton, editPermissionsButton);
 
         VBox mainVBox = new VBox();
-        mainVBox.setSpacing(10);
+        mainVBox.setSpacing(15);
         mainVBox.setPadding(new Insets(10));
-        mainVBox.getChildren().addAll(addBox, buttonBox);
+        mainVBox.getChildren().addAll(addBox1, addBox2, buttonBox);
 
         // Adding search functionality
         searchField.setPromptText("Search by Name");
@@ -169,7 +173,7 @@ public class ManageEmployeeTableView extends BorderPane {
         HBox searchBox = new HBox();
         searchBox.setSpacing(10);
         searchBox.setPadding(new Insets(10));
-        searchBox.getChildren().addAll(searchButton, searchField);
+        searchBox.getChildren().addAll(searchField, searchButton);
 
         // Adding left sidebar with navigation buttons
         VBox leftSidebar = new VBox();
@@ -190,7 +194,8 @@ public class ManageEmployeeTableView extends BorderPane {
         leftSidebar.setStyle("-fx-background-color: #90614d;");
 
         table.setStyle("-fx-background-color: #D2CFDA; -fx-text-fill: #404436;");
-        addBox.setStyle("-fx-background-color: #A79C86;");
+        addBox1.setStyle("-fx-background-color: #A79C86;");
+        addBox2.setStyle("-fx-background-color: #A79C86;");
         mainVBox.setStyle("-fx-background-color: #D39C7E;");
         searchBox.setStyle("-fx-background-color: #C88B3A; -fx-text-fill: white;");
 

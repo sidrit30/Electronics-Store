@@ -28,13 +28,22 @@ public class ManageEmployeeController {
         employeeDAO = new EmployeeDAO();
         employeeTableView = new ManageEmployeeTableView();
         selectedEmployee = employee;
+
+
         //employeeDAO.getEmployees().remove(employee);
         employeeTableView.getTable().setItems(employeeDAO.getEmployees());
-        System.out.println(selectedEmployee.hasPermission(Permission.EDIT_SECTOR));
+
+        employeeTableView.getHomeButton().setOnAction(e -> {
+            Scene scene = new Scene(new HomePageController(employee).getHomePage());
+            Stage stage = (Stage) employeeTableView.getScene().getWindow();
+            stage.setScene(scene);
+        });
+
+        setSearchListener();
+
         if(selectedEmployee.hasPermission(Permission.EDIT_SECTOR)) {
             employeeTableView.getTable().setEditable(true);
             setEditListeners();
-            setSearchListener();
             employeeTableView.getAddNewEmployeeButton().setOnAction(e -> onEmployeeAdd());
             employeeTableView.getDeleteButton().setOnAction(e -> onEmployeeDelete());
             employeeTableView.getSaveButton().setOnAction(e -> {
@@ -250,12 +259,14 @@ public class ManageEmployeeController {
             Alert alert = new Alert(Alert.AlertType.WARNING);
             alert.setTitle("Permissions");
             alert.setHeaderText("Select An Employee First!");
+            alert.show();
             return;
         }
         if(emp.equals(selectedEmployee)) {
             Alert alert = new Alert(Alert.AlertType.WARNING);
             alert.setTitle("Permissions");
             alert.setHeaderText("You Cannot Edit Your Own Permissions!");
+            alert.show();
             return;
         }
 
@@ -263,6 +274,7 @@ public class ManageEmployeeController {
         ListView<Permission> permissions = new ListView<>();
         permissions.getItems().setAll(EnumSet.allOf(Permission.class));
         permissions.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
+        permissions.setMaxHeight(120);
         Label perm = new Label("Select Permission");
         Button submit = new Button("Submit");
         Button cancel = new Button("Cancel");
