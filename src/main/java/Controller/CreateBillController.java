@@ -19,15 +19,6 @@ public class CreateBillController {
         itemList = FXCollections.observableArrayList();
         billItems = FXCollections.observableArrayList();
 
-        // Sample items
-//        itemList.addAll(
-//                new Item("Galaxy S24", "Smartphone", 850.0, 0.5, 100, "Supplier A", "A phone mf"),
-//                new Item("Butt plug", "Chess accessory", 69.0, 0.3, 150, "Supplier B", "yo"),
-//                new Item("Yo momma", "So fat", 1, 0.4, 200, "Supplier C", "Crunchy carrots"),
-//                new Item("Big Booty Latina", "Bakery", 200.0, 1.0, 50, "Supplier D", "Fresh milk"),
-//                new Item("Big tiddy goth mommy", "Mmmmffgh", 250.0, 1.2, 80, "Supplier E", "Whole grain bread")
-//        );
-
         view = new CreateBillView(this);
         view.updateItemTable(itemList); // Update the item table with the sample items
 
@@ -85,7 +76,6 @@ public class CreateBillController {
     }
 
     private void startNewBill() {
-        currentBill = new Bill(new Model.Users.Cashier("PoJamDepressed", "Kaniher", "Buta", "password123", 3000.00));
     }
 
     private void showAlert(String title, String message) {

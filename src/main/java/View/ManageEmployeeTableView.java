@@ -1,5 +1,6 @@
 package View;
 
+import DAO.SectorDAO;
 import Model.Users.Employee;
 import Model.Users.Permission;
 import Model.Users.Role;
@@ -18,6 +19,7 @@ import javafx.scene.layout.*;
 import javafx.stage.Stage;
 import javafx.util.converter.DoubleStringConverter;
 
+import java.util.ArrayList;
 import java.util.EnumSet;
 
 
@@ -33,32 +35,39 @@ public class ManageEmployeeTableView extends VBox {
     private final TableColumn<Employee, String> addressCol;
     private final TableColumn<Employee, Double> salaryCol;
     private final TableColumn<Employee, String> phoneNumberCol;
-    private final TableColumn<Employee, EnumSet<Permission>> permissionCol;
+
 
     private final TextField addFirstName = new TextField();
     private final TextField addLastName = new TextField();
     private final TextField addEmail = new TextField();
     private final TextField addAddress = new TextField();
     private final ComboBox<Role> roleComboBox = new ComboBox<>();
+    private final ListView<String> sectorList = new ListView<>();
+    private final VBox sectorBox = new VBox(5);
     private final TextField addSalary = new TextField();
     private final TextField addPhoneNumber = new TextField();
     private final TextField addUsername = new TextField(); // New field for username
     private final PasswordField addPassword = new PasswordField();// New field for password
     private final ListView<Permission> permissionList = new ListView<>();
+    private final VBox permissionBox = new VBox(5);
 
+    private final ChoiceBox<String> searchBy = new ChoiceBox<>();
     private final Button searchButton = new Button("Search");
     private final Button deleteButton;
     private final Button addNewEmployeeButton;
     private final Button saveButton;
+    private final Button editSectorButton = new Button("Edit Sectors");
+    private final Label sectorLabel = new Label("Sector: ");
     private final Button editPermissionsButton = new Button("Edit Permissions");
 
-    private VBox mainVBox;
+
+    private final VBox mainVBox;
 
     private final TextField searchField = new TextField();
 
 
     public ManageEmployeeTableView() {
-
+        //table datafields
         table.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
         table.setEditable(false);
 
@@ -104,10 +113,7 @@ public class ManageEmployeeTableView extends VBox {
         passwordCol.setCellFactory(TextFieldTableCell.forTableColumn());
         passwordCol.setStyle("-fx-alignment: CENTER;");
 
-        permissionCol = new TableColumn<>("Permissions");
-        permissionCol.setCellValueFactory(new PropertyValueFactory<>("permissions"));
-        permissionCol.setStyle("-fx-alignment: CENTER;");
-        permissionCol.setMaxWidth(200);
+
 
 
         table.getColumns().add(employeeIDCol);
@@ -119,8 +125,6 @@ public class ManageEmployeeTableView extends VBox {
         table.getColumns().add(addressCol);
         table.getColumns().add(salaryCol);
         table.getColumns().add(phoneNumberCol);
-        table.getColumns().add(permissionCol);
-
 
         addFirstName.setPromptText("First Name");
         addLastName.setPromptText("Last Name");
@@ -131,17 +135,26 @@ public class ManageEmployeeTableView extends VBox {
         roleComboBox.setPromptText("Select Role");
         roleComboBox.setMinWidth(100);
 
+
+        sectorLabel.setStyle("-fx-font-weight: bold; -fx-text-fill: white; -fx-alignment: CENTER; -fx-font-size: 14 px;");
+        sectorList.getItems().setAll(new SectorDAO().getSectorNames());
+        sectorList.setMaxHeight(100);
+        sectorList.setMaxWidth(150);
+        sectorBox.getChildren().addAll(sectorLabel, sectorList);
+
         addSalary.setPromptText("Salary");
         addPhoneNumber.setPromptText("Phone Number");
         addUsername.setPromptText("Username"); // Prompt for username
         addPassword.setPromptText("Password");// Prompt for password
 
         Label permission = new Label("Permissions: ");
-        permission.setStyle("-fx-font-size: 14 px;");
+        permission.setStyle("-fx-font-weight: bold; -fx-text-fill: white; -fx-alignment: CENTER; -fx-font-size: 14 px;");
+
         permissionList.getItems().addAll(EnumSet.allOf(Permission.class));
         permissionList.setMinWidth(80);
-        permissionList.setMaxHeight(100);
+        permissionList.setMaxHeight(150);
         permissionList.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
+        permissionBox.getChildren().addAll(permission, permissionList);
 
         HBox addBox1 = new HBox();
         addBox1.setSpacing(30);
@@ -151,11 +164,10 @@ public class ManageEmployeeTableView extends VBox {
         HBox addBox2 = new HBox();
         addBox2.setSpacing(30);
         addBox2.setPadding(new Insets(10));
-        addBox2.getChildren().addAll(addSalary, addPhoneNumber, addUsername, addPassword, permission, permissionList);
+        addBox2.getChildren().addAll(addSalary, addPhoneNumber, addUsername, addPassword, permissionBox);
 
         // Button for adding new employees
         addNewEmployeeButton = new Button("Add New Employee");
-
 
         // Button for deleting employees
         deleteButton = new Button("Delete");
@@ -166,29 +178,25 @@ public class ManageEmployeeTableView extends VBox {
         HBox buttonBox = new HBox();
         buttonBox.setSpacing(10);
         buttonBox.setPadding(new Insets(10));
-        buttonBox.getChildren().addAll(addNewEmployeeButton, deleteButton, saveButton, editPermissionsButton);
+        buttonBox.getChildren().addAll(addNewEmployeeButton, deleteButton, saveButton, editPermissionsButton, editSectorButton);
 
         mainVBox = new VBox();
         mainVBox.setSpacing(15);
         mainVBox.setPadding(new Insets(10));
         mainVBox.getChildren().addAll(addBox1, addBox2, buttonBox);
 
-        // Adding search functionality
-        searchField.setPromptText("Search by Name");
-
+        searchField.setPromptText("Search By: ");
+        ArrayList<String> searchCriteria = new ArrayList<>();
+        searchCriteria.add("Full Name");
+        searchCriteria.add("Sector");
+        searchBy.getItems().setAll(searchCriteria);
+        searchBy.getSelectionModel().selectFirst();
 
         HBox searchBox = new HBox();
         searchBox.setSpacing(10);
         searchBox.setPadding(new Insets(10));
-        searchBox.getChildren().addAll(searchField, searchButton);
+        searchBox.getChildren().addAll(searchField, searchBy, searchButton);
 
-        // Old version
-//        VBox leftSidebar = new VBox();
-//        leftSidebar.setSpacing(10);
-//        leftSidebar.setPadding(new Insets(10));
-
-//        leftSidebar.getChildren().add(homeButton);
-//        leftSidebar.setStyle("-fx-background-color: #90614d;");
 
         table.setStyle("-fx-background-color: #D2CFDA; -fx-text-fill: #884135;");
         mainVBox.setStyle("-fx-background-color: #D39C7E;");
@@ -278,6 +286,10 @@ public class ManageEmployeeTableView extends VBox {
         return roleComboBox;
     }
 
+    public ListView<String> getSectorList() {
+        return sectorList;
+    }
+
     public TextField getAddSalary() {
         return addSalary;
     }
@@ -314,19 +326,35 @@ public class ManageEmployeeTableView extends VBox {
         return editPermissionsButton;
     }
 
+    public Button getEditSectorButton() {
+        return editSectorButton;
+    }
+
     public TextField getSearchField() {
         return searchField;
+    }
+
+    public ChoiceBox<String> getSearchBy() {
+        return searchBy;
     }
 
     public ListView<Permission> getPermissionList() {
         return permissionList;
     }
 
-    public TableColumn<Employee, EnumSet<Permission>> getPermissionCol() {
-        return permissionCol;
+    public Label getSectorLabel() {
+        return sectorLabel;
     }
 
     public VBox getMainVBox() {
         return mainVBox;
+    }
+
+    public VBox getPermissionBox() {
+        return permissionBox;
+    }
+
+    public VBox getSectorBox() {
+        return sectorBox;
     }
 }

@@ -29,7 +29,7 @@ public class HomePage extends BorderPane {
 
         // Create MenuBar and add items
         menuBar = new MenuBar();
-        menuBar.setStyle("-fx-background-color: #d2cfda; -fx-text-fill: #000000;");
+        menuBar.setStyle("-fx-background-color: #ffffff; -fx-text-fill: #000000;");
 
         // Menu Items for Statistics, Profile, and Log Out
         Menu profileMenu = createStyledMenu("User Profile");
@@ -51,6 +51,7 @@ public class HomePage extends BorderPane {
         menuBar.getMenus().addAll(profileMenu, aboutMenu, logoutMenu);
 
         this.setTop(menuBar);
+
         this.setStyle("-fx-background-color: #fcf2d8;");
 
         sidebarHome.setPadding(new Insets(40));
@@ -62,13 +63,9 @@ public class HomePage extends BorderPane {
         titleLabel.setFont(new Font("Verdana", 28));
         titleLabel.setStyle("-fx-font-weight: bold; -fx-text-fill: #404436;");
 
-
-
-        // Update the root layout with Home Page content
         this.setLeft(sidebarHome);
-
-
     }
+
     // Method to create a styled menu
     private Menu createStyledMenu(String text) {
         Menu menu = new Menu(text);

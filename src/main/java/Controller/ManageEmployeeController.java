@@ -1,15 +1,18 @@
 package Controller;
 
 import DAO.EmployeeDAO;
+import DAO.SectorDAO;
 import Model.Users.*;
 import View.ManageEmployeeTableView;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.event.ActionEvent;
 import javafx.geometry.Insets;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.input.KeyCode;
 import javafx.scene.layout.GridPane;
+import javafx.scene.layout.HBox;
 import javafx.stage.Stage;
 
 import java.util.EnumSet;
@@ -49,8 +52,102 @@ public class ManageEmployeeController {
                 }
             });
             employeeTableView.getEditPermissionsButton().setOnAction(e -> editPermissions());
+            employeeTableView.getRoleComboBox().setOnAction(e -> addSector());
+            employeeTableView.getEditSectorButton().setOnAction(e -> editSector());
         } else {
-            this.getManageEmployeeTableView().getMainVBox().setVisible(false);
+            employeeTableView.getMainVBox().setVisible(false);
+        }
+    }
+
+    private void editSector() {
+        Employee emp = employeeTableView.getTable().getSelectionModel().getSelectedItem();
+        if(emp == null) {
+            Alert alert = new Alert(Alert.AlertType.WARNING);
+            alert.setTitle("Permissions");
+            alert.setHeaderText("Select An Employee First!");
+            alert.show();
+            return;
+        }
+
+        if(emp.equals(selectedEmployee)) {
+            Alert alert = new Alert(Alert.AlertType.WARNING);
+            alert.setTitle("Permissions");
+            alert.setHeaderText("You Cannot Edit Your Own Sectors!");
+            alert.show();
+            return;
+        }
+
+        Stage popup = new Stage();
+        ListView<String> sectorListView = new ListView<>();
+        sectorListView.getItems().setAll(new SectorDAO().getSectorNames());
+
+        if(emp instanceof Cashier)
+            sectorListView.getSelectionModel().setSelectionMode(SelectionMode.SINGLE);
+        if(emp instanceof Manager)
+            sectorListView.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
+
+        sectorListView.setMaxHeight(120);
+
+        Label sector = new Label("Select Sector/s: ");
+
+        Button submit = new Button("Submit");
+        Button cancel = new Button("Cancel");
+        GridPane grid = new GridPane();
+        grid.add(sector, 0, 0);
+        grid.add(sectorListView,0, 1);
+        grid.add(submit, 1, 2);
+        grid.add(cancel, 0, 2);
+        grid.setHgap(10);
+        grid.setVgap(10);
+        grid.setPadding(new Insets(20, 10, 10, 10));
+        popup.setTitle("Sector");
+        popup.setResizable(false);
+        popup.setScene(new Scene(grid));
+        popup.show();
+
+        submit.setOnAction(e -> {
+            ObservableList<String> sectorList;
+            String sectorName = sectorListView.getSelectionModel().getSelectedItem();
+            if(emp instanceof Manager) {
+                sectorList = sectorListView.getSelectionModel().getSelectedItems();
+                if(sectorList == null || sectorList.isEmpty())
+                    popup.close();
+                ((Manager) emp).setSectors(sectorList);
+            }
+            if(emp instanceof Cashier) {
+                if(sectorName == null || sectorName.isEmpty())
+                    popup.close();
+                ((Cashier) emp).setSectorName(sectorName);
+            }
+            popup.close();
+        });
+
+        cancel.setOnAction(e -> {
+            popup.close();
+        });
+
+    }
+
+    private void addSector() {
+        Role role = employeeTableView.getRoleComboBox().getSelectionModel().getSelectedItem();
+        //get addBox1
+        HBox hBox = (HBox) employeeTableView.getMainVBox().getChildren().getFirst();
+        if(Role.MANAGER.equals(role)) {
+            if(hBox.getChildren().size() < 6)
+                hBox.getChildren().add(employeeTableView.getSectorBox());
+
+            employeeTableView.getSectorList().getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
+        }
+        if(Role.CASHIER.equals(role)) {
+            System.out.println(hBox.getChildren().size());
+            if(hBox.getChildren().size() < 6)
+                hBox.getChildren().add(employeeTableView.getSectorBox());
+            employeeTableView.getSectorList().getSelectionModel().setSelectionMode(SelectionMode.SINGLE);
+        }
+        if(Role.ADMIN.equals(role)) {
+            if(hBox.getChildren().size() >= 6) {
+                hBox.getChildren().removeLast();
+            }
         }
     }
 
@@ -88,11 +185,13 @@ public class ManageEmployeeController {
                 case CASHIER:
                     newEmp = new Cashier(employeeSurname, employeeName,
                             employeeUsername, employeePassword, employeeSalary);
+                    ((Cashier) newEmp).setSectorName(employeeTableView.getSectorList().getSelectionModel().getSelectedItem());
                     addEmployeeData(newEmp, employeeEmail, employeeAddress, employeePhone, permissions);
                     break;
                 case MANAGER:
                     newEmp = new Manager(employeeSurname, employeeName,
                             employeeUsername, employeePassword, employeeSalary);
+                    ((Manager) newEmp).setSectors(employeeTableView.getSectorList().getSelectionModel().getSelectedItems());
                     addEmployeeData(newEmp, employeeEmail, employeeAddress, employeePhone, permissions);
                     break;
                 case ADMIN:
@@ -267,16 +366,40 @@ public class ManageEmployeeController {
     }
 
     private void searchEmployee() {
-        String fullName = employeeTableView.getSearchField().getText();
+        String searchString = employeeTableView.getSearchField().getText();
         ObservableList<Employee> filteredEmployees = FXCollections.observableArrayList();
-        for(Employee employee : employeeDAO.getEmployees()) {
-            if(employee.getFullName().toLowerCase().contains(fullName.toLowerCase())) {
-                filteredEmployees.add(employee);
+
+        String criteria = this.employeeTableView.getSearchBy().getSelectionModel().getSelectedItem();
+
+        if(criteria.equals("Full Name")) {
+            for (Employee employee : employeeDAO.getEmployees()) {
+                if (employee.getFullName().toLowerCase().contains(searchString.toLowerCase())) {
+                    filteredEmployees.add(employee);
+                }
+            }
+        } else {
+            for (Employee employee : employeeDAO.getEmployees()) {
+                if(employee instanceof Admin)
+                    continue;
+                if(employee instanceof Manager) {
+                    for(String sector : ((Manager)employee).getSectors()) {
+                        if(sector.toLowerCase().contains(searchString.toLowerCase())) {
+                            filteredEmployees.add(employee);
+                        }
+                    }
+                }
+                if(employee instanceof Cashier) {
+                    if(((Cashier)employee).getSectorName().toLowerCase().contains(searchString.toLowerCase())) {
+                        filteredEmployees.add(employee);
+                    }
+                }
             }
         }
+
         this.employeeTableView.getTable().getSelectionModel().clearSelection();
         this.employeeTableView.getTable().setItems(filteredEmployees);
         this.employeeTableView.getSearchField().clear();
+
     }
 
     private void editPermissions() {

@@ -25,7 +25,8 @@ public class LoginController {
         loginPage = new LoginPage();
         employeeDAO = new EmployeeDAO();
         loginPage.getPasswordField().setOnKeyPressed(e->onLoginEnter(e));
-
+        loginPage.getUsernameField().setOnKeyPressed(e->onLoginEnter(e));
+        loginPage.getUnmaskedPasswordField().setOnKeyPressed(e->onLoginEnter(e));
         loginPage.getLoginButton().setOnAction(e -> onLoginButton(e));
     }
 
@@ -41,7 +42,7 @@ public class LoginController {
     }
 
     private void login() {
-        String username = loginPage.getTextField().getText();
+        String username = loginPage.getUsernameField().getText();
         String password = loginPage.getPasswordField().getText();
         Employee emp;
 

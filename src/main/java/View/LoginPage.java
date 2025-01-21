@@ -2,36 +2,31 @@ package View;
 
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
-import javafx.scene.Scene;
+import javafx.scene.control.*;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
+import javafx.scene.layout.*;
+import javafx.scene.paint.Color;
+
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
-import javafx.scene.image.Image;
-import javafx.scene.layout.*;
-import javafx.scene.paint.Color;
-import javafx.stage.Stage;
+import javafx.scene.text.Font;
 
-import javafx.geometry.Insets;
-import javafx.geometry.Pos;
-import javafx.scene.Scene;
-import javafx.scene.control.Button;
-import javafx.scene.control.Label;
-import javafx.scene.control.PasswordField;
-import javafx.scene.control.TextField;
-import javafx.scene.image.Image;
-import javafx.scene.layout.*;
-import javafx.scene.paint.Color;
-import javafx.stage.Stage;
-
-public class LoginPage extends BorderPane {
-    private TextField textField = new TextField();
+public class LoginPage extends VBox {
+    private TextField usernameField = new TextField();
+    private TextField unmaskedPasswordField = new TextField();
     private PasswordField passwordField = new PasswordField();
     private Button loginButton = new Button("Login");
     Label errorLabel = new Label();
 
-    public TextField getTextField() {
-        return textField;
+    public TextField getUsernameField() {
+        return usernameField;
+    }
+
+    public TextField getUnmaskedPasswordField() {
+        return unmaskedPasswordField;
     }
 
     public PasswordField getPasswordField() {
@@ -47,86 +42,90 @@ public class LoginPage extends BorderPane {
     }
 
     public LoginPage() {
-        Image backgroundImage = new Image("file:src/main/resources/images/background.jpg");
+        this.setStyle("-fx-background-color: #fcf2d8; -fx-alignment: center;");
+        this.setPrefSize(800, 600);
 
-        BackgroundSize backgroundSize = new BackgroundSize(100, 100, true, true, true, false);
-        BackgroundImage bgImage = new BackgroundImage(backgroundImage, BackgroundRepeat.NO_REPEAT,
-                BackgroundRepeat.NO_REPEAT, BackgroundPosition.CENTER, backgroundSize);
+        // Add the logo
+        Image logo = new Image("file:src/main/resources/images/jupiterLogo.png");
+        ImageView logoView = new ImageView(logo);
+        logoView.setFitWidth(120); // Small size
+        logoView.setPreserveRatio(true);
 
-        this.setBackground(new Background(bgImage));
+        // Add welcome text below the logo
+        Label welcomeLabel = new Label("Welcome to Jupiter Electronics");
+        welcomeLabel.setStyle("-fx-text-fill: #C88B3A; -fx-font-size: 18px; -fx-font-weight: bold; -fx-padding: 10px;");
+
+        // Create a VBox for the login box
+        VBox loginBox = new VBox(5);
+        loginBox.setStyle("-fx-background-color: linear-gradient(to bottom, #fcf2d8, #e5c892); " +
+                "-fx-padding: 30px; -fx-border-radius: 15px; -fx-background-radius: 15px; -fx-border-color: #C88B3A; " +
+                "-fx-border-width: 2px; -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.3), 15, 0.5, 0, 0);");
+
+        loginBox.setAlignment(Pos.CENTER);
+        loginBox.setMaxWidth(350);
 
 
-        GridPane gridPane = new GridPane();
-        gridPane.setPadding(new Insets(5, 20, 20, 20));
-        gridPane.setHgap(10);
-        gridPane.setVgap(10);
+        usernameField.setStyle("-fx-background-radius: 10px; -fx-border-radius: 10px; -fx-border-color: #C88B3A; " +
+                "-fx-border-width: 1px; -fx-padding: 5px;");
+        unmaskedPasswordField.setStyle("-fx-background-radius: 10px; -fx-border-radius: 10px; -fx-border-color: #C88B3A; " +
+                "-fx-border-width: 1px; -fx-padding: 5px;");
+        passwordField.setStyle("-fx-background-radius: 10px; -fx-border-radius: 10px; -fx-border-color: #C88B3A; " +
+                "-fx-border-width: 1px; -fx-padding: 5px;");
 
-        CornerRadii cornerRadii = new CornerRadii(10);
-        BackgroundFill backgroundFill = new BackgroundFill(Color.DARKORANGE, cornerRadii, Insets.EMPTY);
-        gridPane.setBackground(new Background(backgroundFill));
-        gridPane.setMaxSize(Region.USE_PREF_SIZE, Region.USE_PREF_SIZE);
+        //add a hint to the txt fields
+        usernameField.setPromptText("Username");
+        passwordField.setPromptText("Password");
 
-        Label username = new Label("Username");
-        username.setStyle("-fx-text-fill: black; -fx-font-weight: bold;");
+        Label loginLabel = new Label("Log-In");
+        loginLabel.setStyle("-fx-text-fill: #050507; -fx-font-size: 20px; -fx-font-weight: bold;");
 
-        styleTextField(textField);
-
-        Label password = new Label("Password");
-        password.setStyle("-fx-text-fill: black; -fx-font-weight: bold;");
-        styleTextField(passwordField);
-
-        errorLabel.setStyle("-fx-text-fill: red; -fx-font-weight: bold;");
+        errorLabel.setFont(new Font("Roboto", 16));
+        errorLabel.setStyle("-fx-text-fill: #e30707; -fx-font-weight: bold;");
         errorLabel.setVisible(false);
 
+        //the following (from here to end) modified from an answer in
+        //https://stackoverflow.com/questions/17014012/how-to-unmask-a-javafx-passwordfield-or-properly-mask-a-textfield
 
-        styleButton(loginButton, Color.DARKORANGE, Color.BLACK, 10);
-        loginButton.disableProperty().bind(textField.textProperty().isEmpty().or(passwordField.textProperty().isEmpty()));
+        // Set initial state
+        unmaskedPasswordField.setManaged(false);
+        unmaskedPasswordField.setVisible(false);
 
-        gridPane.add(errorLabel, 1, 0);
-        gridPane.add(username, 0, 1);
-        gridPane.add(textField, 1, 1);
-        gridPane.add(password, 0, 2);
-        gridPane.add(passwordField, 1, 2);
-        gridPane.add(loginButton, 1, 3);
+        CheckBox checkBox = new CheckBox();
+
+        // Bind properties. Toggle textField and passwordField
+        // visibility and manageability properties mutually when checkbox's state is changed.
+        unmaskedPasswordField.managedProperty().bind(checkBox.selectedProperty());
+        unmaskedPasswordField.visibleProperty().bind(checkBox.selectedProperty());
+
+        passwordField.managedProperty().bind(checkBox.selectedProperty().not());
+        passwordField.visibleProperty().bind(checkBox.selectedProperty().not());
+
+        // Bind the textField and passwordField text values bidirectionally.
+        unmaskedPasswordField.textProperty().bindBidirectional(passwordField.textProperty());
+        //end
 
 
-        Label titleLabel = new Label("Welcome to Jupiter");
-        titleLabel.setStyle("-fx-text-fill: black; -fx-font-weight: bold;");
-        Label footerLabel = new Label("@ 2025 Jupiter Electronics");
-        footerLabel.setStyle("-fx-text-fill: black; -fx-font-weight: bold;");
 
-        StackPane centerPane = new StackPane(gridPane);
-        centerPane.setPrefHeight(Region.USE_COMPUTED_SIZE);
-        centerPane.setPrefWidth(Region.USE_COMPUTED_SIZE);
-        centerPane.setAlignment(Pos.CENTER);
+        HBox passwordBox = new HBox(10, passwordField, unmaskedPasswordField, checkBox);
+        passwordBox.setAlignment(Pos.CENTER);
 
-        VBox vBox = new VBox();
-        vBox.getChildren().addAll(titleLabel, centerPane, footerLabel);
-        vBox.setAlignment(Pos.CENTER);
+        //make all tf the same size
+        VBox loginVBox = new VBox(20, usernameField, passwordBox);
+        loginVBox.setAlignment(Pos.CENTER_LEFT);
+        loginVBox.setMaxWidth(150);
 
-        this.setCenter(vBox);
+        loginButton.setStyle("-fx-background-color: #c9af7b; -fx-text-fill: white; -fx-font-weight: bold; -fx-border-radius: 5px; -fx-background-radius: 5px; -fx-padding: 10px 20px;");
+        //disable loginButton until user enters text
+        loginButton.disableProperty().bind(usernameField.textProperty().isEmpty().or(passwordField.textProperty().isEmpty()));
 
-        HBox.setMargin(titleLabel, new Insets(10));
-        HBox.setMargin(footerLabel, new Insets(10));
-    }
+        loginBox.getChildren().addAll(errorLabel, loginLabel, loginVBox, loginButton);
 
-    private void styleTextField(TextField textField) {
-        textField.setStyle(
-                "-fx-background-color: orange;" +
-                        "-fx-text-fill: black;" +
-                        "-fx-background-radius: 10;" +
-                        "-fx-border-radius: 10;" +
-                        "-fx-border-color: black;" +
-                        "-fx-border-width: 2;" +
-                        "-fx-padding: 5 10 5 10;");
-    }
+        // Add footer text below the login box
+        Label footerLabel = new Label("Jupiter Electronics 2025 ©");
+        footerLabel.setStyle("-fx-text-fill: #916449; -fx-font-size: 12px; -fx-font-weight: bold; -fx-padding: 20px;");
 
-    private void styleButton(Button button, Color backgroundColor, Color borderColor, double borderRadius) {
-        button.setStyle("-fx-background-color: " + toRgbString(backgroundColor) + ";" + "-fx-text-fill: black;" + "-fx-background-radius: " + borderRadius + ";" +
-                "-fx-border-radius: " + borderRadius + ";" + "-fx-border-color: " + toRgbString(borderColor) + ";" + "-fx-border-width: 2;" + "-fx-padding: 5 15 5 15;");
-    }
+        // Center the login box and footer in the scene
+        this.getChildren().addAll(logoView, welcomeLabel, loginBox, footerLabel);
 
-    private String toRgbString(Color color) {
-        return "rgb(" + (int) (color.getRed() * 255) + "," + (int) (color.getGreen() * 255) + "," + (int) (color.getBlue() * 255) + ")";
     }
 }

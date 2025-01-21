@@ -1,12 +1,13 @@
 package DAO;
 
 
+import Model.Items.Item;
 import Model.Items.Sector;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 
 import java.io.*;
-import java.util.List;
+
 
 public class SectorDAO {
     private static final File SECTOR_FILE = new File("src/main/resources/data/sectors.dat");
@@ -81,5 +82,13 @@ public class SectorDAO {
             names.add(s.getSectorName());
         }
         return names;
+    }
+
+    public ObservableList<Item> getAllItems() {
+        ObservableList<Item> items = FXCollections.observableArrayList();
+        for(Sector s : getSectors()) {
+            items.addAll(s.getItems());
+        }
+        return items;
     }
 }
