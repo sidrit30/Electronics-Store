@@ -16,7 +16,6 @@ public class HomePage extends BorderPane {
     private Employee employee;
 
     private MenuItem profileItem;
-    private MenuItem aboutItem;
     private MenuItem logoutItem;
     private VBox sidebarHome = new VBox();
 
@@ -31,22 +30,19 @@ public class HomePage extends BorderPane {
 
         // Menu Items for Statistics, Profile, and Log Out
         Menu profileMenu = createStyledMenu("User Profile");
-        Menu aboutMenu = createStyledMenu("About");
         Menu logoutMenu = createStyledMenu("Log Out");
 
         // MenuItems
         profileItem = createStyledMenuItem("User Profile");
-        aboutItem = createStyledMenuItem("About");
         logoutItem = createStyledMenuItem("Log Out");
 
 
         // Add MenuItems to Menus
         profileMenu.getItems().add(profileItem);
-        aboutMenu.getItems().add(aboutItem);
         logoutMenu.getItems().add(logoutItem);
 
         // Add Menus to the MenuBar
-        menuBar.getMenus().addAll(profileMenu, aboutMenu, logoutMenu);
+        menuBar.getMenus().addAll(profileMenu, logoutMenu);
 
         this.setTop(menuBar);
 
@@ -80,10 +76,6 @@ public class HomePage extends BorderPane {
 
     public MenuItem getProfileItem() {
         return profileItem;
-    }
-
-    public MenuItem getAboutItem() {
-        return aboutItem;
     }
 
     public MenuItem getLogoutItem() {

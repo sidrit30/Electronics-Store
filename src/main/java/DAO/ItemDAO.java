@@ -18,15 +18,13 @@ public class ItemDAO {
     }
 
     public ObservableList<Item> getItemsBySector(String sector) {
-        ObservableList<Item> items = FXCollections.observableArrayList();
-        for (Item item : items) {
-            System.out.println(item.getSectorName() + " " + sector);
+        ObservableList<Item> filteredItems = FXCollections.observableArrayList();
+        for (Item item : getItems()) {
             if(item.getSectorName().equals(sector)) {
-                System.out.println(item.getItemName());
-                items.add(item);
+                filteredItems.add(item);
             }
         }
-        return items;
+        return filteredItems;
     }
 
     public ObservableList<Item> getItemsBySectors(ObservableList<String> sectors) {
