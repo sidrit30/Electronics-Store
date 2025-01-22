@@ -19,7 +19,7 @@ public abstract class Employee implements Serializable {
     private transient StringProperty username;
     private transient StringProperty password;
     private transient DoubleProperty salary;
-    private EnumSet<Permission> permissions;
+    private transient EnumSet<Permission> permissions;
 
     public Employee(String lastName, String firstName, String username, String password, double salary) {
         this.id = UniqueIDGenerator.getUniqueId();
@@ -126,6 +126,8 @@ public abstract class Employee implements Serializable {
         return this.permissions.contains(permission);
     }
 
+    public abstract String getSectorName();
+
 
     @Override
     public String toString() {
@@ -141,6 +143,7 @@ public abstract class Employee implements Serializable {
         out.writeUTF(this.username.getValueSafe());
         out.writeUTF(this.password.getValueSafe());
         out.writeDouble(this.salary.getValue());
+        out.writeObject(this.permissions);
     }
 
     @Serial
@@ -152,5 +155,6 @@ public abstract class Employee implements Serializable {
         this.username = new SimpleStringProperty(in.readUTF());
         this.password = new SimpleStringProperty(in.readUTF());
         this.salary = new SimpleDoubleProperty(in.readDouble());
+        this.permissions = ((EnumSet<Permission>) in.readObject());
     }
 }

@@ -1,82 +1,113 @@
 package Controller;
 
 import DAO.BillDAO;
+import DAO.SectorDAO;
 import Model.Bill;
 import Model.Exceptions.InsufficientStockException;
 import Model.Items.Item;
+import Model.Users.Cashier;
+import Model.Users.Employee;
 import View.CreateBillView;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.scene.control.Alert;
 
 public class CreateBillController {
-    private CreateBillView view;
-    private Bill currentBill;
-    private ObservableList<Item> itemList;
-    private ObservableList<CreateBillView.BillItem> billItems;
+    private final CreateBillView view;
+    private BillDAO billDAO;
+    private Employee employee;
+    private SectorDAO sectorDAO;
+    private Bill bill;
 
-    public CreateBillController(BillDAO billDAO) {
-        itemList = FXCollections.observableArrayList();
-        billItems = FXCollections.observableArrayList();
 
-        view = new CreateBillView(this);
-        view.updateItemTable(itemList); // Update the item table with the sample items
-
-        // Create a dummy cashier for the bill
-        currentBill = new Bill(new Model.Users.Cashier("PoJamDepressed", "Kaniher", "Buta", "password123", 3000.00));
+    public CreateBillView getCreateBillView() {
+        return view;
     }
 
-    public ObservableList<Item> getItemList() {
-        return itemList;
+    public CreateBillController(Employee employee) {
+       this.view = new CreateBillView();
+       this.billDAO = new BillDAO();
+       this.sectorDAO = new SectorDAO();
+       this.employee = employee;
+
+       view.getSearchButton().setOnAction(e -> filterItems());
+       //get all the items from the sector of the current employee
+       ObservableList<Item> items = (sectorDAO.getSectorByName(((Cashier) employee).getSectorName())).getItems();
+       if(items != null)
+           view.getItemTable().setItems(items);
+       view.getAddItemButton().setOnAction(event -> addItemToBill());
+       view.getSavePrintButton().setOnAction(event -> saveBillToFile());
+       view.getRemoveItemButton().setOnAction(e -> removeItem());
+
     }
 
-    public ObservableList<CreateBillView.BillItem> getBillItems() {
-        return billItems;
-    }
-
-    public void filterItems(String query) {
+    public void filterItems() {
+        String query = view.getSearchBar().getText();
         ObservableList<Item> filteredItems = FXCollections.observableArrayList();
-        for (Item item : itemList) {
+        for (Item item : view.getItems()) {
             if (item.getItemName().toLowerCase().contains(query.toLowerCase())) {
                 filteredItems.add(item);
             }
         }
-        view.updateItemTable(filteredItems);
+        view.getItemTable().getItems().clear();
+        view.getItemTable().getItems().addAll(filteredItems);
     }
 
-    public void addItemToBill(Item selectedItem, int quantity) {
-        if (selectedItem != null) {
-            try {
-                currentBill.addItem(selectedItem, quantity);
-                CreateBillView.BillItem billItem = new CreateBillView.BillItem(selectedItem, quantity);
-                billItems.add(billItem);
-                view.clearQuantityField();
-                view.refreshTables();
+    public void addItemToBill() {
+
+        if(view.getBillTable().getItems().isEmpty()) {
+            bill = new Bill(employee, ((Cashier)employee).getSectorName());
+        }
+        Item selectedItem = view.getItemTable().getSelectionModel().getSelectedItem();
+        try {
+            if (selectedItem == null) {
+                showAlert("Error", "No item selected!");
+            }
+            int quantity = Integer.parseInt(view.getQuantityField().getText());
+            if(quantity <= 0) {
+                showAlert("Error", "Quantity must be greater than 0!");
+            }
+
+            bill.addItem(selectedItem, quantity);
+            view.getItemTable().refresh();
+
+            view.getBillTable().getItems().add(new CreateBillView.BillItem(selectedItem, quantity));
+            view.getQuantityField().clear();
+            view.getBillsTextArea().setText(bill.printBill());
             } catch (InsufficientStockException e) {
                 showAlert("Error", e.getMessage());
+            } catch (NumberFormatException e) {
+                showAlert("Error", "Please enter a valid quantity!");
             }
-        } else {
-            showAlert("Error", "No item selected or quantity not specified");
+
         }
-    }
 
-    public void saveAndPrintBill() {
-        String billText = currentBill.printBill();
-        view.appendBillText(billText + "\n\n---------------------------------\n\n");
-        currentBill.saveBillToFile();
+
+    public void saveBillToFile() {
+        if(view.getBillTable().getItems().isEmpty()) {
+            showAlert("Error", "No item selected!");
+            return;
+        }
         showAlert("Success", "Bill saved and printed successfully");
-
-        clearTables();
-        startNewBill();
+        billDAO.createBill(bill);
+        bill.saveBillToFile();
+        view.getBillTable().getItems().clear();
     }
 
-    private void clearTables() {
-        billItems.clear();
-        view.refreshTables();
+    public void removeItem() {
+        CreateBillView.BillItem billItem = view.getBillTable().getSelectionModel().getSelectedItem();
+        if(billItem != null) {
+            bill.removeItem(billItem.getItem());
+            view.getBillTable().getItems().remove(billItem);
+            view.getBillsTextArea().setText(bill.printBill());
+            view.getItemTable().refresh();
+
+        }
+        else
+            showAlert("Error", "No item selected!");
     }
 
-    private void startNewBill() {
-    }
+
 
     private void showAlert(String title, String message) {
         Alert alert = new Alert(Alert.AlertType.INFORMATION);
@@ -85,7 +116,5 @@ public class CreateBillController {
         alert.showAndWait();
     }
 
-    public CreateBillView getView() {
-        return view;
-    }
+
 }

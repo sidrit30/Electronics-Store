@@ -31,6 +31,14 @@ public class SectorDAO {
         return filteredSectors;
     }
 
+    public Sector getSectorByName(String sectorName) {
+        for (Sector sector : getSectors()) {
+            if(sector.getSectorName().equals(sectorName))
+                return sector;
+        }
+        return null;
+    }
+
 
     public void loadSectors() {
         try(ObjectInputStream input = new ObjectInputStream(new FileInputStream(SECTOR_FILE))) {

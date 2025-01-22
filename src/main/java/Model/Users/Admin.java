@@ -12,6 +12,10 @@ public class Admin extends Employee{
         this.setPermissions(EnumSet.allOf(Permission.class));
     }
 
+    public String getSectorName() {
+        return "All";
+    }
+
 //    //creates a basic admin for testing purposes
 //    public Admin() {
 //        this.setUsername("admin");

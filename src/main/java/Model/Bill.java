@@ -72,7 +72,10 @@ public class Bill implements Serializable {
     }
 
     public void removeItem(Item item) {
+        int index = this.itemList.indexOf(item);
+        item.setQuantity(item.getQuantity() + this.quantities.get(index));
         this.itemList.remove(item);
+        this.quantities.remove(index);
     }
 
     private double calculateCost() {

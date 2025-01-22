@@ -202,6 +202,9 @@ public class ManageEmployeeController {
             }
             if (newEmp != null) {
                 employeeDAO.createEmployee(newEmp);
+                System.out.println(newEmp);
+                System.out.println(newEmp.getSectorName());
+                System.out.println(newEmp.getPermissions());
                 Alert alert = new Alert(Alert.AlertType.INFORMATION);
                 alert.setTitle("Added Employee");
                 alert.setHeaderText("New Employee Added Successfully!");
@@ -275,7 +278,7 @@ public class ManageEmployeeController {
         if(employeePhone != null && !employeePhone.isEmpty()) {
             newEmp.setPhone(employeePhone);
         }
-        if(!permissions.isEmpty()) {
+        if(permissions != null && !permissions.isEmpty()) {
             newEmp.setPermissions(permissions);
         }
     }
@@ -422,6 +425,9 @@ public class ManageEmployeeController {
         Stage popup = new Stage();
         ListView<Permission> permissionsListView = new ListView<>();
         permissionsListView.getItems().setAll(EnumSet.allOf(Permission.class));
+        if(emp instanceof Manager) {
+            permissionsListView.getItems().removeFirst();
+        }
         permissionsListView.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
         permissionsListView.setMaxHeight(120);
         Label perm = new Label("Select Permission");
@@ -448,11 +454,9 @@ public class ManageEmployeeController {
             //if permissions are left default
             try {
                 permissions = EnumSet.copyOf(permissionsList);
-            } catch (IllegalArgumentException ev) {
-                permissions = EnumSet.noneOf(Permission.class);
+                emp.setPermissions(permissions);
+            } catch (IllegalArgumentException ignored) {
             }
-
-            emp.setPermissions(permissions);
             popup.close();
         });
 

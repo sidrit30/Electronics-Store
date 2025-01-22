@@ -5,6 +5,7 @@ import javafx.beans.property.ListProperty;
 import javafx.beans.property.SimpleListProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import org.w3c.dom.ls.LSOutput;
 
 import java.io.IOException;
 import java.io.ObjectOutputStream;
@@ -44,6 +45,10 @@ public class Manager extends Employee {
 
     public boolean sectorExists(String sector) {
         return this.sectors.contains(sector);
+    }
+
+    public String getSectorName() {
+        return getSectors().toString();
     }
 
 

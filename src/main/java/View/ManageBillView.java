@@ -37,11 +37,11 @@ public class ManageBillView extends VBox {
 
         // Columns
         billIdCol = new TableColumn<>("Bill ID");
-        billIdCol.setCellValueFactory(new PropertyValueFactory<>("billId"));
+        billIdCol.setCellValueFactory(new PropertyValueFactory<>("billID"));
         billIdCol.setStyle("-fx-alignment: CENTER;");
 
         billDateCol = new TableColumn<>("Bill Date");
-        billDateCol.setCellValueFactory(new PropertyValueFactory<>("billDate"));
+        billDateCol.setCellValueFactory(new PropertyValueFactory<>("billTime"));
         billDateCol.setStyle("-fx-alignment: CENTER;");
 
         cashierCol = new TableColumn<>("Cashier");
@@ -49,7 +49,7 @@ public class ManageBillView extends VBox {
         cashierCol.setStyle("-fx-alignment: CENTER;");
 
         totalRevenueCol = new TableColumn<>("Total Revenue");
-        totalRevenueCol.setCellValueFactory(new PropertyValueFactory<>("totalRevenue"));
+        totalRevenueCol.setCellValueFactory(new PropertyValueFactory<>("revenue"));
         setStyle("-fx-alignment: CENTER;");
 
         costCol = new TableColumn<>("Cost");

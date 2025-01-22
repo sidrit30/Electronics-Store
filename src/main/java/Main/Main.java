@@ -61,7 +61,9 @@ public class Main extends Application {
 //        sectorDAO.createSector(consoleSector);
 //        sectorDAO.createSector(applianceSector);
 //        sectorDAO.createSector(smartphoneSector);
-
+//        EmployeeDAO employeeDAO = new EmployeeDAO();
+//        employeeDAO.createEmployee(new Admin("Zela", "Sidrit", "sidrit", "sidrit", 300000));
+//        employeeDAO.UpdateAll();
         launch(args);
     }
 

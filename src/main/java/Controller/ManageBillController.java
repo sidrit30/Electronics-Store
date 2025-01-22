@@ -22,6 +22,10 @@ public class ManageBillController {
     private EmployeeDAO employeeDAO;
     private ManageBillView manageBillView;
 
+    public ManageBillView getManageBillView() {
+        return manageBillView;
+    }
+
     public ManageBillController(Employee employee) {
         this.employee = employee;
         this.billDAO = new BillDAO();
@@ -75,7 +79,7 @@ public class ManageBillController {
     private void filterSector() {
         String sectorFilter = manageBillView.getSectorFilter().getSelectionModel().getSelectedItem();
         manageBillView.getTable().getSelectionModel().clearSelection();
-        if(sectorFilter.equals("All Sectors")) {
+        if(sectorFilter != null && sectorFilter.equals("All Sectors")) {
             manageBillView.getTable().getSelectionModel().clearSelection();
             manageBillView.getTable().setItems(billDAO.getBills());
             return;

@@ -8,22 +8,36 @@ import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.*;
 
-public class CreateBillView {
-    private BorderPane root;
-    private TableView<Item> itemTable;
-    private TableView<BillItem> billTable;
+import java.util.ArrayList;
+
+public class CreateBillView extends BorderPane {
+    private Button searchButton = new Button("Search: ");
+    //private BorderPane root;
+    private TableView<Item> itemTable = new TableView<>();
+    TableColumn<Item, String> itemIdColumn;
+    TableColumn<Item, String> nameColumn;
+    TableColumn<Item, String> categoryColumn;
+    TableColumn<Item, Double> priceColumn;
+    TableColumn<Item, Integer> quantityColumn;
+
+    private TableView<BillItem> billTable = new TableView<>();
+    TableColumn<BillItem, String> billItemIdColumn;
+    TableColumn<BillItem, String> billNameColumn;
+    TableColumn<BillItem, String> billCategoryColumn;
+    TableColumn<BillItem, Double> billPriceColumn;
+    TableColumn<BillItem, Integer> billQuantityColumn;
+
+    private ArrayList<Item> items = new ArrayList<>();
+    private ArrayList<Integer> quantity = new ArrayList<>();
+
+    TextField searchBar = new TextField();
     private TextField quantityField;
     private TextArea billsTextArea;
-    private CreateBillController controller;
+    private Button addItemButton = new Button("Add Item");
+    private Button savePrintButton = new Button("Save and Print Bill");
+    private Button removeItemButton = new Button("Remove from Bill");
 
-    public CreateBillView(CreateBillController controller) {
-        this.controller = controller;
-        setupUI();
-    }
-
-    private void setupUI() {
-        root = new BorderPane();
-
+    public CreateBillView() {
         // Left Section
         VBox leftSection = new VBox();
         leftSection.setPadding(new Insets(10));
@@ -31,42 +45,39 @@ public class CreateBillView {
         //leftSection.setStyle("-fx-background-color: orange;");
 
         // Search Bar
-        TextField searchBar = new TextField();
         searchBar.setPromptText("Search...");
-        searchBar.textProperty().addListener((observable, oldValue, newValue) -> controller.filterItems(newValue));
+        HBox searchBox = new HBox(10, searchBar, searchButton);
 
         // Table for items
-        itemTable = new TableView<>();
         itemTable.setPrefWidth(550);
-        TableColumn<Item, String> itemIdColumn = new TableColumn<>("ItemID");
+        itemIdColumn = new TableColumn<>("ItemID");
         itemIdColumn.setCellValueFactory(new PropertyValueFactory<>("itemID"));
-        TableColumn<Item, String> nameColumn = new TableColumn<>("Name");
+        nameColumn = new TableColumn<>("Name");
         nameColumn.setCellValueFactory(new PropertyValueFactory<>("itemName"));
-        TableColumn<Item, String> categoryColumn = new TableColumn<>("Category");
+        categoryColumn = new TableColumn<>("Category");
         categoryColumn.setCellValueFactory(new PropertyValueFactory<>("itemCategory"));
-        TableColumn<Item, Double> priceColumn = new TableColumn<>("Price");
+        priceColumn = new TableColumn<>("Price");
         priceColumn.setCellValueFactory(new PropertyValueFactory<>("sellingPrice"));
-        TableColumn<Item, Integer> quantityColumn = new TableColumn<>("Quantity");
+        quantityColumn = new TableColumn<>("Quantity");
         quantityColumn.setCellValueFactory(new PropertyValueFactory<>("quantity"));
 
         itemTable.getColumns().addAll(itemIdColumn, nameColumn, categoryColumn, priceColumn, quantityColumn);
-        itemTable.setItems(controller.getItemList());
 
         // Add Item Button and Quantity TextField
         HBox addItemBox = new HBox();
         addItemBox.setSpacing(8);
-        Button addItemButton = new Button("Add Item");
-        addItemButton.setOnAction(event -> {
-            Item selectedItem = itemTable.getSelectionModel().getSelectedItem();
-            int quantity = Integer.parseInt(quantityField.getText());
-            controller.addItemToBill(selectedItem, quantity);
-        });
+
+//        addItemButton.setOnAction(event -> {
+//            Item selectedItem = itemTable.getSelectionModel().getSelectedItem();
+//            int quantity = Integer.parseInt(quantityField.getText());
+//            controller.addItemToBill(selectedItem, quantity);
+//        });
         quantityField = new TextField();
         quantityField.setPromptText("Quantity");
 
-        addItemBox.getChildren().addAll(addItemButton, quantityField);
+        addItemBox.getChildren().addAll(addItemButton, quantityField, removeItemButton);
 
-        leftSection.getChildren().addAll(searchBar, itemTable, addItemBox);
+        leftSection.getChildren().addAll(searchBox, itemTable, addItemBox);
 
         // Right Section
         VBox rightSection = new VBox();
@@ -81,39 +92,26 @@ public class CreateBillView {
         billsTextArea.setPrefHeight(600);
 
         // Bill Table
-        billTable = new TableView<>();
-        TableColumn<BillItem, String> billItemIdColumn = new TableColumn<>("ItemID");
+
+        billItemIdColumn = new TableColumn<>("ItemID");
         billItemIdColumn.setCellValueFactory(new PropertyValueFactory<>("itemID"));
-        TableColumn<BillItem, String> billNameColumn = new TableColumn<>("Name");
+        billNameColumn = new TableColumn<>("Name");
         billNameColumn.setCellValueFactory(new PropertyValueFactory<>("itemName"));
-        TableColumn<BillItem, String> billCategoryColumn = new TableColumn<>("Category");
+        billCategoryColumn = new TableColumn<>("Category");
         billCategoryColumn.setCellValueFactory(new PropertyValueFactory<>("itemCategory"));
-        TableColumn<BillItem, Double> billPriceColumn = new TableColumn<>("Price");
+        billPriceColumn = new TableColumn<>("Price");
         billPriceColumn.setCellValueFactory(new PropertyValueFactory<>("sellingPrice"));
-        TableColumn<BillItem, Integer> billQuantityColumn = new TableColumn<>("Quantity");
+        billQuantityColumn = new TableColumn<>("Quantity");
         billQuantityColumn.setCellValueFactory(new PropertyValueFactory<>("quantity"));
 
         billTable.getColumns().addAll(billItemIdColumn, billNameColumn, billCategoryColumn, billPriceColumn, billQuantityColumn);
-        billTable.setItems(controller.getBillItems());
-
-        // Save and Print Bill Button
-        Button savePrintButton = new Button("Save and Print Bill");
-        savePrintButton.setOnAction(event -> controller.saveAndPrintBill());
-
         rightSection.getChildren().addAll(billsTextArea, billTable, savePrintButton);
 
         // Add Sections to Root
-        root.setLeft(leftSection);
-        root.setCenter(rightSection);
+        this.setLeft(leftSection);
+        this.setCenter(rightSection);
     }
 
-    public void updateItemTable(ObservableList<Item> items) {
-        itemTable.setItems(items);
-    }
-
-    public void clearQuantityField() {
-        quantityField.clear();
-    }
 
     public void refreshTables() {
         itemTable.refresh();
@@ -124,8 +122,88 @@ public class CreateBillView {
         billsTextArea.appendText(text);
     }
 
-    public BorderPane getRoot() {
-        return root;
+    public TableView<Item> getItemTable() {
+        return itemTable;
+    }
+
+    public TableColumn<Item, String> getItemIdColumn() {
+        return itemIdColumn;
+    }
+
+    public TableColumn<Item, String> getNameColumn() {
+        return nameColumn;
+    }
+
+    public TableColumn<Item, String> getCategoryColumn() {
+        return categoryColumn;
+    }
+
+    public TableColumn<Item, Double> getPriceColumn() {
+        return priceColumn;
+    }
+
+    public TableColumn<Item, Integer> getQuantityColumn() {
+        return quantityColumn;
+    }
+
+    public TableView<BillItem> getBillTable() {
+        return billTable;
+    }
+
+    public TableColumn<BillItem, String> getBillItemIdColumn() {
+        return billItemIdColumn;
+    }
+
+    public TableColumn<BillItem, String> getBillNameColumn() {
+        return billNameColumn;
+    }
+
+    public TableColumn<BillItem, String> getBillCategoryColumn() {
+        return billCategoryColumn;
+    }
+
+    public TableColumn<BillItem, Double> getBillPriceColumn() {
+        return billPriceColumn;
+    }
+
+    public TableColumn<BillItem, Integer> getBillQuantityColumn() {
+        return billQuantityColumn;
+    }
+
+    public TextField getSearchBar() {
+        return searchBar;
+    }
+
+    public TextField getQuantityField() {
+        return quantityField;
+    }
+
+    public TextArea getBillsTextArea() {
+        return billsTextArea;
+    }
+
+    public Button getAddItemButton() {
+        return addItemButton;
+    }
+
+    public Button getSavePrintButton() {
+        return savePrintButton;
+    }
+
+    public Button getRemoveItemButton() {
+        return removeItemButton;
+    }
+
+    public Button getSearchButton() {
+        return searchButton;
+    }
+
+    public ArrayList<Item> getItems() {
+        return items;
+    }
+
+    public ArrayList<Integer> getQuantity() {
+        return quantity;
     }
 
     // Inner class to represent items added to the bill with their quantities
@@ -157,5 +235,12 @@ public class CreateBillView {
         public int getQuantity() {
             return quantity;
         }
+
+        public Item getItem() {
+            return item;
+        }
     }
+
+
 }
+

@@ -35,6 +35,7 @@ public class ManageEmployeeTableView extends VBox {
     private final TableColumn<Employee, String> addressCol;
     private final TableColumn<Employee, Double> salaryCol;
     private final TableColumn<Employee, String> phoneNumberCol;
+    private final TableColumn<Employee, String> sectorCol;
 
 
     private final TextField addFirstName = new TextField();
@@ -113,8 +114,9 @@ public class ManageEmployeeTableView extends VBox {
         passwordCol.setCellFactory(TextFieldTableCell.forTableColumn());
         passwordCol.setStyle("-fx-alignment: CENTER;");
 
-
-
+        sectorCol = new TableColumn<>("Sector");
+        sectorCol.setCellValueFactory(new PropertyValueFactory<>("sectorName"));
+        sectorCol.setStyle("-fx-alignment: CENTER;");
 
         table.getColumns().add(employeeIDCol);
         table.getColumns().add(fullNameCol);
@@ -125,6 +127,7 @@ public class ManageEmployeeTableView extends VBox {
         table.getColumns().add(addressCol);
         table.getColumns().add(salaryCol);
         table.getColumns().add(phoneNumberCol);
+        table.getColumns().add(sectorCol);
 
         addFirstName.setPromptText("First Name");
         addLastName.setPromptText("Last Name");
