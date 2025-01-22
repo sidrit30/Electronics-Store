@@ -72,7 +72,7 @@ public class ManageBillController {
         ObservableList<Bill> billsInTable = FXCollections.observableArrayList(manageBillView.getTable().getItems());
         System.out.println(billsInTable);
         manageBillView.getTable().getItems().clear();
-        //this looks atrocious but I can't find a better way rn
+        //this looks atrocious, but I can't find a better way rn
         for (Bill bill : billsInTable) {
             if(bill.getBillTime().getYear() >= dateFrom.getYear())
                 if(bill.getBillTime().getMonthValue() >= dateFrom.getMonthValue())

@@ -53,6 +53,10 @@ public class Bill implements Serializable {
         return billTime;
     }
 
+    public String getDate() {
+        return billTime.format(formatter);
+    }
+
     public double getCost() {
         cost = calculateCost();
         return cost;

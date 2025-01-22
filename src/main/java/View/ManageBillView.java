@@ -41,7 +41,7 @@ public class ManageBillView extends VBox {
         billIdCol.setStyle("-fx-alignment: CENTER;");
 
         billDateCol = new TableColumn<>("Bill Date");
-        billDateCol.setCellValueFactory(new PropertyValueFactory<>("billTime"));
+        billDateCol.setCellValueFactory(new PropertyValueFactory<>("date"));
         billDateCol.setStyle("-fx-alignment: CENTER;");
 
         cashierCol = new TableColumn<>("Cashier");

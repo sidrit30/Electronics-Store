@@ -76,7 +76,7 @@ public class ManageEmployeeTableView extends VBox {
         employeeIDCol.setCellValueFactory(new PropertyValueFactory<>("id"));
         employeeIDCol.setStyle("-fx-alignment: CENTER;");
 
-        fullNameCol = new TableColumn<>("First Name");
+        fullNameCol = new TableColumn<>("Full Name");
         fullNameCol.setCellValueFactory(new PropertyValueFactory<>("fullName"));
         fullNameCol.setStyle("-fx-alignment: CENTER;");
 
