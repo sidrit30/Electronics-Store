@@ -133,43 +133,11 @@ public class ManageBillView extends VBox {
         return searchButton;
     }
 
-    //    private void filterTable() {
-//        String selectedSector = sectorFilter.getValue();
-//        String selectedDate = dateFrom.getValue() != null ? dateFrom.getValue().toString() : "";
-//
-//        ObservableList<Bill> filteredData = FXCollections.observableArrayList();
-//
-//        for (Bill bill : data) {
-//            boolean matchesSector = selectedSector.equals("All Sectors") || bill.getSector().equals(selectedSector);
-//            boolean matchesDate = selectedDate.isEmpty() || bill.getBillDate().equals(selectedDate);
-//
-//            if (matchesSector && matchesDate) {
-//                filteredData.add(bill);
-//            }
-//        }
-//
-//        table.setItems(filteredData);
-//    }
+    public Button getSearchCashierButton() {
+        return searchCashierButton;
+    }
 
-//    private void viewBillDetails() {
-//        Bill selectedBill = table.getSelectionModel().getSelectedItem();
-//        Alert alert;
-//        if (selectedBill != null) {
-//            alert = new Alert(Alert.AlertType.INFORMATION);
-//            alert.setTitle("Bill Details");
-//            alert.setHeaderText("Details for Bill ID: " + selectedBill.getBillId());
-//            alert.setContentText("Bill Date: " + selectedBill.getBillDate() + "\n" +
-//                    "Cashier: " + selectedBill.getCashier() + "\n" +
-//                    "Sector: " + selectedBill.getSector() + "\n" +
-//                    "Total Revenue: " + selectedBill.getTotalRevenue() + "\n" +
-//                    "Cost: " + selectedBill.getCost());
-//        } else {
-//            alert = new Alert(Alert.AlertType.WARNING);
-//            alert.setTitle("No Selection");
-//            alert.setHeaderText(null);
-//            alert.setContentText("Please select a bill to view details.");
-//        }
-//        alert.showAndWait();
-//    }
-
+    public TextField getSearchField() {
+        return searchField;
+    }
 }

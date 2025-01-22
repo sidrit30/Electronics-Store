@@ -11,6 +11,7 @@ import javafx.collections.ObservableList;
 import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.GridPane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
@@ -38,9 +39,18 @@ public class HomePageController {
 
 
         homePage.getSidebarHome().getChildren().add(buttons.getHomeButton());
+        homePage.getProfileItem().setOnAction(event -> profile());
         homePage.getLogoutItem().setOnAction(event -> logout());
 
         setEventHandlers();
+    }
+
+    private void profile() {
+        GridPane gridPane = new ProfileController(employee).getView();
+        homePage.setCenter(gridPane);
+        buttons.getHomeButton().setVisible(true);
+        buttons.getHomeButton().setOnAction(e -> welcomeView());
+
     }
 
     private void logout() {

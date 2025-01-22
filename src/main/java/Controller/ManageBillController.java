@@ -55,6 +55,21 @@ public class ManageBillController {
         manageBillView.getViewDetailsButton().setOnAction(e -> viewBillDetails());
         manageBillView.getSectorFilter().setOnAction(e -> filterSector());
         manageBillView.getSearchButton().setOnAction(e -> searchDate());
+        manageBillView.getSearchCashierButton().setOnAction(e -> searchCashier());
+    }
+
+    private void searchCashier() {
+        String searchString = manageBillView.getSearchField().getText();
+        filterSector();
+        ObservableList<Bill> bills = FXCollections.observableArrayList(manageBillView.getTable().getItems());
+        ObservableList<Bill> filteredEmployees = FXCollections.observableArrayList();
+
+        for (Bill bill : bills) {
+            if (bill.getCashier().getFullName().toLowerCase().contains(searchString.toLowerCase())) {
+                filteredEmployees.add(bill);
+            }
+        }
+        manageBillView.getTable().setItems(filteredEmployees);
     }
 
     private void searchDate() {
