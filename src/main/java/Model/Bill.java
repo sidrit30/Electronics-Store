@@ -2,7 +2,6 @@ package Model;
 
 import Model.Exceptions.InsufficientStockException;
 import Model.Items.Item;
-import Model.Items.Sector;
 import Model.Users.Employee;
 
 import java.io.*;

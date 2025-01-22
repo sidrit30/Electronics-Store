@@ -20,7 +20,9 @@ public class ItemDAO {
     public ObservableList<Item> getItemsBySector(String sector) {
         ObservableList<Item> items = FXCollections.observableArrayList();
         for (Item item : items) {
+            System.out.println(item.getSectorName() + " " + sector);
             if(item.getSectorName().equals(sector)) {
+                System.out.println(item.getItemName());
                 items.add(item);
             }
         }

@@ -112,9 +112,15 @@ public class ManageInventoryView extends VBox {
         addItemDescription.setPromptText("Description");
 
         selectSector.setPromptText("Select Sector");
+        selectSector.setStyle("-fx-alignment: CENTER;");
+        selectSector.setMinWidth(100);
+
+        selectItemCategory.setPromptText("Select Item Category");
+        selectItemCategory.setStyle("-fx-alignment: CENTER;");
+        selectItemCategory.setVisible(false);
         selectItemCategory.setMinWidth(100);
         selectItemCategory.setPromptText("Select Category");
-        selectItemCategory.setMinWidth(100);
+
 
 
 
@@ -281,5 +287,9 @@ public class ManageInventoryView extends VBox {
 
     public ComboBox<String> getSelectSector() {
         return selectSector;
+    }
+
+    public ComboBox<String> getSortSector() {
+        return sortSector;
     }
 }

@@ -1,6 +1,6 @@
 package Model.Users;
 
-import Model.Items.Sector;
+
 import javafx.beans.property.ListProperty;
 import javafx.beans.property.SimpleListProperty;
 import javafx.collections.FXCollections;

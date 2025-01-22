@@ -22,7 +22,6 @@ public class EmployeeDAO {
         return employees;
     }
 
-
     private void loadEmployees() {
         try(ObjectInputStream input = new ObjectInputStream(new FileInputStream(EMPLOYEES_FILE))) {
             while (true) {

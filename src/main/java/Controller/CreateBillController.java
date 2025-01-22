@@ -10,6 +10,7 @@ import View.CreateBillView;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.scene.control.Alert;
+import javafx.scene.input.KeyCode;
 
 public class CreateBillController {
     private final CreateBillView view;
@@ -38,8 +39,9 @@ public class CreateBillController {
        this.itemDAO = new ItemDAO();
        this.employee = employee;
 
-       view.getSearchButton().setOnAction(e -> filterItems());
+       setSearchListeners();
        //get all the items from the sector of the current employee
+        System.out.println(employee.getSectorName());
        ObservableList<Item> items = (itemDAO.getItemsBySector(employee.getSectorName()));
        if(items != null)
            view.getItemTable().setItems(items);
@@ -47,6 +49,15 @@ public class CreateBillController {
        view.getSavePrintButton().setOnAction(event -> saveBillToFile());
        view.getRemoveItemButton().setOnAction(e -> removeItem());
 
+    }
+
+    private void setSearchListeners() {
+        view.getSearchButton().setOnAction(e -> filterItems());
+        view.getSearchBar().setOnKeyReleased(e -> {
+            if(e.getCode() == KeyCode.ENTER) {
+                filterItems();
+            }
+        });
     }
 
     public void filterItems() {

@@ -32,7 +32,7 @@
 //
 //        if(employee instanceof Admin) {
 //            inventoryView.getTable().setItems(itemDAO.getItems());
-//            inventoryView.g
+//            inventoryView.get
 //        }
 //
 //        if(employee instanceof Manager) {
@@ -74,81 +74,6 @@
 //
 //
 //
-//    private void onEmployeeAdd() {
-//        if(isValid()) {
-//            String employeeName = inventoryView.getAddFirstName().getText();
-//            employeeName = employeeName.substring(0, 1).toUpperCase() + employeeName.substring(1);
-//
-//            String employeeSurname = inventoryView.getAddLastName().getText();
-//            employeeSurname = employeeSurname.substring(0, 1).toUpperCase() + employeeSurname.substring(1);
-//
-//            String employeeEmail = inventoryView.getAddEmail().getText();
-//            String employeeUsername = inventoryView.getAddUsername().getText();
-//            String employeePassword = inventoryView.getAddPassword().getText();
-//            String employeeAddress = inventoryView.getAddAddress().getText();
-//            String employeePhone = inventoryView.getAddPhoneNumber().getText();
-//            double employeeSalary = Double.parseDouble(inventoryView.getAddSalary().getText());
-//            Role role = inventoryView.getRoleComboBox().getSelectionModel().getSelectedItem();
-//
-//            ObservableList<Permission> permissionsList
-//                    = inventoryView.getPermissionList().getSelectionModel().getSelectedItems();
-//            EnumSet<Permission> permissions;
-//
-//            //if permissions are left default
-//            try {
-//                permissions = EnumSet.copyOf(permissionsList);
-//            } catch (IllegalArgumentException e) {
-//                permissions = EnumSet.noneOf(Permission.class);
-//            }
-//
-//
-//            Employee newEmp = null;
-//
-//            switch (role) {
-//                case CASHIER:
-//                    newEmp = new Cashier(employeeSurname, employeeName,
-//                            employeeUsername, employeePassword, employeeSalary);
-//                    ((Cashier) newEmp).setSectorName(inventoryView.getSectorList().getSelectionModel().getSelectedItem());
-//                    addEmployeeData(newEmp, employeeEmail, employeeAddress, employeePhone, permissions);
-//                    break;
-//                case MANAGER:
-//                    newEmp = new Manager(employeeSurname, employeeName,
-//                            employeeUsername, employeePassword, employeeSalary);
-//                    ((Manager) newEmp).setSectors(inventoryView.getSectorList().getSelectionModel().getSelectedItems());
-//                    addEmployeeData(newEmp, employeeEmail, employeeAddress, employeePhone, permissions);
-//                    break;
-//                case ADMIN:
-//                    newEmp = new Admin(employeeSurname, employeeName,
-//                            employeeUsername, employeePassword, employeeSalary);
-//                    addEmployeeData(newEmp, employeeEmail, employeeAddress, employeePhone, permissions);
-//                    break;
-//            }
-//            if (newEmp != null) {
-//                employeeDAO.createEmployee(newEmp);
-//                inventoryView.getTable().refresh();
-//                System.out.println(newEmp);
-//                System.out.println(newEmp.getSectorName());
-//                System.out.println(newEmp.getPermissions());
-//                Alert alert = new Alert(Alert.AlertType.INFORMATION);
-//                alert.setTitle("Added Employee");
-//                alert.setHeaderText("New Employee Added Successfully!");
-//                alert.show();
-//
-//                inventoryView.getAddFirstName().clear();
-//                inventoryView.getAddLastName().clear();
-//                inventoryView.getAddEmail().clear();
-//                inventoryView.getAddUsername().clear();
-//                inventoryView.getAddPassword().clear();
-//                inventoryView.getAddAddress().clear();
-//                inventoryView.getAddPhoneNumber().clear();
-//                inventoryView.getAddSalary().clear();
-//                inventoryView.getRoleComboBox().getSelectionModel().clearSelection();
-//                inventoryView.getPermissionList().getSelectionModel().clearSelection();
-//            }
-//        }
-//
-//
-//    }
 //
 //    private boolean isValid() {
 //        if (inventoryView.getAddNewItemButton().getText().isEmpty() ||
