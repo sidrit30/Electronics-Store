@@ -1,11 +1,10 @@
 package Controller;
 
 import DAO.BillDAO;
-import DAO.SectorDAO;
+import DAO.ItemDAO;
 import Model.Bill;
 import Model.Exceptions.InsufficientStockException;
 import Model.Items.Item;
-import Model.Users.Cashier;
 import Model.Users.Employee;
 import View.CreateBillView;
 import javafx.collections.FXCollections;
@@ -16,7 +15,7 @@ public class CreateBillController {
     private final CreateBillView view;
     private BillDAO billDAO;
     private Employee employee;
-    private SectorDAO sectorDAO;
+    private ItemDAO itemDAO;
     private Bill bill;
 
 
@@ -28,20 +27,20 @@ public class CreateBillController {
         return bill;
     }
 
-    public SectorDAO getSectorDAO() {
-        return sectorDAO;
+    public ItemDAO getItemDAO() {
+        return itemDAO;
     }
 
     public CreateBillController(Employee employee) {
        this.view = new CreateBillView();
        this.billDAO = new BillDAO();
        this.bill = new Bill(employee, employee.getSectorName());
-       this.sectorDAO = new SectorDAO();
+       this.itemDAO = new ItemDAO();
        this.employee = employee;
 
        view.getSearchButton().setOnAction(e -> filterItems());
        //get all the items from the sector of the current employee
-       ObservableList<Item> items = (sectorDAO.getSectorByName((employee.getSectorName())).getItems());
+       ObservableList<Item> items = (itemDAO.getItemsBySector(employee.getSectorName()));
        if(items != null)
            view.getItemTable().setItems(items);
        view.getAddItemButton().setOnAction(event -> addItemToBill());
@@ -96,7 +95,7 @@ public class CreateBillController {
         }
         showAlert("Success", "Bill saved and printed successfully");
         billDAO.createBill(bill);
-        sectorDAO.UpdateAll();
+        itemDAO.UpdateAll();
         bill.saveBillToFile();
         bill = new Bill(employee, employee.getSectorName());
         view.getBillTable().getItems().clear();

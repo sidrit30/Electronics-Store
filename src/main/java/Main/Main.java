@@ -2,9 +2,9 @@ package Main;
 
 import Controller.LoginController;
 import DAO.EmployeeDAO;
-import DAO.SectorDAO;
+
 import Model.Items.Item;
-import Model.Items.Sector;
+
 import Model.Users.Admin;
 import Model.Users.Cashier;
 import Model.Users.Employee;
@@ -20,8 +20,6 @@ public class Main extends Application {
     public static final Rectangle2D VISUAL_BOUNDS = screen.getVisualBounds();
 
     public static void main(String[] args) {
-
-
 
         launch(args);
     }

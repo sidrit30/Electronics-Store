@@ -1,6 +1,7 @@
 package View;
 
-import DAO.SectorDAO;
+
+import DAO.ItemDAO;
 import Model.Users.Employee;
 import Model.Users.Permission;
 import Model.Users.Role;
@@ -140,7 +141,7 @@ public class ManageEmployeeTableView extends VBox {
 
 
         sectorLabel.setStyle("-fx-font-weight: bold; -fx-text-fill: white; -fx-alignment: CENTER; -fx-font-size: 14 px;");
-        sectorList.getItems().setAll(new SectorDAO().getSectorNames());
+        sectorList.getItems().setAll(new ItemDAO().getSectorNames());
         //sectorList.setMaxHeight(100);
         sectorList.setMinWidth(150);
         sectorBox.getChildren().addAll(sectorLabel, sectorList);

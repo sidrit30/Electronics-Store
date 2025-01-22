@@ -22,9 +22,11 @@ public class ManageBillView extends VBox {
     private DatePicker dateFrom = new DatePicker();
     private DatePicker dateTo = new DatePicker();
     private HBox filterBox;
+    private TextField searchField = new TextField();
 
     private Button viewDetailsButton = new Button("View Bill Details");
-    private Button searchButton = new Button("Search");
+    private Button searchCashierButton = new Button("Search by Cashier");
+    private Button searchButton = new Button("Search by Date");
 
 
     private Employee employee;
@@ -62,10 +64,13 @@ public class ManageBillView extends VBox {
         table.getColumns().add(totalRevenueCol);
         table.getColumns().add(costCol);
 
+        sectorFilter.setPromptText("Select sector");
+
         dateFrom.setPromptText("From:");
         dateTo.setPromptText("To:");
+
         // Layout
-        filterBox = new HBox(10, new Label("Filter by Sector:"), sectorFilter, new Label("From:"), dateFrom, new Label("To:"), dateTo, searchButton);
+        filterBox = new HBox(10, sectorFilter, searchField, searchCashierButton ,new Label("From:"), dateFrom, new Label("To:"), dateTo, searchButton);
         filterBox.setPadding(new Insets(10));
 
         HBox buttonBox = new HBox(10, viewDetailsButton);

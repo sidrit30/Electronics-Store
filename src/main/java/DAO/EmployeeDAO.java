@@ -23,17 +23,6 @@ public class EmployeeDAO {
     }
 
 
-    public ObservableList<Cashier> getCashiers(ArrayList<String> sectors) {
-        ObservableList<Cashier> cashiers = FXCollections.observableArrayList();
-        for (Employee employee : getEmployees()) {
-            if(employee instanceof Cashier){
-                if(sectors.contains(((Cashier) employee).getSectorName()))
-                    cashiers.add((Cashier) employee);
-            }
-        }
-        return cashiers;
-    }
-
     private void loadEmployees() {
         try(ObjectInputStream input = new ObjectInputStream(new FileInputStream(EMPLOYEES_FILE))) {
             while (true) {

@@ -13,6 +13,7 @@ import javafx.util.converter.IntegerStringConverter;
 import java.util.ArrayList;
 
 public class ManageInventoryView extends VBox {
+    //most of the class adapted from ManageEmployeeTableView
     private final TableView<Item> table = new TableView<>();
     private final TableColumn<Item, String> itemIdCol;
     private final TableColumn<Item, String> itemNameCol;
@@ -25,13 +26,14 @@ public class ManageInventoryView extends VBox {
     private final TableColumn<Item, String> descriptionCol;
 
     private final TextField addItemName = new TextField();
+    private final ComboBox<String> selectSector = new ComboBox<>();
     private final ComboBox<String> selectItemCategory = new ComboBox<>();
     private final TextField addSupplierName = new TextField();
     private final TextField addPurchasePrice = new TextField();
     private final TextField addSellPrice = new TextField();
     private final TextField addQuantity = new TextField();
     private final TextArea addItemDescription = new TextArea();
-
+    private final ComboBox<String> sortSector = new ComboBox<>();
     private final ChoiceBox<String> searchBy = new ChoiceBox<>();
     private final Button searchButton = new Button("Search");
     private final Button deleteButton = new Button("Delete");
@@ -109,7 +111,9 @@ public class ManageInventoryView extends VBox {
         addQuantity.setPromptText("Quantity");
         addItemDescription.setPromptText("Description");
 
-        selectItemCategory.setPromptText("Select Role");
+        selectSector.setPromptText("Select Sector");
+        selectItemCategory.setMinWidth(100);
+        selectItemCategory.setPromptText("Select Category");
         selectItemCategory.setMinWidth(100);
 
 
@@ -117,12 +121,12 @@ public class ManageInventoryView extends VBox {
         HBox addBox1 = new HBox();
         addBox1.setSpacing(30);
         addBox1.setPadding(new Insets(10));
-        addBox1.getChildren().addAll(addItemName, selectItemCategory, addSupplierName, addPurchasePrice);
+        addBox1.getChildren().addAll(addItemName, selectSector, selectItemCategory);
 
         HBox addBox2 = new HBox();
         addBox2.setSpacing(30);
         addBox2.setPadding(new Insets(10));
-        addBox2.getChildren().addAll(addSellPrice, addQuantity, addItemDescription);
+        addBox2.getChildren().addAll(addSupplierName, addPurchasePrice, addSellPrice, addQuantity, addItemDescription);
 
 
         HBox buttonBox = new HBox();
@@ -135,10 +139,10 @@ public class ManageInventoryView extends VBox {
         mainVBox.setPadding(new Insets(10));
         mainVBox.getChildren().addAll(addBox1, addBox2, buttonBox);
 
+        sortSector.setPromptText("Select Sector");
         searchField.setPromptText("Search By: ");
         ArrayList<String> searchCriteria = new ArrayList<>();
         searchCriteria.add("Item Name");
-        searchCriteria.add("Sector");
         searchCriteria.add("Category");
         searchBy.getItems().setAll(searchCriteria);
         searchBy.getSelectionModel().selectFirst();
@@ -146,7 +150,7 @@ public class ManageInventoryView extends VBox {
         HBox searchBox = new HBox();
         searchBox.setSpacing(10);
         searchBox.setPadding(new Insets(10));
-        searchBox.getChildren().addAll(searchField, searchBy, searchButton);
+        searchBox.getChildren().addAll(sortSector, searchField, searchBy, searchButton);
 
 
         table.setStyle("-fx-background-color: #D2CFDA; -fx-text-fill: #884135;");
@@ -273,5 +277,9 @@ public class ManageInventoryView extends VBox {
 
     public TextField getSearchField() {
         return searchField;
+    }
+
+    public ComboBox<String> getSelectSector() {
+        return selectSector;
     }
 }

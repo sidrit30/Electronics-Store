@@ -2,7 +2,7 @@ package Controller;
 
 import DAO.BillDAO;
 import DAO.EmployeeDAO;
-import DAO.SectorDAO;
+import DAO.ItemDAO;
 import Model.Bill;
 import Model.Users.*;
 import View.ManageBillView;
@@ -20,7 +20,7 @@ import java.time.LocalDate;
 public class ManageBillController {
     private Employee employee;
     private BillDAO billDAO;
-    private SectorDAO sectorDAO;
+    private ItemDAO itemDAO;
     private EmployeeDAO employeeDAO;
     private ManageBillView manageBillView;
 
@@ -31,33 +31,25 @@ public class ManageBillController {
     public ManageBillController(Employee employee) {
         this.employee = employee;
         this.billDAO = new BillDAO();
-        this.sectorDAO = new SectorDAO();
+        this.itemDAO = new ItemDAO();
         this.employeeDAO = new EmployeeDAO();
         this.manageBillView = new ManageBillView(employee);
 
-        ObservableList<String> sectorNames = FXCollections.observableArrayList();
 
-        switch (employee.getRole()) {
-            case CASHIER:
-                if(employee.hasPermission(Permission.VIEW_SECTOR)) {
-                    //a bit too convoluted but I swear it makes sense
-                    manageBillView.getTable().setItems(billDAO.getBillsBySector((employee).getSectorName()));
-                }
-                else
-                    manageBillView.getTable().setItems(billDAO.getBillsByEmployee(employee));
-                break;
-            case MANAGER:
-                if(employee.hasPermission(Permission.VIEW_SECTOR)) {
-                    manageBillView.getSectorFilter().getItems().add("All Sectors");
-                }
-                manageBillView.getSectorFilter().getItems().addAll(((Manager) employee).getSectors());
-                manageBillView.getTable().setItems(billDAO.getBillsBySectors(((Manager) employee).getSectors()));
-                break;
-            case ADMIN:
-                manageBillView.getSectorFilter().getItems().add("All Sectors");
-                manageBillView.getSectorFilter().getItems().addAll(sectorDAO.getSectorNames());
-                manageBillView.getTable().setItems(billDAO.getBills());
-                break;
+        if(employee instanceof Admin) {
+            manageBillView.getTable().setItems(billDAO.getBills());
+            manageBillView.getSectorFilter().getItems().add("All Sectors");
+            manageBillView.getSectorFilter().getItems().addAll(itemDAO.getSectorNames());
+        }
+
+        if(employee instanceof Manager) {
+            manageBillView.getTable().setItems(billDAO.getBillsBySectors(((Manager)employee).getSectors()));
+            manageBillView.getSectorFilter().getItems().addAll(((Manager)employee).getSectors());
+        }
+
+        if(employee instanceof Cashier) {
+            manageBillView.getTable().setItems(billDAO.getBillsByEmployee(employee));
+            manageBillView.getSectorFilter().getItems().add(employee.getSectorName());
         }
 
         manageBillView.getViewDetailsButton().setOnAction(e -> viewBillDetails());

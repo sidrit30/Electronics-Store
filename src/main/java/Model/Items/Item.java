@@ -17,6 +17,7 @@ public class Item implements Serializable {
     private final String itemID;
     private final String itemName;
     private final String itemCategory;
+    private final String sectorName;
 
     private final LocalDateTime purchaseDate;
     private transient final DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm:ss");
@@ -28,7 +29,8 @@ public class Item implements Serializable {
     private transient StringProperty itemDescription;
 
 
-    public Item(String itemName, String itemCategory, double salePrice, double purchasePrice, int quantity, String supplier, String itemDescription) {
+    public Item(String itemName, String itemCategory, double salePrice, double purchasePrice, int quantity, String supplier, String itemDescription, String sectorName) {
+        this.sectorName = sectorName;
         this.itemID = UniqueIDGenerator.getUniqueId();
         this.itemName = itemName;
         this.purchaseDate = LocalDateTime.now();
@@ -51,6 +53,10 @@ public class Item implements Serializable {
 
     public String getItemCategory() {
         return itemCategory;
+    }
+
+    public String getSectorName() {
+        return sectorName;
     }
 
     public double getSellingPrice() {

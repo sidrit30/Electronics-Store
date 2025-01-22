@@ -71,7 +71,7 @@ public class HomePageController {
 //                for(Item item : items)
 //                    controller.getBill().getItemList().remove(item);
 //            });
-//            controller.getSectorDAO().UpdateAll();
+//            controller.getItemDAO().UpdateAll();
 //        }
         buttons.getHomeButton().setVisible(true);
         buttons.getHomeButton().setOnAction(e -> welcomeView());

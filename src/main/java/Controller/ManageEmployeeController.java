@@ -1,7 +1,7 @@
 package Controller;
 
 import DAO.EmployeeDAO;
-import DAO.SectorDAO;
+import DAO.ItemDAO;
 import Model.Users.*;
 import View.ManageEmployeeTableView;
 import javafx.collections.FXCollections;
@@ -79,7 +79,7 @@ public class ManageEmployeeController {
 
         Stage popup = new Stage();
         ListView<String> sectorListView = new ListView<>();
-        sectorListView.getItems().setAll(new SectorDAO().getSectorNames());
+        sectorListView.getItems().setAll(new ItemDAO().getSectorNames());
 
         if(emp instanceof Cashier)
             sectorListView.getSelectionModel().setSelectionMode(SelectionMode.SINGLE);
