@@ -24,15 +24,24 @@ public class CreateBillController {
         return view;
     }
 
+    public Bill getBill() {
+        return bill;
+    }
+
+    public SectorDAO getSectorDAO() {
+        return sectorDAO;
+    }
+
     public CreateBillController(Employee employee) {
        this.view = new CreateBillView();
        this.billDAO = new BillDAO();
+       this.bill = new Bill(employee, employee.getSectorName());
        this.sectorDAO = new SectorDAO();
        this.employee = employee;
 
        view.getSearchButton().setOnAction(e -> filterItems());
        //get all the items from the sector of the current employee
-       ObservableList<Item> items = (sectorDAO.getSectorByName(((Cashier) employee).getSectorName())).getItems();
+       ObservableList<Item> items = (sectorDAO.getSectorByName((employee.getSectorName())).getItems());
        if(items != null)
            view.getItemTable().setItems(items);
        view.getAddItemButton().setOnAction(event -> addItemToBill());
@@ -54,15 +63,12 @@ public class CreateBillController {
     }
 
     public void addItemToBill() {
-
-        if(view.getBillTable().getItems().isEmpty()) {
-            bill = new Bill(employee, ((Cashier)employee).getSectorName());
-        }
         Item selectedItem = view.getItemTable().getSelectionModel().getSelectedItem();
         try {
             if (selectedItem == null) {
                 showAlert("Error", "No item selected!");
             }
+            System.out.println(selectedItem.getItemCategory());
             int quantity = Integer.parseInt(view.getQuantityField().getText());
             if(quantity <= 0) {
                 showAlert("Error", "Quantity must be greater than 0!");
@@ -90,7 +96,9 @@ public class CreateBillController {
         }
         showAlert("Success", "Bill saved and printed successfully");
         billDAO.createBill(bill);
+        sectorDAO.UpdateAll();
         bill.saveBillToFile();
+        bill = new Bill(employee, employee.getSectorName());
         view.getBillTable().getItems().clear();
     }
 

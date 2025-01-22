@@ -29,7 +29,14 @@ public class Sector implements Serializable {
 
     public ObservableList<String> getCategories() {
         ObservableList<String> categories = FXCollections.observableArrayList();
-        categories.addAll(this.categories);
+        for(Item item : items) {
+            if(categories.isEmpty()) {
+                categories.add(item.getItemCategory());
+            }
+            if(!categories.contains(item.getItemCategory())) {
+                categories.add(item.getItemCategory());
+            }
+        }
         return categories;
     }
 

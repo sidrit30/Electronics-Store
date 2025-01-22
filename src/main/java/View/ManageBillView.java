@@ -62,10 +62,8 @@ public class ManageBillView extends VBox {
         table.getColumns().add(totalRevenueCol);
         table.getColumns().add(costCol);
 
-        dateFrom.setPromptText("Select Date");
-
-        //viewDetailsButton.setOnAction(e -> viewBillDetails());
-
+        dateFrom.setPromptText("From:");
+        dateTo.setPromptText("To:");
         // Layout
         filterBox = new HBox(10, new Label("Filter by Sector:"), sectorFilter, new Label("From:"), dateFrom, new Label("To:"), dateTo, searchButton);
         filterBox.setPadding(new Insets(10));

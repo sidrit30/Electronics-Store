@@ -1,15 +1,20 @@
 package Controller;
 
 import Main.Main;
+import Model.Items.Item;
 import Model.Users.Admin;
 import Model.Users.Cashier;
 import Model.Users.Employee;
 import Model.Users.Manager;
 import View.*;
+import javafx.collections.ObservableList;
+import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
+
+import java.util.ArrayList;
 
 public class HomePageController {
     private Employee employee;
@@ -56,8 +61,18 @@ public class HomePageController {
     }
 
     private void createBill() {
-        BorderPane createBillPane = new CreateBillController(employee).getCreateBillView();
+        CreateBillController controller = new CreateBillController(employee);
+        BorderPane createBillPane = controller.getCreateBillView();
         homePage.setCenter(createBillPane);
+
+//        for(Node button : homePage.getSidebarHome().getChildren()) {
+//            button.setOnMouseClicked(event -> {
+//                ArrayList<Item> items = (ArrayList<Item>) controller.getBill().getItemList().clone();
+//                for(Item item : items)
+//                    controller.getBill().getItemList().remove(item);
+//            });
+//            controller.getSectorDAO().UpdateAll();
+//        }
         buttons.getHomeButton().setVisible(true);
         buttons.getHomeButton().setOnAction(e -> welcomeView());
     }

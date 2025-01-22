@@ -14,11 +14,11 @@ public class CreateBillView extends BorderPane {
     private Button searchButton = new Button("Search: ");
     //private BorderPane root;
     private TableView<Item> itemTable = new TableView<>();
-    TableColumn<Item, String> itemIdColumn;
-    TableColumn<Item, String> nameColumn;
-    TableColumn<Item, String> categoryColumn;
-    TableColumn<Item, Double> priceColumn;
-    TableColumn<Item, Integer> quantityColumn;
+    private TableColumn<Item, String> itemIdColumn;
+    private TableColumn<Item, String> nameColumn;
+    private TableColumn<Item, String> categoryColumn;
+    private TableColumn<Item, Double> priceColumn;
+    private TableColumn<Item, Integer> quantityColumn;
 
     private TableView<BillItem> billTable = new TableView<>();
     TableColumn<BillItem, String> billItemIdColumn;

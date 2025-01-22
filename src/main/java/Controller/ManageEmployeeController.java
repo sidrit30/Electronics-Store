@@ -202,6 +202,7 @@ public class ManageEmployeeController {
             }
             if (newEmp != null) {
                 employeeDAO.createEmployee(newEmp);
+                employeeTableView.getTable().refresh();
                 System.out.println(newEmp);
                 System.out.println(newEmp.getSectorName());
                 System.out.println(newEmp.getPermissions());
@@ -382,6 +383,8 @@ public class ManageEmployeeController {
             }
         } else {
             for (Employee employee : employeeDAO.getEmployees()) {
+                if(employee.getSectorName() == null || employee.getSectorName().isEmpty())
+                    continue;
                 if(employee instanceof Admin)
                     continue;
                 if(employee instanceof Manager) {
