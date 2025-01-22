@@ -303,19 +303,19 @@ public class ManageEmployeeController {
             Optional<ButtonType> result = alert.showAndWait();
             if (result.isPresent() && result.get() == ButtonType.OK) {
                 if (employeeDAO.deleteEmployee(toDelete)) {
-                    alert = new Alert(Alert.AlertType.CONFIRMATION);
+                    alert = new Alert(Alert.AlertType.CONFIRMATION, "Success!", ButtonType.OK);
                     alert.setTitle("Deleted Employee");
                     alert.setHeaderText("Employee Deleted Successfully!");
                     alert.show();
                 } else {
-                    alert = new Alert(Alert.AlertType.ERROR);
+                    alert = new Alert(Alert.AlertType.ERROR, "Error", ButtonType.OK);
                     alert.setTitle("Error");
                     alert.setHeaderText("Error while deleting Employee!");
                     alert.show();
                 }
             }
             else {
-                alert = new Alert(Alert.AlertType.CONFIRMATION);
+                alert = new Alert(Alert.AlertType.CONFIRMATION, "Cancelled", ButtonType.OK);
                 alert.setTitle("Confirmation");
                 alert.setHeaderText("Employee Deletion Cancelled!");
             }

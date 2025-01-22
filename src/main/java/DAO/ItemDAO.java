@@ -1,6 +1,7 @@
 package DAO;
 
 import Model.Items.Item;
+import Model.Users.Employee;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 
@@ -27,15 +28,23 @@ public class ItemDAO {
         return filteredItems;
     }
 
-    public ObservableList<Item> getItemsBySectors(ObservableList<String> sectors) {
-        ObservableList<Item> items = FXCollections.observableArrayList();
-        for (Item item : items) {
-            if(sectors.isEmpty())
-                return items;
-            if(sectors.contains(item.getSectorName()))
-                items.add(item);
+    public boolean validItemName(String name) {
+        for (Item item : getItems()) {
+            if (item.getItemName().equals(name))
+                return false;
         }
-        return items;
+        return true;
+    }
+
+    public ObservableList<Item> getItemsBySectors(ObservableList<String> sectors) {
+        ObservableList<Item> filteredItems = FXCollections.observableArrayList();
+        if(sectors.isEmpty())
+            return filteredItems;
+        for (Item item : getItems()) {
+            if(sectors.contains(item.getSectorName()))
+                filteredItems.add(item);
+        }
+        return filteredItems;
     }
 
     public void loadItems() {

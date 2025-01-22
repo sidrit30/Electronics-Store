@@ -65,24 +65,30 @@ public class HomePageController {
     private void setEventHandlers() {
         buttons.getButtons().get(0).setOnAction(event -> createBill());
         buttons.getButtons().get(1).setOnAction(event -> billManagement());
-
+        buttons.getButtons().get(2).setOnAction(event -> inventoryManagement());
         buttons.getButtons().get(3).setOnAction(e -> employeeManagement());
+        buttons.getButtons().get(4).setOnAction(event -> performance());
 
+    }
+
+    private void performance() {
+        VBox vBox = new PerformanceController(employee).getPerformanceView();
+        homePage.setCenter(vBox);
+        buttons.getHomeButton().setVisible(true);
+        buttons.getHomeButton().setOnAction(e -> welcomeView());
+    }
+
+    private void inventoryManagement() {
+        VBox vBox = new ManageInventoryController(employee).getManageInventoryView();
+        homePage.setCenter(vBox);
+        buttons.getHomeButton().setVisible(true);
+        buttons.getHomeButton().setOnAction(e -> welcomeView());
     }
 
     private void createBill() {
         CreateBillController controller = new CreateBillController(employee);
         BorderPane createBillPane = controller.getCreateBillView();
         homePage.setCenter(createBillPane);
-
-//        for(Node button : homePage.getSidebarHome().getChildren()) {
-//            button.setOnMouseClicked(event -> {
-//                ArrayList<Item> items = (ArrayList<Item>) controller.getBill().getItemList().clone();
-//                for(Item item : items)
-//                    controller.getBill().getItemList().remove(item);
-//            });
-//            controller.getItemDAO().UpdateAll();
-//        }
         buttons.getHomeButton().setVisible(true);
         buttons.getHomeButton().setOnAction(e -> welcomeView());
     }

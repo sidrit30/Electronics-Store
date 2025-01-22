@@ -18,7 +18,6 @@ public class ManageInventoryView extends VBox {
     private final TableColumn<Item, String> itemIdCol;
     private final TableColumn<Item, String> itemNameCol;
     private final TableColumn<Item, String> itemCategoryCol;
-    private final TableColumn<Item, String> purchaseDateCol;
     private final TableColumn<Item, String> supplierNameCol;
     private final TableColumn<Item, Double> purchasePriceCol;
     private final TableColumn<Item, Double> sellPriceCol;
@@ -33,9 +32,11 @@ public class ManageInventoryView extends VBox {
     private final TextField addSellPrice = new TextField();
     private final TextField addQuantity = new TextField();
     private final TextArea addItemDescription = new TextArea();
-    private final ComboBox<String> sortSector = new ComboBox<>();
-    private final ChoiceBox<String> searchBy = new ChoiceBox<>();
-    private final Button searchButton = new Button("Search");
+
+    //no time
+//    private final ComboBox<String> sortSector = new ComboBox<>();
+//    private final ChoiceBox<String> searchBy = new ChoiceBox<>();
+//    private final Button searchButton = new Button("Search");
     private final Button deleteButton = new Button("Delete");
     private final Button addNewItemButton = new Button("Add New Item");
     private final Button saveButton = new Button("Save");
@@ -63,12 +64,8 @@ public class ManageInventoryView extends VBox {
         itemCategoryCol.setCellValueFactory(new PropertyValueFactory<>("itemCategory"));
         itemCategoryCol.setStyle("-fx-alignment: CENTER;");
 
-        purchaseDateCol = new TableColumn<>("Added Date");
-        purchaseDateCol.setCellValueFactory(new PropertyValueFactory<>("purchaseDate"));
-        purchaseDateCol.setStyle("-fx-alignment: CENTER;");
-
         supplierNameCol = new TableColumn<>("Supplier Name");
-        supplierNameCol.setCellValueFactory(new PropertyValueFactory<>("address"));
+        supplierNameCol.setCellValueFactory(new PropertyValueFactory<>("supplier"));
         supplierNameCol.setCellFactory(TextFieldTableCell.forTableColumn());
         supplierNameCol.setStyle("-fx-alignment: CENTER;");
 
@@ -96,7 +93,6 @@ public class ManageInventoryView extends VBox {
         table.getColumns().add(itemIdCol);
         table.getColumns().add(itemNameCol);
         table.getColumns().add(itemCategoryCol);
-        table.getColumns().add(purchaseDateCol);
         table.getColumns().add(supplierNameCol);
         table.getColumns().add(purchasePriceCol);
         table.getColumns().add(sellPriceCol);
@@ -117,7 +113,6 @@ public class ManageInventoryView extends VBox {
 
         selectItemCategory.setPromptText("Select Item Category");
         selectItemCategory.setStyle("-fx-alignment: CENTER;");
-        selectItemCategory.setVisible(false);
         selectItemCategory.setMinWidth(100);
         selectItemCategory.setPromptText("Select Category");
 
@@ -145,26 +140,26 @@ public class ManageInventoryView extends VBox {
         mainVBox.setPadding(new Insets(10));
         mainVBox.getChildren().addAll(addBox1, addBox2, buttonBox);
 
-        sortSector.setPromptText("Select Sector");
-        searchField.setPromptText("Search By: ");
-        ArrayList<String> searchCriteria = new ArrayList<>();
-        searchCriteria.add("Item Name");
-        searchCriteria.add("Category");
-        searchBy.getItems().setAll(searchCriteria);
-        searchBy.getSelectionModel().selectFirst();
+//        sortSector.setPromptText("Select Sector");
+//        searchField.setPromptText("Search By: ");
+//        ArrayList<String> searchCriteria = new ArrayList<>();
+//        searchCriteria.add("Item Name");
+//        searchCriteria.add("Category");
+//        searchBy.getItems().setAll(searchCriteria);
+//        searchBy.getSelectionModel().selectFirst();
 
-        HBox searchBox = new HBox();
-        searchBox.setSpacing(10);
-        searchBox.setPadding(new Insets(10));
-        searchBox.getChildren().addAll(sortSector, searchField, searchBy, searchButton);
+//        HBox searchBox = new HBox();
+//        searchBox.setSpacing(10);
+//        searchBox.setPadding(new Insets(10));
+//        searchBox.getChildren().addAll(sortSector, searchField, searchBy, searchButton);
 
 
         table.setStyle("-fx-background-color: #D2CFDA; -fx-text-fill: #884135;");
         mainVBox.setStyle("-fx-background-color: #D39C7E;");
-        searchBox.setStyle("-fx-background-color: #916449; -fx-text-fill: white;");
+        //searchBox.setStyle("-fx-background-color: #916449; -fx-text-fill: white;");
 
 
-        this.getChildren().addAll(searchBox, table, mainVBox);
+        this.getChildren().addAll(table, mainVBox);
         this.setPadding(new Insets(10));
         this.setSpacing(10);
         //this.setStyle("-fx-background-color: #90614d;");
@@ -205,9 +200,6 @@ public class ManageInventoryView extends VBox {
         return itemCategoryCol;
     }
 
-    public TableColumn<Item, String> getPurchaseDateCol() {
-        return purchaseDateCol;
-    }
 
     public TableColumn<Item, String> getSupplierNameCol() {
         return supplierNameCol;
@@ -257,13 +249,13 @@ public class ManageInventoryView extends VBox {
         return addItemDescription;
     }
 
-    public ChoiceBox<String> getSearchBy() {
-        return searchBy;
-    }
-
-    public Button getSearchButton() {
-        return searchButton;
-    }
+//    public ChoiceBox<String> getSearchBy() {
+//        return searchBy;
+//    }
+//
+//    public Button getSearchButton() {
+//        return searchButton;
+//    }
 
     public Button getDeleteButton() {
         return deleteButton;
@@ -289,7 +281,7 @@ public class ManageInventoryView extends VBox {
         return selectSector;
     }
 
-    public ComboBox<String> getSortSector() {
-        return sortSector;
-    }
+//    public ComboBox<String> getSortSector() {
+//        return sortSector;
+//    }
 }

@@ -4,6 +4,7 @@ import DAO.EmployeeDAO;
 import Model.Exceptions.InvalidPasswordException;
 import Model.Exceptions.InvalidUsernameException;
 import Model.Users.Employee;
+import Model.Users.Manager;
 import View.LoginPage;
 import javafx.event.ActionEvent;
 import javafx.scene.Scene;
@@ -61,6 +62,10 @@ public class LoginController {
             primaryStage.setWidth(VISUAL_BOUNDS.getWidth());
             primaryStage.setHeight(VISUAL_BOUNDS.getHeight());
             primaryStage.show();
+
+            if(emp instanceof Manager) {
+                new ManagerController(emp);
+            }
         }
         catch (InvalidUsernameException | InvalidPasswordException e1) {
             loginPage.getErrorLabel().setVisible(true);

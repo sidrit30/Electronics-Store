@@ -1,318 +1,238 @@
-//package Controller;
-//
-//import DAO.ItemDAO;
-//import Model.Users.*;
-//import View.ManageInventoryView;
-//import javafx.collections.FXCollections;
-//import javafx.collections.ObservableList;
-//import javafx.geometry.Insets;
-//import javafx.scene.Scene;
-//import javafx.scene.control.*;
-//import javafx.scene.input.KeyCode;
-//import javafx.scene.layout.GridPane;
-//import javafx.stage.Stage;
-//
-//import java.util.EnumSet;
-//import java.util.Optional;
-//
-//public class ManageInventoryController {
-//    private ItemDAO itemDAO;
-//    private ManageInventoryView inventoryView;
-//    private Employee selectedEmployee;
-//
-//    public ManageInventoryView getManageInventoryView() {
-//        return inventoryView;
-//    }
-//
-//    public ManageInventoryController(Employee employee) {
-//        itemDAO = new ItemDAO();
-//        inventoryView = new ManageInventoryView();
-//        selectedEmployee = employee;
-//
-//
-//        if(employee instanceof Admin) {
-//            inventoryView.getTable().setItems(itemDAO.getItems());
-//            inventoryView.get
-//        }
-//
-//        if(employee instanceof Manager) {
-//            inventoryView.getTable().setItems(itemDAO.getItemsBySectors(((Manager)employee).getSectors()));
-//        }
-//
-//        if(employee instanceof Cashier) {
-//            inventoryView.getTable().setItems(itemDAO.getItemsBySector(employee.getSectorName()));
-//        }
-//
-//
-//
-//        setSearchListener();
-//
-//        if(selectedEmployee.hasPermission(Permission.EDIT_ITEM)) {
-//            inventoryView.getTable().setEditable(true);
-//            setEditListeners();
-//            inventoryView.getAddNewItemButton().setOnAction(e -> onItemAdd());
-//            inventoryView.getDeleteButton().setOnAction(e -> onItemDelete());
-//            inventoryView.getSaveButton().setOnAction(e -> {
-//                boolean flag = itemDAO.UpdateAll();
-//                if (flag) {
-//                    Alert alert = new Alert(Alert.AlertType.INFORMATION);
-//                    alert.setTitle("Success");
-//                    alert.setHeaderText("Employees Updated");
-//                    alert.show();
-//                }
-//            });
-//        } else {
-//            inventoryView.getMainVBox().setVisible(false);
-//        }
-//    }
-//
-//    private void onItemDelete() {
-//    }
-//
-//    private void onItemAdd() {
-//    }
-//
-//
-//
-//
-//    private boolean isValid() {
-//        if (inventoryView.getAddNewItemButton().getText().isEmpty() ||
-//                inventoryView.getSelectItemCategory().getValue() == null ||
-//                inventoryView.getAddSupplierName().getText().isEmpty() ||
-//                inventoryView.getAddPurchasePrice().getText().isEmpty() ||
-//                inventoryView.getAddSellPrice().getText().isEmpty() ||
-//                inventoryView.getAddQuantity().getText().isEmpty()) {
-//            inventoryView.showErrorAlert("Item details are missing!");
-//            return false;
-//        }
-//
-//        if(inventoryView.getAddItemName().getText().length() < 6) {
-//            inventoryView.showErrorAlert("Item can't be less than 6 characters!");
-//            return false;
-//        }
-//        if(!(inventoryView.getAddUsername().getText())) {
-//            inventoryView.showErrorAlert("Username is already taken.");
-//            return false;
-//        }
-//
-//        //check password
-//        if(inventoryView.getAddPassword().getText().length() < 4 || inventoryView.getAddPassword().getText().length() > 20) {
-//            inventoryView.showErrorAlert("Password must be between 4 and 20 characters.");
-//            return false;
-//        }
-//
-//        //check salary
-//        try {
-//            Double.parseDouble(inventoryView.getAddSalary().getText());
-//        } catch (NumberFormatException e) {
-//            inventoryView.showErrorAlert("Salary must be a positive number.");
-//            return false;
-//        }
-//        if(Double.parseDouble(inventoryView.getAddSalary().getText())<=0) {
-//            inventoryView.showErrorAlert("Salary must be a positive number.");
-//            return false;
-//        }
-//
-//        return true;
-//
-//    }
-//
-//    private void addEmployeeData(Employee newEmp, String employeeEmail, String employeeAddress, String employeePhone, EnumSet<Permission> permissions) {
-//        if(employeeEmail != null && !employeeEmail.isEmpty()) {
-//            newEmp.setEmail(employeeEmail);
-//        }
-//        if(employeeAddress != null && !employeeAddress.isEmpty()) {
-//            newEmp.setAddress(employeeAddress);
-//        }
-//        if(employeePhone != null && !employeePhone.isEmpty()) {
-//            newEmp.setPhone(employeePhone);
-//        }
-//        if(permissions != null && !permissions.isEmpty()) {
-//            newEmp.setPermissions(permissions);
-//        }
-//    }
-//
-//    private void onEmployeeDelete() {
-//
-//        Employee toDelete = inventoryView.getTable().getSelectionModel().getSelectedItem();
-//        Alert alert;
-//
-//        if(toDelete.equals(selectedEmployee)) {
-//            alert = new Alert(Alert.AlertType.ERROR);
-//            alert.setTitle("Delete Employee");
-//            alert.setHeaderText("You Cannot Delete Yourself.");
-//            alert.show();
-//        }
-//        else {
-//            alert = new Alert(Alert.AlertType.WARNING, "Confirm Deletion", ButtonType.OK, ButtonType.CANCEL);
-//            alert.setTitle("Confirm Deletion");
-//            alert.setHeaderText("Are you sure you want to delete employee " + toDelete +"?");
-//
-//            Optional<ButtonType> result = alert.showAndWait();
-//            if (result.isPresent() && result.get() == ButtonType.OK) {
-//                if (employeeDAO.deleteEmployee(toDelete)) {
-//                    alert = new Alert(Alert.AlertType.CONFIRMATION);
-//                    alert.setTitle("Deleted Employee");
-//                    alert.setHeaderText("Employee Deleted Successfully!");
-//                    alert.show();
-//                } else {
-//                    alert = new Alert(Alert.AlertType.ERROR);
-//                    alert.setTitle("Error");
-//                    alert.setHeaderText("Error while deleting Employee!");
-//                    alert.show();
-//                }
-//            }
-//            else {
-//                alert = new Alert(Alert.AlertType.CONFIRMATION);
-//                alert.setTitle("Confirmation");
-//                alert.setHeaderText("Employee Deletion Cancelled!");
-//            }
-//
-//        }
-//    }
-//
-//    private void setEditListeners() {
-//
-//        this.inventoryView.getUsernameCol().setOnEditCommit(e -> {
-//            String username = e.getNewValue();
-//            if(username == null || username.length() < 4 || username.length() > 20) {
-//                this.inventoryView.showErrorAlert("Username must be between 4 and 20 characters.");
-//                return;
-//            }
-//            if (!employeeDAO.validUsername(username)) {
-//                this.inventoryView.showErrorAlert(username+" is not an available username.");
-//                return;
-//            }
-//
-//            employeeDAO.getEmployees().get(e.getTablePosition().getRow()).setUsername(username);
-//        });
-//        this.inventoryView.getPasswordCol().setOnEditCommit(e -> {
-//            String password = e.getNewValue();
-//            if(password == null || password.length() < 4 || password.length() > 20) {
-//                inventoryView.showErrorAlert("Password must be between 4 and 20 characters.");
-//                return;
-//            }
-//            employeeDAO.getEmployees().get(e.getTablePosition().getRow()).setPassword(password);
-//        });
-//        this.inventoryView.getEmailCol().setOnEditCommit(e -> {
-//            employeeDAO.getEmployees().get(e.getTablePosition().getRow()).setEmail(e.getNewValue());
-//        });
-//        this.inventoryView.getAddressCol().setOnEditCommit(e -> {
-//            employeeDAO.getEmployees().get(e.getTablePosition().getRow()).setAddress(e.getNewValue());
-//        });
-//        this.inventoryView.getPhoneNumberCol().setOnEditCommit(e -> {
-//            employeeDAO.getEmployees().get(e.getTablePosition().getRow()).setPhone(e.getNewValue());
-//        });
-//        this.inventoryView.getSalaryCol().setOnEditCommit(e -> {
-//            employeeDAO.getEmployees().get(e.getTablePosition().getRow()).setSalary(e.getNewValue());
-//        });
-//    }
-//
+package Controller;
+
+import DAO.ItemDAO;
+import Model.Items.Item;
+import Model.Users.*;
+import View.ManageInventoryView;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
+import javafx.geometry.Insets;
+import javafx.scene.Scene;
+import javafx.scene.control.*;
+import javafx.scene.input.KeyCode;
+import javafx.scene.layout.GridPane;
+import javafx.stage.Stage;
+
+import java.util.EnumSet;
+import java.util.Optional;
+
+public class ManageInventoryController {
+    private ItemDAO itemDAO;
+    private ManageInventoryView inventoryView;
+    private Employee selectedEmployee;
+
+    public ManageInventoryView getManageInventoryView() {
+        return inventoryView;
+    }
+
+    public ManageInventoryController(Employee employee) {
+        itemDAO = new ItemDAO();
+        inventoryView = new ManageInventoryView();
+        selectedEmployee = employee;
+
+
+        if(employee instanceof Admin) {
+            inventoryView.getTable().setItems(itemDAO.getItems());
+//            inventoryView.getSortSector().getItems().add("All Sectors");
+//            inventoryView.getSortSector().getItems().addAll(itemDAO.getSectorNames());
+            inventoryView.getSelectSector().getItems().addAll(itemDAO.getSectorNames());
+        }
+
+        if(employee instanceof Manager) {
+            inventoryView.getTable().setItems(itemDAO.getItemsBySectors(((Manager)employee).getSectors()));
+//            inventoryView.getSortSector().getItems().addAll(((Manager)employee).getSectors());
+            inventoryView.getSelectSector().getItems().addAll(((Manager)employee).getSectors());
+        }
+
+        if(employee instanceof Cashier) {
+            inventoryView.getTable().setItems(itemDAO.getItemsBySector(employee.getSectorName()));
+//            inventoryView.getSortSector().getItems().add(employee.getSectorName());
+            inventoryView.getSelectSector().getItems().add(employee.getSectorName());
+        }
+
+        //setSearchListener();
+
+        if(selectedEmployee.hasPermission(Permission.EDIT_ITEM)) {
+            inventoryView.getTable().setEditable(true);
+            setEditListeners();
+            inventoryView.getSelectSector().setOnAction(event -> loadCategories());
+            inventoryView.getAddNewItemButton().setOnAction(e -> onItemAdd());
+            inventoryView.getDeleteButton().setOnAction(e -> onItemDelete());
+            inventoryView.getSaveButton().setOnAction(e -> {
+                boolean flag = itemDAO.UpdateAll();
+                if (flag) {
+                    Alert alert = new Alert(Alert.AlertType.INFORMATION);
+                    alert.setTitle("Success");
+                    alert.setHeaderText("Items Updated");
+                    alert.show();
+                }
+            });
+        } else {
+            inventoryView.getMainVBox().setVisible(false);
+        }
+    }
+
+    private void loadCategories() {
+        String sector = inventoryView.getSelectSector().getSelectionModel().getSelectedItem();
+        inventoryView.getSelectItemCategory().getItems().addAll(itemDAO.getItemCategories(sector));
+    }
+
+
+    private void onItemAdd() {
+        if(isValid()) {
+            String itemName = inventoryView.getAddItemName().getText();
+            String itemSector = inventoryView.getSelectSector().getSelectionModel().getSelectedItem();
+            String itemCategory = inventoryView.getSelectItemCategory().getSelectionModel().getSelectedItem();
+            String itemSupplier = inventoryView.getAddSupplierName().getText();
+            Double itemPurchasePrice = Double.valueOf(inventoryView.getAddPurchasePrice().getText());
+            Double itemSellingPrice = Double.valueOf(inventoryView.getAddSellPrice().getText());
+            int itemQuantity = Integer.valueOf(inventoryView.getAddQuantity().getText());
+            String itemDescription = inventoryView.getAddItemDescription().getText();
+            itemDAO.createItem(new Item(itemName, itemCategory, itemSellingPrice, itemPurchasePrice, itemQuantity, itemSupplier, itemDescription, itemSector));
+
+            inventoryView.getAddItemName().clear();
+            inventoryView.getAddSupplierName().clear();
+            inventoryView.getAddPurchasePrice().clear();
+            inventoryView.getAddSellPrice().clear();
+            inventoryView.getAddQuantity().clear();
+            inventoryView.getAddItemDescription().clear();
+            inventoryView.getSelectSector().getSelectionModel().clearSelection();
+            inventoryView.getSelectItemCategory().getSelectionModel().clearSelection();
+
+        }
+    }
+
+
+
+
+    private boolean isValid() {
+        if (inventoryView.getAddNewItemButton().getText().isEmpty() ||
+                inventoryView.getSelectItemCategory().getValue() == null ||
+                inventoryView.getAddSupplierName().getText().isEmpty() ||
+                inventoryView.getAddPurchasePrice().getText().isEmpty() ||
+                inventoryView.getAddSellPrice().getText().isEmpty() ||
+                inventoryView.getAddQuantity().getText().isEmpty()) {
+            inventoryView.showErrorAlert("Item details are missing!");
+            return false;
+        }
+
+        if(inventoryView.getAddItemName().getText().length() < 6) {
+            inventoryView.showErrorAlert("Item can't be less than 6 characters!");
+            return false;
+        }
+
+        if(!itemDAO.validItemName(inventoryView.getAddItemName().getText())) {
+            inventoryView.showErrorAlert("Item already exists!");
+            return false;
+        }
+
+        try {
+            Double.parseDouble(inventoryView.getAddPurchasePrice().getText());
+            Double.parseDouble(inventoryView.getAddSellPrice().getText());
+        } catch (NumberFormatException e) {
+            inventoryView.showErrorAlert("Prices must be a positive number.");
+            return false;
+        }
+        if(Double.parseDouble(inventoryView.getAddQuantity().getText())<=0) {
+            inventoryView.showErrorAlert("Prices must be a positive number.");
+            return false;
+        }
+
+        try {
+            Integer.parseInt(inventoryView.getAddQuantity().getText());
+        } catch (NumberFormatException e) {
+            inventoryView.showErrorAlert("Quantity must be a positive number.");
+            return false;
+        }
+
+        return true;
+
+    }
+
+
+
+    private void onItemDelete() {
+
+        Item toDelete = inventoryView.getTable().getSelectionModel().getSelectedItem();
+        Alert alert;
+        alert = new Alert(Alert.AlertType.WARNING, "Confirm Deletion", ButtonType.OK, ButtonType.CANCEL);
+        alert.setTitle("Confirm Deletion");
+        alert.setHeaderText("Are you sure you want to delete item " + toDelete.getItemName() +"?");
+
+        Optional<ButtonType> result = alert.showAndWait();
+        if (result.isPresent() && result.get() == ButtonType.OK) {
+            if (itemDAO.deleteItem(toDelete)) {
+                alert = new Alert(Alert.AlertType.CONFIRMATION, "Success!", ButtonType.OK);
+                alert.setTitle("Deleted Item");
+                alert.setHeaderText("Item Deleted Successfully!");
+                alert.show();
+            } else {
+                alert = new Alert(Alert.AlertType.ERROR, "Error!", ButtonType.OK);
+                alert.setTitle("Error");
+                alert.setHeaderText("Error while deleting Item!");
+                alert.show();
+            }
+        }
+        else {
+            alert = new Alert(Alert.AlertType.CONFIRMATION, "Cancelled!", ButtonType.OK);
+            alert.setTitle("Confirmation");
+            alert.setHeaderText("Item Deletion Cancelled!");
+        }
+    }
+
+    private void setEditListeners() {
+        if(selectedEmployee instanceof Admin) {
+            inventoryView.getPurchasePriceCol().setOnEditCommit(event -> {
+                itemDAO.getItems().get(event.getTablePosition().getRow()).setPurchasePrice(event.getNewValue());
+            });
+
+            inventoryView.getSellPriceCol().setOnEditCommit(event -> {
+                itemDAO.getItems().get(event.getTablePosition().getRow()).setSellingPrice(event.getNewValue());
+            });
+
+            inventoryView.getQuantityCol().setOnEditCommit(event -> {
+                itemDAO.getItems().get(event.getTablePosition().getRow()).setQuantity(event.getNewValue());
+            });
+
+            inventoryView.getSupplierNameCol().setOnEditCommit(event -> {
+                itemDAO.getItems().get(event.getTablePosition().getRow()).setSupplier(event.getNewValue());
+            });
+
+            inventoryView.getDescriptionCol().setOnEditCommit(event -> {
+                itemDAO.getItems().get(event.getTablePosition().getRow()).setItemDescription(event.getNewValue());
+            });
+        } else {
+            inventoryView.getPurchasePriceCol().setOnEditCommit(event -> {
+                itemDAO.getItemsBySectors(((Manager)selectedEmployee).getSectors()).get(event.getTablePosition().getRow()).setPurchasePrice(event.getNewValue());
+            });
+
+            inventoryView.getSellPriceCol().setOnEditCommit(event -> {
+                itemDAO.getItemsBySectors(((Manager)selectedEmployee).getSectors()).get(event.getTablePosition().getRow()).setSellingPrice(event.getNewValue());
+            });
+
+            inventoryView.getQuantityCol().setOnEditCommit(event -> {
+                itemDAO.getItemsBySectors(((Manager)selectedEmployee).getSectors()).get(event.getTablePosition().getRow()).setQuantity(event.getNewValue());
+            });
+
+            inventoryView.getSupplierNameCol().setOnEditCommit(event -> {
+                itemDAO.getItemsBySectors(((Manager)selectedEmployee).getSectors()).get(event.getTablePosition().getRow()).setSupplier(event.getNewValue());
+            });
+
+            inventoryView.getDescriptionCol().setOnEditCommit(event -> {
+                itemDAO.getItemsBySectors(((Manager)selectedEmployee).getSectors()).get(event.getTablePosition().getRow()).setItemDescription(event.getNewValue());
+            });
+        }
+
+
+    }
+
 //    private void setSearchListener() {
 //        this.inventoryView.getSearchButton().setOnAction(e -> searchEmployee());
-//        this.inventoryView.getSearchField().setOnKeyReleased(e -> {
-//            if(e.getCode() == KeyCode.ENTER) {
-//                searchEmployee();
-//            }
-//        });
 //    }
 //
 //    private void searchEmployee() {
-//        String searchString = inventoryView.getSearchField().getText();
-//        ObservableList<Employee> filteredEmployees = FXCollections.observableArrayList();
-//
-//        String criteria = this.inventoryView.getSearchBy().getSelectionModel().getSelectedItem();
-//
-//        if(criteria.equals("Full Name")) {
-//            for (Employee employee : employeeDAO.getEmployees()) {
-//                if (employee.getFullName().toLowerCase().contains(searchString.toLowerCase())) {
-//                    filteredEmployees.add(employee);
-//                }
-//            }
-//        } else {
-//            for (Employee employee : employeeDAO.getEmployees()) {
-//                if(employee.getSectorName() == null || employee.getSectorName().isEmpty())
-//                    continue;
-//                if(employee instanceof Admin)
-//                    continue;
-//                if(employee instanceof Manager) {
-//                    for(String sector : ((Manager)employee).getSectors()) {
-//                        if(sector.toLowerCase().contains(searchString.toLowerCase())) {
-//                            filteredEmployees.add(employee);
-//                        }
-//                    }
-//                }
-//                if(employee instanceof Cashier) {
-//                    if(((Cashier)employee).getSectorName().toLowerCase().contains(searchString.toLowerCase())) {
-//                        filteredEmployees.add(employee);
-//                    }
-//                }
-//            }
-//        }
-//
-//        this.inventoryView.getTable().getSelectionModel().clearSelection();
-//        this.inventoryView.getTable().setItems(filteredEmployees);
-//        this.inventoryView.getSearchField().clear();
 //
 //    }
-//
-//    private void editPermissions() {
-//        Employee emp = inventoryView.getTable().getSelectionModel().getSelectedItem();
-//        if(emp == null) {
-//            Alert alert = new Alert(Alert.AlertType.WARNING);
-//            alert.setTitle("Permissions");
-//            alert.setHeaderText("Select An Employee First!");
-//            alert.show();
-//            return;
-//        }
-//        if(emp instanceof Admin) {
-//            Alert alert = new Alert(Alert.AlertType.WARNING);
-//            alert.setTitle("Permissions");
-//            alert.setHeaderText("You Cannot Edit Admin Permissions!");
-//            alert.show();
-//            return;
-//        }
-//
-//        Stage popup = new Stage();
-//        ListView<Permission> permissionsListView = new ListView<>();
-//        permissionsListView.getItems().setAll(EnumSet.allOf(Permission.class));
-//        if(emp instanceof Manager) {
-//            permissionsListView.getItems().removeFirst();
-//        }
-//        permissionsListView.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
-//        permissionsListView.setMaxHeight(120);
-//        Label perm = new Label("Select Permission");
-//        Button submit = new Button("Submit");
-//        Button cancel = new Button("Cancel");
-//        GridPane grid = new GridPane();
-//        grid.add(perm, 0, 0);
-//        grid.add(permissionsListView,0, 1);
-//        grid.add(submit, 1, 2);
-//        grid.add(cancel, 0, 2);
-//        grid.setHgap(10);
-//        grid.setVgap(10);
-//        grid.setPadding(new Insets(20, 10, 10, 10));
-//        popup.setTitle("Permissions");
-//        popup.setResizable(false);
-//        popup.setScene(new Scene(grid));
-//        popup.show();
-//
-//        submit.setOnAction(e -> {
-//            ObservableList<Permission> permissionsList
-//                    = permissionsListView.getSelectionModel().getSelectedItems();
-//            EnumSet<Permission> permissions;
-//
-//            //if permissions are left default
-//            try {
-//                permissions = EnumSet.copyOf(permissionsList);
-//                emp.setPermissions(permissions);
-//            } catch (IllegalArgumentException ignored) {
-//            }
-//            popup.close();
-//        });
-//
-//        cancel.setOnAction(e -> {
-//            popup.close();
-//        });
-//    }
-//}
+
+
+}
