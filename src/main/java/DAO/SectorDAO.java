@@ -7,6 +7,7 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 
 import java.io.*;
+import java.util.ArrayList;
 
 
 public class SectorDAO {
@@ -19,6 +20,17 @@ public class SectorDAO {
         }
         return sectors;
     }
+
+
+    public ObservableList<Sector> getSectorsByName(ArrayList<String> sectorNames) {
+        ObservableList<Sector> filteredSectors = FXCollections.observableArrayList();
+        for (Sector sector : getSectors()) {
+            if(sectorNames.contains(sector.getSectorName()))
+                filteredSectors.add(sector);
+        }
+        return filteredSectors;
+    }
+
 
     public void loadSectors() {
         try(ObjectInputStream input = new ObjectInputStream(new FileInputStream(SECTOR_FILE))) {

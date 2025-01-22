@@ -2,6 +2,7 @@ package Model;
 
 import Model.Exceptions.InsufficientStockException;
 import Model.Items.Item;
+import Model.Items.Sector;
 import Model.Users.Employee;
 
 import java.io.*;
@@ -17,13 +18,15 @@ public class Bill implements Serializable {
     private final ArrayList<Item> itemList;
     private final ArrayList<Integer> quantities;
     private final Employee cashier;
+    private final String sector;
     private final LocalDateTime billTime;
     private static final DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm:ss");
     private double cost;
     private double revenue;
 
-    public Bill(Employee cashier) {
+    public Bill(Employee cashier, String sector) {
         this.cashier = cashier;
+        this.sector = sector;
         this.billTime = LocalDateTime.now();
         billID = UniqueIDGenerator.getUniqueId();
         this.itemList = new ArrayList<>();
@@ -36,6 +39,10 @@ public class Bill implements Serializable {
 
     public Employee getCashier() {
         return cashier;
+    }
+
+    public String getSector() {
+        return sector;
     }
 
     public ArrayList<Item> getItemList() {

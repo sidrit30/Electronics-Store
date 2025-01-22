@@ -411,10 +411,10 @@ public class ManageEmployeeController {
             alert.show();
             return;
         }
-        if(emp.equals(selectedEmployee)) {
+        if(emp instanceof Admin) {
             Alert alert = new Alert(Alert.AlertType.WARNING);
             alert.setTitle("Permissions");
-            alert.setHeaderText("You Cannot Edit Your Own Permissions!");
+            alert.setHeaderText("You Cannot Edit Admin Permissions!");
             alert.show();
             return;
         }

@@ -5,8 +5,9 @@ public enum Permission {
     //Too late to change it now because serialization and all that
     //Explanation for ambiguous permissions below
 
+    //does nothing for manager and admin due to time constraints
     CREATE_BILL,
-    //view bills created by the user themselves
+    //view bills created in the sector/s, or by the user themselves
     VIEW_BILL,
 
     //view and edit stock per sector

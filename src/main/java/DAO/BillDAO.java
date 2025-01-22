@@ -1,11 +1,13 @@
 package DAO;
 
 import Model.Bill;
+import Model.Users.Employee;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 
 import java.io.*;
-import java.util.List;
+import java.time.LocalDate;
+import java.util.Objects;
 
 public class BillDAO {
     private static final File BILL_FILE = new File("src/main/resources/data/bills.dat");
@@ -17,6 +19,50 @@ public class BillDAO {
         }
         return bills;
     }
+
+    public ObservableList<Bill> getBillsByDate(LocalDate dateFrom, LocalDate dateTo) {
+        ObservableList<Bill> filteredBills = FXCollections.observableArrayList();
+        for (Bill bill : getBills()) {
+            if(bill.getBillTime().getDayOfMonth() >= dateFrom.getDayOfMonth() && bill.getBillTime().getMonthValue() >=
+                    dateFrom.getMonthValue() && bill.getBillTime().getYear() >= dateFrom.getYear()) {
+                    if (bill.getBillTime().getDayOfMonth() <= dateFrom.getDayOfMonth() && bill.getBillTime().getMonthValue() <=
+                            dateTo.getMonthValue() && bill.getBillTime().getYear() <= dateTo.getYear())
+                        filteredBills.add(bill);
+            }
+        }
+        return filteredBills;
+    }
+
+    public ObservableList<Bill> getBillsByEmployee(Employee employee) {
+        ObservableList<Bill> filteredBills = FXCollections.observableArrayList();
+        for (Bill bill : getBills()) {
+            if(Objects.equals(bill.getCashier().getId(), employee.getId())) {
+                filteredBills.add(bill);
+            }
+        }
+        return filteredBills;
+    }
+
+    public ObservableList<Bill> getBillsBySectors(ObservableList<String> sectorNames) {
+        ObservableList<Bill> filteredBills = FXCollections.observableArrayList();
+        for (Bill bill : getBills()) {
+            if(sectorNames.contains(bill.getSector())) {
+                filteredBills.add(bill);
+            }
+        }
+        return filteredBills;
+    }
+
+    public ObservableList<Bill> getBillsBySector(String sectorName) {
+        ObservableList<Bill> filteredBills = FXCollections.observableArrayList();
+        for (Bill bill : getBills()) {
+            if(bill.getSector().equals(sectorName)) {
+                filteredBills.add(bill);
+            }
+        }
+        return filteredBills;
+    }
+
 
     public void loadBills() {
         try(ObjectInputStream input = new ObjectInputStream(new FileInputStream(BILL_FILE))) {
@@ -55,19 +101,6 @@ public class BillDAO {
                 }
             }
             bills.remove(bill);
-            return true;
-        } catch (IOException e) {
-            return false;
-        }
-    }
-
-    public boolean deleteList(List<Bill> list) {
-        try(ObjectOutputStream output = new ObjectOutputStream(new FileOutputStream(BILL_FILE))) {
-            for (Bill b : bills) {
-                if(!list.contains(b))
-                    output.writeObject(b);
-            }
-            bills.remove(list);
             return true;
         } catch (IOException e) {
             return false;
