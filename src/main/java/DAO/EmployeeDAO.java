@@ -52,6 +52,15 @@ public class EmployeeDAO {
         }
     }
 
+    public Employee getEmployeebyID(String id){
+        for(Employee employee : getEmployees()) {
+            if(employee.getId().equals(id)) {
+                return employee;
+            }
+        }
+        return null;
+    }
+
     public boolean validUsername(String username) {
         for (Employee emp : getEmployees()) {
             if (emp.getUsername().equals(username))

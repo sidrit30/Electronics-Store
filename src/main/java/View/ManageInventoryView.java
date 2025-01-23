@@ -17,6 +17,7 @@ public class ManageInventoryView extends VBox {
     private final TableView<Item> table = new TableView<>();
     private final TableColumn<Item, String> itemIdCol;
     private final TableColumn<Item, String> itemNameCol;
+    private final TableColumn<Item, String> itemSectorCol;
     private final TableColumn<Item, String> itemCategoryCol;
     private final TableColumn<Item, String> supplierNameCol;
     private final TableColumn<Item, Double> purchasePriceCol;
@@ -60,6 +61,10 @@ public class ManageInventoryView extends VBox {
         itemNameCol.setCellValueFactory(new PropertyValueFactory<>("itemName"));
         itemNameCol.setStyle("-fx-alignment: CENTER;");
 
+        itemSectorCol = new TableColumn<>("Sector");
+        itemSectorCol.setCellValueFactory(new PropertyValueFactory<>("sectorName"));
+        itemSectorCol.setStyle("-fx-alignment: CENTER;");
+
         itemCategoryCol = new TableColumn<>("Category");
         itemCategoryCol.setCellValueFactory(new PropertyValueFactory<>("itemCategory"));
         itemCategoryCol.setStyle("-fx-alignment: CENTER;");
@@ -92,6 +97,7 @@ public class ManageInventoryView extends VBox {
 
         table.getColumns().add(itemIdCol);
         table.getColumns().add(itemNameCol);
+        table.getColumns().add(itemSectorCol);
         table.getColumns().add(itemCategoryCol);
         table.getColumns().add(supplierNameCol);
         table.getColumns().add(purchasePriceCol);

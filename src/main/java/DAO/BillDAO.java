@@ -46,7 +46,7 @@ public class BillDAO {
     public ObservableList<Bill> getBillsBySectors(ObservableList<String> sectorNames) {
         ObservableList<Bill> filteredBills = FXCollections.observableArrayList();
         for (Bill bill : getBills()) {
-            if(sectorNames.contains(bill.getSector())) {
+            if(sectorNames.contains(bill.getCashier().getSectorName())) {
                 filteredBills.add(bill);
             }
         }
@@ -56,8 +56,9 @@ public class BillDAO {
     public ObservableList<Bill> getBillsBySector(String sectorName) {
         ObservableList<Bill> filteredBills = FXCollections.observableArrayList();
         for (Bill bill : getBills()) {
-            if(bill.getSector().equals(sectorName)) {
+            if(bill.getCashier().getSectorName().equals(sectorName)) {
                 filteredBills.add(bill);
+                System.out.println(bill.getCashier().getFullName());
             }
         }
         return filteredBills;

@@ -111,7 +111,12 @@ public class ManageEmployeeTableView extends VBox {
         usernameCol.setStyle("-fx-alignment: CENTER;");
 
         passwordCol = new TableColumn<>("Password");
-        passwordCol.setCellValueFactory(new PropertyValueFactory<>("password"));
+        passwordCol.setCellValueFactory(cellData -> {
+            //hide password
+            StringBuilder hiddenPassword = new StringBuilder();
+            hiddenPassword.repeat('•', cellData.getValue().getPassword().length());
+            return new javafx.beans.property.SimpleStringProperty(hiddenPassword.toString());
+        });
         passwordCol.setCellFactory(TextFieldTableCell.forTableColumn());
         passwordCol.setStyle("-fx-alignment: CENTER;");
 

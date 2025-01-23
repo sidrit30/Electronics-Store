@@ -23,6 +23,7 @@ public class ManageBillController {
     private ItemDAO itemDAO;
     private EmployeeDAO employeeDAO;
     private ManageBillView manageBillView;
+    private ObservableList<Bill> bills;
 
     public ManageBillView getManageBillView() {
         return manageBillView;
@@ -35,22 +36,7 @@ public class ManageBillController {
         this.employeeDAO = new EmployeeDAO();
         this.manageBillView = new ManageBillView(employee);
 
-
-        if(employee instanceof Admin) {
-            manageBillView.getTable().setItems(billDAO.getBills());
-            manageBillView.getSectorFilter().getItems().add("All Sectors");
-            manageBillView.getSectorFilter().getItems().addAll(itemDAO.getSectorNames());
-        }
-
-        if(employee instanceof Manager) {
-            manageBillView.getTable().setItems(billDAO.getBillsBySectors(((Manager)employee).getSectors()));
-            manageBillView.getSectorFilter().getItems().addAll(((Manager)employee).getSectors());
-        }
-
-        if(employee instanceof Cashier) {
-            manageBillView.getTable().setItems(billDAO.getBillsByEmployee(employee));
-            manageBillView.getSectorFilter().getItems().add(employee.getSectorName());
-        }
+        loadData();
 
         manageBillView.getViewDetailsButton().setOnAction(e -> viewBillDetails());
         manageBillView.getSectorFilter().setOnAction(e -> filterSector());
@@ -60,8 +46,7 @@ public class ManageBillController {
 
     private void searchCashier() {
         String searchString = manageBillView.getSearchField().getText();
-        filterSector();
-        ObservableList<Bill> bills = FXCollections.observableArrayList(manageBillView.getTable().getItems());
+        //filterSector();
         ObservableList<Bill> filteredEmployees = FXCollections.observableArrayList();
 
         for (Bill bill : bills) {
@@ -69,6 +54,7 @@ public class ManageBillController {
                 filteredEmployees.add(bill);
             }
         }
+        manageBillView.getTable().getItems().clear();
         manageBillView.getTable().setItems(filteredEmployees);
     }
 
@@ -93,18 +79,17 @@ public class ManageBillController {
 
     private void filterSector() {
         String sectorFilter = manageBillView.getSectorFilter().getSelectionModel().getSelectedItem();
-        manageBillView.getTable().getSelectionModel().clearSelection();
-        if(sectorFilter == null) {
-            return;
-        }
+        System.out.println(sectorFilter);
         if(sectorFilter.equals("All Sectors")) {
             manageBillView.getTable().setItems(billDAO.getBills());
-            manageBillView.getSectorFilter().getSelectionModel().clearSelection();
-            return;
+//            manageBillView.getSectorFilter().getSelectionModel().clearSelection();
         }
-        ObservableList<Bill> bills = FXCollections.observableArrayList(billDAO.getBillsBySector(sectorFilter));
-        manageBillView.getTable().setItems(bills);
-        manageBillView.getSectorFilter().getSelectionModel().clearSelection();
+        else {
+            //added to new observable list to not get null pointer exception
+            ObservableList<Bill> filteredBills = FXCollections.observableArrayList(billDAO.getBillsBySector(sectorFilter));
+            manageBillView.getTable().setItems(filteredBills);
+//            manageBillView.getSectorFilter().getSelectionModel().clearSelection();
+        }
     }
 
     private void viewBillDetails() {
@@ -123,5 +108,23 @@ public class ManageBillController {
         popUpWindow.show();
         ok.setOnAction(e -> popUpWindow.close());
 
+    }
+
+    private void loadData() {
+        if(employee instanceof Admin) {
+            bills = FXCollections.observableArrayList(billDAO.getBills());
+            manageBillView.getSectorFilter().getItems().add("All Sectors");
+            manageBillView.getSectorFilter().getItems().addAll(itemDAO.getSectorNames());
+        }
+
+        if(employee instanceof Manager) {
+            bills = FXCollections.observableArrayList(billDAO.getBillsBySectors(((Manager)employee).getSectors()));
+            manageBillView.getSectorFilter().getItems().addAll(((Manager)employee).getSectors());
+        }
+
+        if(employee instanceof Cashier) {
+            bills = FXCollections.observableArrayList(billDAO.getBillsByEmployee(employee));
+            manageBillView.getSectorFilter().setVisible(false);
+        }
     }
 }

@@ -336,7 +336,8 @@ public class ManageEmployeeController {
                 return;
             }
 
-            employeeDAO.getEmployees().get(e.getTablePosition().getRow()).setUsername(username);
+            employeeDAO.getEmployeebyID(e.getRowValue().getId()).setUsername(username);
+            e.getTableView().refresh();
         });
         this.employeeTableView.getPasswordCol().setOnEditCommit(e -> {
             String password = e.getNewValue();
@@ -344,19 +345,24 @@ public class ManageEmployeeController {
                 employeeTableView.showErrorAlert("Password must be between 4 and 20 characters.");
                 return;
             }
-            employeeDAO.getEmployees().get(e.getTablePosition().getRow()).setPassword(password);
+            employeeDAO.getEmployeebyID(e.getRowValue().getId()).setPassword(password);
+            e.getTableView().refresh();
         });
         this.employeeTableView.getEmailCol().setOnEditCommit(e -> {
-            employeeDAO.getEmployees().get(e.getTablePosition().getRow()).setEmail(e.getNewValue());
+            employeeDAO.getEmployeebyID(e.getRowValue().getId()).setEmail(e.getNewValue());
+            e.getTableView().refresh();
         });
         this.employeeTableView.getAddressCol().setOnEditCommit(e -> {
-            employeeDAO.getEmployees().get(e.getTablePosition().getRow()).setAddress(e.getNewValue());
+            employeeDAO.getEmployeebyID(e.getRowValue().getId()).setAddress(e.getNewValue());
+            e.getTableView().refresh();
         });
         this.employeeTableView.getPhoneNumberCol().setOnEditCommit(e -> {
-            employeeDAO.getEmployees().get(e.getTablePosition().getRow()).setPhone(e.getNewValue());
+            employeeDAO.getEmployeebyID(e.getRowValue().getId()).setPhone(e.getNewValue());
+            e.getTableView().refresh();
         });
         this.employeeTableView.getSalaryCol().setOnEditCommit(e -> {
-            employeeDAO.getEmployees().get(e.getTablePosition().getRow()).setSalary(e.getNewValue());
+            employeeDAO.getEmployeebyID(e.getRowValue().getId()).setSalary(e.getNewValue());
+            e.getTableView().refresh();
         });
     }
 
@@ -376,6 +382,9 @@ public class ManageEmployeeController {
         String criteria = this.employeeTableView.getSearchBy().getSelectionModel().getSelectedItem();
 
         if(criteria.equals("Full Name")) {
+            //not used anymore
+            //used to make table not editable
+//            employeeTableView.getTable().setEditable((searchString.isEmpty()));
             for (Employee employee : employeeDAO.getEmployees()) {
                 if (employee.getFullName().toLowerCase().contains(searchString.toLowerCase())) {
                     filteredEmployees.add(employee);

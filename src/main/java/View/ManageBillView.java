@@ -4,6 +4,7 @@ import Model.Bill;
 import Model.Users.Employee;
 import javafx.collections.ObservableList;
 import javafx.geometry.Insets;
+import javafx.geometry.Pos;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.HBox;
@@ -13,6 +14,7 @@ public class ManageBillView extends VBox {
     private TableView<Bill> table = new TableView<>();
     private TableColumn<Bill, String> billIdCol;
     private TableColumn<Bill, String> billDateCol;
+    private TableColumn<Bill, String> billSectorCol;
     private TableColumn<Bill, String> cashierCol;
     private TableColumn<Bill, String> totalRevenueCol;
     private TableColumn<Bill, String> costCol;
@@ -35,6 +37,7 @@ public class ManageBillView extends VBox {
 
         // TableView setup
         table.setPlaceholder(new Label("No content in table"));
+        table.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
         table.setEditable(false);
 
         // Columns
@@ -50,17 +53,25 @@ public class ManageBillView extends VBox {
         cashierCol.setCellValueFactory(new PropertyValueFactory<>("cashier"));
         cashierCol.setStyle("-fx-alignment: CENTER;");
 
+        billSectorCol = new TableColumn<>("Sector");
+        billSectorCol.setCellValueFactory(cellData -> {
+            String sector = cellData.getValue().getCashier().getSectorName();
+            return new javafx.beans.property.SimpleStringProperty(sector);
+        });
+        billSectorCol.setStyle("-fx-alignment: CENTER;");
+
         totalRevenueCol = new TableColumn<>("Total Revenue");
         totalRevenueCol.setCellValueFactory(new PropertyValueFactory<>("revenue"));
-        setStyle("-fx-alignment: CENTER;");
+        totalRevenueCol.setStyle("-fx-alignment: CENTER;");
 
         costCol = new TableColumn<>("Cost");
         costCol.setCellValueFactory(new PropertyValueFactory<>("cost"));
-        setStyle("-fx-alignment: CENTER;");
+        costCol.setStyle("-fx-alignment: CENTER;");
 
         table.getColumns().add(billIdCol);
         table.getColumns().add(billDateCol);
         table.getColumns().add(cashierCol);
+        table.getColumns().add(billSectorCol);
         table.getColumns().add(totalRevenueCol);
         table.getColumns().add(costCol);
 
@@ -73,12 +84,13 @@ public class ManageBillView extends VBox {
         filterBox = new HBox(10, sectorFilter, searchField, searchCashierButton ,new Label("From:"), dateFrom, new Label("To:"), dateTo, searchButton);
         filterBox.setPadding(new Insets(10));
 
-        HBox buttonBox = new HBox(10, viewDetailsButton);
-        buttonBox.setPadding(new Insets(10));
+        HBox buttonBox = new HBox(5, viewDetailsButton);
 
-        VBox topBox = new VBox(10, filterBox, buttonBox);
+        VBox topBox = new VBox(5, filterBox, buttonBox);
 
         this.getChildren().addAll(topBox, table);
+        this.setPadding(new Insets(20));
+        this.setAlignment(Pos.CENTER_LEFT);
     }
 
     public TableView<Bill> getTable() {
