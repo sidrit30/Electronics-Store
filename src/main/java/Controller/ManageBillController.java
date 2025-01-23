@@ -63,7 +63,6 @@ public class ManageBillController {
         LocalDate dateTo = manageBillView.getDateTo().getValue();
         filterSector();
         ObservableList<Bill> billsInTable = FXCollections.observableArrayList(manageBillView.getTable().getItems());
-        System.out.println(billsInTable);
         manageBillView.getTable().getItems().clear();
         //this looks atrocious, but I can't find a better way rn
         for (Bill bill : billsInTable) {
@@ -82,13 +81,11 @@ public class ManageBillController {
         System.out.println(sectorFilter);
         if(sectorFilter.equals("All Sectors")) {
             manageBillView.getTable().setItems(billDAO.getBills());
-//            manageBillView.getSectorFilter().getSelectionModel().clearSelection();
         }
         else {
             //added to new observable list to not get null pointer exception
             ObservableList<Bill> filteredBills = FXCollections.observableArrayList(billDAO.getBillsBySector(sectorFilter));
             manageBillView.getTable().setItems(filteredBills);
-//            manageBillView.getSectorFilter().getSelectionModel().clearSelection();
         }
     }
 
@@ -124,7 +121,7 @@ public class ManageBillController {
 
         if(employee instanceof Cashier) {
             bills = FXCollections.observableArrayList(billDAO.getBillsByEmployee(employee));
-            manageBillView.getSectorFilter().setVisible(false);
+            //manageBillView.getSectorFilter().setVisible(false);
         }
     }
 }

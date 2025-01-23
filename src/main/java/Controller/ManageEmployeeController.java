@@ -69,10 +69,10 @@ public class ManageEmployeeController {
             return;
         }
 
-        if(emp.equals(selectedEmployee)) {
+        if(emp instanceof Admin) {
             Alert alert = new Alert(Alert.AlertType.WARNING);
             alert.setTitle("Sector");
-            alert.setHeaderText("You Cannot Edit Your Own Sectors!");
+            alert.setHeaderText("You Cannot Edit Admin Sectors!");
             alert.show();
             return;
         }
@@ -173,7 +173,7 @@ public class ManageEmployeeController {
 
             //if permissions are left default
             try {
-                permissions = EnumSet.copyOf(permissionsList);
+                 permissions = EnumSet.copyOf(permissionsList);
             } catch (IllegalArgumentException e) {
                 permissions = EnumSet.noneOf(Permission.class);
             }
@@ -324,7 +324,6 @@ public class ManageEmployeeController {
     }
 
     private void setEditListeners() {
-
         this.employeeTableView.getUsernameCol().setOnEditCommit(e -> {
             String username = e.getNewValue();
             if(username == null || username.length() < 4 || username.length() > 20) {

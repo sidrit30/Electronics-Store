@@ -54,6 +54,8 @@ public class PerformanceView extends VBox {
         gridPane.add(totalCostTextField, 1, 1);
         gridPane.add(totalRevenueLabel, 0, 2);
         gridPane.add(totalRevenueTextField, 1, 2);
+        gridPane.add(totalProfitLabel, 0, 3);
+        gridPane.add(totalProfitTextField, 1, 3);
 
         // Layout configuration
         setSpacing(10);

@@ -11,7 +11,7 @@ import javafx.scene.control.ButtonType;
 
 public class ManagerController {
     public ManagerController(Employee emp) {
-        System.out.println(((Manager)emp).getSectors());
+//        System.out.println(((Manager)emp).getSectors());
         ObservableList<Item> lowStock = FXCollections.observableArrayList();
         ItemDAO dao = new ItemDAO();
         for(Item i: dao.getItemsBySectors(((Manager)emp).getSectors())) {

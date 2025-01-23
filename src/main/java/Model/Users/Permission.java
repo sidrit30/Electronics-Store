@@ -23,6 +23,6 @@ public enum Permission {
     //Old name, now used for Statistics View
     PERFORMANCE_SECTOR,
 
-    //Old name, now used for more details in Statistic View
+    //Old name, not used at all
     PERFORMANCE_ALL;
 }

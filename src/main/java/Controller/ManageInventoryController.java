@@ -141,7 +141,7 @@ public class ManageInventoryController {
         try {
             Integer.parseInt(inventoryView.getAddQuantity().getText());
         } catch (NumberFormatException e) {
-            inventoryView.showErrorAlert("Quantity must be a positive number.");
+            inventoryView.showErrorAlert("Quantity must be a positive integer.");
             return false;
         }
 
@@ -181,49 +181,39 @@ public class ManageInventoryController {
     }
 
     private void setEditListeners() {
-        if(selectedEmployee instanceof Admin) {
-            inventoryView.getPurchasePriceCol().setOnEditCommit(event -> {
-                itemDAO.getItems().get(event.getTablePosition().getRow()).setPurchasePrice(event.getNewValue());
-            });
+        inventoryView.getPurchasePriceCol().setOnEditCommit(event -> {
+            itemDAO.getItemByID(event.getRowValue().getItemID()).setPurchasePrice(event.getNewValue());
+            inventoryView.getTable().refresh();
+        });
 
-            inventoryView.getSellPriceCol().setOnEditCommit(event -> {
-                itemDAO.getItems().get(event.getTablePosition().getRow()).setSellingPrice(event.getNewValue());
-            });
+        inventoryView.getSellPriceCol().setOnEditCommit(event -> {
+            itemDAO.getItemByID(event.getRowValue().getItemID()).setSellingPrice(event.getNewValue());
+            inventoryView.getTable().refresh();
 
-            inventoryView.getQuantityCol().setOnEditCommit(event -> {
-                itemDAO.getItems().get(event.getTablePosition().getRow()).setQuantity(event.getNewValue());
-            });
+        });
 
-            inventoryView.getSupplierNameCol().setOnEditCommit(event -> {
-                itemDAO.getItems().get(event.getTablePosition().getRow()).setSupplier(event.getNewValue());
-            });
+        inventoryView.getQuantityCol().setOnEditCommit(event -> {
+            if(event.getNewValue() < event.getOldValue()) {
+                Alert alert = new Alert(Alert.AlertType.INFORMATION);
+                alert.setTitle("Warning");
+                alert.setHeaderText("Can't decrease item quantity!");
+                alert.show();
+                return;
+            }
+            itemDAO.getItemByID(event.getRowValue().getItemID()).setQuantity(event.getNewValue());
+            inventoryView.getTable().refresh();
 
-            inventoryView.getDescriptionCol().setOnEditCommit(event -> {
-                itemDAO.getItems().get(event.getTablePosition().getRow()).setItemDescription(event.getNewValue());
-            });
-        } else {
-            inventoryView.getPurchasePriceCol().setOnEditCommit(event -> {
-                itemDAO.getItemsBySectors(((Manager)selectedEmployee).getSectors()).get(event.getTablePosition().getRow()).setPurchasePrice(event.getNewValue());
-            });
+        });
 
-            inventoryView.getSellPriceCol().setOnEditCommit(event -> {
-                itemDAO.getItemsBySectors(((Manager)selectedEmployee).getSectors()).get(event.getTablePosition().getRow()).setSellingPrice(event.getNewValue());
-            });
+        inventoryView.getSupplierNameCol().setOnEditCommit(event -> {
+            itemDAO.getItemByID(event.getRowValue().getItemID()).setSupplier(event.getNewValue());
+            inventoryView.getTable().refresh();
+        });
 
-            inventoryView.getQuantityCol().setOnEditCommit(event -> {
-                itemDAO.getItemsBySectors(((Manager)selectedEmployee).getSectors()).get(event.getTablePosition().getRow()).setQuantity(event.getNewValue());
-            });
-
-            inventoryView.getSupplierNameCol().setOnEditCommit(event -> {
-                itemDAO.getItemsBySectors(((Manager)selectedEmployee).getSectors()).get(event.getTablePosition().getRow()).setSupplier(event.getNewValue());
-            });
-
-            inventoryView.getDescriptionCol().setOnEditCommit(event -> {
-                itemDAO.getItemsBySectors(((Manager)selectedEmployee).getSectors()).get(event.getTablePosition().getRow()).setItemDescription(event.getNewValue());
-            });
-        }
-
-
+        inventoryView.getDescriptionCol().setOnEditCommit(event -> {
+            itemDAO.getItemByID(event.getRowValue().getItemID()).setItemDescription(event.getNewValue());
+            inventoryView.getTable().refresh();
+        });
     }
 
 //    private void setSearchListener() {

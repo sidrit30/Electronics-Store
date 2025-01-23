@@ -70,8 +70,8 @@ public class PerformanceController {
             double totalCost = 0;
             double totalRevenue = 0;
             for(Bill bill : filteredBills) {
-                totalCost +=bill.getCost();
-                totalRevenue +=bill.getRevenue();
+                totalCost += bill.getCost();
+                totalRevenue += bill.getRevenue();
             }
 
             performanceView.getTotalCostTextField().setText(String.valueOf(totalCost));

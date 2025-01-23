@@ -6,6 +6,7 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 
 import java.io.*;
+import java.util.List;
 
 public class ItemDAO {
     private static final File ITEM_FILE = new File("src/main/resources/data/items.dat");
@@ -122,4 +123,11 @@ public class ItemDAO {
         return categories;
     }
 
+    public Item getItemByID(String id) {
+        for(Item item : getItems()) {
+            if(item.getItemID().equals(id))
+                return item;
+        }
+        return null;
+    }
 }

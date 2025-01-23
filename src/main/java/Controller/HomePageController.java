@@ -50,7 +50,6 @@ public class HomePageController {
         homePage.setCenter(gridPane);
         buttons.getHomeButton().setVisible(true);
         buttons.getHomeButton().setOnAction(e -> welcomeView());
-
     }
 
     private void logout() {
@@ -68,7 +67,6 @@ public class HomePageController {
         buttons.getButtons().get(2).setOnAction(event -> inventoryManagement());
         buttons.getButtons().get(3).setOnAction(e -> employeeManagement());
         buttons.getButtons().get(4).setOnAction(event -> performance());
-
     }
 
     private void performance() {

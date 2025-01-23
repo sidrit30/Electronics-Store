@@ -51,7 +51,6 @@ public class LoginController {
             emp = employeeDAO.authLogin(username, password);
             System.out.println("Login Successful");
             Scene homeScene = new Scene(new HomePageController(emp).getHomePage());
-            //Scene test = new Scene(new ManageEmployeeController(emp).getManageEmployeeTableView());
             Stage oldStage = (Stage) loginPage.getScene().getWindow();
             oldStage.close();
             Stage primaryStage = new Stage();

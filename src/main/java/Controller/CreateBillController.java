@@ -41,8 +41,8 @@ public class CreateBillController {
 
        setSearchListeners();
        //get all the items from the sector of the current employee
-        System.out.println(employee.getSectorName());
-       ObservableList<Item> items = (itemDAO.getItemsBySector(employee.getSectorName()));
+//        System.out.println(employee.getSectorName());
+       ObservableList<Item> items = FXCollections.observableArrayList(itemDAO.getItemsBySector(employee.getSectorName()));
        if(items != null)
            view.getItemTable().setItems(items);
        view.getAddItemButton().setOnAction(event -> addItemToBill());

@@ -36,7 +36,7 @@ public class ManageBillView extends VBox {
     public ManageBillView(Employee employee) {
 
         // TableView setup
-        table.setPlaceholder(new Label("No content in table"));
+        //table.setPlaceholder(new Label("No content in table"));
         table.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
         table.setEditable(false);
 
@@ -75,21 +75,22 @@ public class ManageBillView extends VBox {
         table.getColumns().add(totalRevenueCol);
         table.getColumns().add(costCol);
 
-        sectorFilter.setPromptText("Select sector");
+        sectorFilter.getSelectionModel().selectFirst();
 
         dateFrom.setPromptText("From:");
         dateTo.setPromptText("To:");
 
         // Layout
         filterBox = new HBox(10, sectorFilter, searchField, searchCashierButton ,new Label("From:"), dateFrom, new Label("To:"), dateTo, searchButton);
-        filterBox.setPadding(new Insets(10));
+        filterBox.setPadding(new Insets(5));
 
         HBox buttonBox = new HBox(5, viewDetailsButton);
+        buttonBox.setPadding(new Insets(5));
 
         VBox topBox = new VBox(5, filterBox, buttonBox);
 
         this.getChildren().addAll(topBox, table);
-        this.setPadding(new Insets(20));
+        this.setPadding(new Insets(10));
         this.setAlignment(Pos.CENTER_LEFT);
     }
 
