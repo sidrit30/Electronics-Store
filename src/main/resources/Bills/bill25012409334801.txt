@@ -1,0 +1,15 @@
+Bill Details:
+--------------------------------------------------
+Bill Date: 2025/01/24 09:33:48
+Cashier: Jurgen Hila
+--------------------------------------------------
+Item: Pico Neo 2
+ Quantity: 1
+ Item Price: 700.00
+ Total: 700.00
+Item: Valve Index
+ Quantity: 3
+ Item Price: 1000.00
+ Total: 3000.00
+--------------------------------------------------
+Total: 3700.00
