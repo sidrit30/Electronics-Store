@@ -37,6 +37,7 @@ public class ManageBillController {
         this.manageBillView = new ManageBillView(employee);
 
         loadData();
+        manageBillView.getTable().setItems(bills);
 
         manageBillView.getViewDetailsButton().setOnAction(e -> viewBillDetails());
         manageBillView.getSectorFilter().setOnAction(e -> filterSector());
@@ -121,7 +122,7 @@ public class ManageBillController {
 
         if(employee instanceof Cashier) {
             bills = FXCollections.observableArrayList(billDAO.getBillsByEmployee(employee));
-            //manageBillView.getSectorFilter().setVisible(false);
+            manageBillView.getSectorFilter().setDisable(true);
         }
     }
 }

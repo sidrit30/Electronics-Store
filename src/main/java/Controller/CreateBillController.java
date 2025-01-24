@@ -131,7 +131,7 @@ public class CreateBillController {
         Alert alert = new Alert(Alert.AlertType.INFORMATION);
         alert.setTitle(title);
         alert.setContentText(message);
-        alert.showAndWait();
+        alert.show();
     }
 
 

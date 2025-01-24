@@ -187,7 +187,7 @@ public class ManageInventoryView extends VBox {
         Alert alert = new Alert(Alert.AlertType.ERROR, message, ButtonType.OK);
         alert.setHeaderText(message);
         alert.setTitle("Error");
-        alert.showAndWait();
+        alert.show();
     }
 
     public TableView<Item> getTable() {

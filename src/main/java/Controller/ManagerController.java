@@ -28,7 +28,7 @@ public class ManagerController {
             }
             items.setLength(items.length() - 2);
             alert.setHeaderText("Low Stock for these items: " + items + "!");
-            alert.showAndWait();
+            alert.show();
         }
     }
 }
