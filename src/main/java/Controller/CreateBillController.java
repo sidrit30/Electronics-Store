@@ -36,6 +36,7 @@ public class CreateBillController {
        this.view = new CreateBillView();
        this.billDAO = new BillDAO();
        this.bill = new Bill(employee, employee.getSectorName());
+       billDAO.getBills();
        this.itemDAO = new ItemDAO();
        this.employee = employee;
 
@@ -105,9 +106,10 @@ public class CreateBillController {
             return;
         }
         showAlert("Success", "Bill saved and printed successfully");
+        bill.saveBillToFile();
         billDAO.createBill(bill);
         itemDAO.UpdateAll();
-        bill.saveBillToFile();
+
         bill = new Bill(employee, employee.getSectorName());
         view.getBillTable().getItems().clear();
     }

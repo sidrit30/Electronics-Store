@@ -8,6 +8,7 @@ import Model.Users.Manager;
 import View.LoginPage;
 import javafx.event.ActionEvent;
 import javafx.scene.Scene;
+import javafx.scene.image.Image;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.stage.Stage;
@@ -60,6 +61,7 @@ public class LoginController {
             primaryStage.setY(VISUAL_BOUNDS.getMinY());
             primaryStage.setWidth(VISUAL_BOUNDS.getWidth());
             primaryStage.setHeight(VISUAL_BOUNDS.getHeight());
+            primaryStage.getIcons().add(new Image("file:src/main/resources/images/appIcon.jpg"));
             primaryStage.show();
 
             if(emp instanceof Manager) {

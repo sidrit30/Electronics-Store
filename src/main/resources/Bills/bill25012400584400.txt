@@ -1,0 +1,15 @@
+Bill Details:
+--------------------------------------------------
+Bill Date: 2025/01/24 00:58:44
+Cashier: Flori Mumajesi
+--------------------------------------------------
+Item: KitchenAid Mixer
+ Quantity: 2
+ Item Price: 350.00
+ Total: 700.00
+Item: LG Microwave
+ Quantity: 1
+ Item Price: 200.00
+ Total: 200.00
+--------------------------------------------------
+Total: 900.00
