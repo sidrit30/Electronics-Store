@@ -1,9 +1,0 @@
-exceptions (incorrect username or password etc.)
-//duhet perdor regex
-
-search profiles
-
-deciding sectors and categories
-
-
-logs (bit later)
