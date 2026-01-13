@@ -20,22 +20,15 @@ public class Launcher extends Application {
     public static final String PATH = "src/main/resources";
 
     public static void main(String[] args) {
-        //checkDirectory();
-        launch(args);
-    }
-
-    private static void checkDirectory() {
-        if(new File(PATH).mkdirs()) {
+        if(new File(PATH + File.separator + "data").mkdirs()) {
             loadInitial();
         }
+        launch(args);
     }
 
     //load initial items and a single admin
     private static void loadInitial() {
-        File test = new File(PATH + File.separator + "data");
-        test.mkdirs();
-        System.out.println(test);
-        new File(PATH + File.separator + "Bills").mkdirs();
+        new File(PATH + File.separator + "data" + File.separator + "Bills").mkdirs();
         EmployeeDAO dao = new EmployeeDAO();
         dao.createEmployee(new Admin("", "Admin", "admin", "admin", 1));
         Item[] demoItems = {
