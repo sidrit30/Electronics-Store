@@ -1,0 +1,13 @@
+--type msi
+--name "Jupiter"
+--win-menu
+--win-menu-group "sidrit30"
+--vendor "sidrit30"
+--icon "C:\\Users\\User\\IdeaProjects\\Electronics-Store\\jupiterIcon.ico"
+--dest "C:\\Users\\User\\IdeaProjects\\Electronics-Store\\target"
+--main-jar electronicsstore-1.1-SNAPSHOT.jar
+--main-class Main.Launcher
+--input "C:\\Users\\User\\IdeaProjects\\Electronics-Store\\target\\dependency"
+--app-version "1.0.0"
+--runtime-image "C:\\Users\\User\\IdeaProjects\\Electronics-Store\\target\\jvm-image"
+--temp "C:\\Users\\User\\IdeaProjects\\Electronics-Store\\target\\installer-work"
