@@ -20,7 +20,7 @@ public class Launcher extends Application {
     public static final String PATH = "src/main/resources";
 
     public static void main(String[] args) {
-        if(new File(PATH + File.separator + "data").mkdirs()) {
+        if(new File(PATH).mkdirs()) {
             loadInitial();
         }
         launch(args);
@@ -28,7 +28,8 @@ public class Launcher extends Application {
 
     //load initial items and a single admin
     private static void loadInitial() {
-        new File(PATH + File.separator + "data" + File.separator + "Bills").mkdirs();
+        new File(PATH + File.separator + "data").mkdirs();
+        new File(PATH + File.separator + "Bills").mkdirs();
         EmployeeDAO dao = new EmployeeDAO();
         dao.createEmployee(new Admin("", "Admin", "admin", "admin", 1));
         Item[] demoItems = {
@@ -108,3 +109,4 @@ public class Launcher extends Application {
         primaryStage.show();
     }
 }
+
