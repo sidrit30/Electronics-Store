@@ -1,0 +1,43 @@
+Testing plan:
+
+1. Static planning:
+Per static testing, secili do marri persiper nje package,
+do analizoje cdo file me sonarqube dhe do hedhi gjith bugsat qe dalin te ky spreadsheeti:
+https://docs.google.com/spreadsheets/d/10NazmMQEauUWqolKoPeQCU-es5bcPaeK737m2KSiByY/edit?usp=sharing
+Bugsat pastaj pasi te jen shenuar tgjitha do flasim cilat do rregullojm.
+Packages - Member:
+View - Juri & Enea
+Model - Xhois
+Controller - Orgest
+DAO - Sidrit
+
+
+2. Testing analysis:
+Secili do zgjedhi 3 metoda dhe do beje:
+Boundary Value Testing
+Equivalence Class Testing
+Code Coverage
+Me shum info keni te project guidelines, metoda mund te merrni cila te doni, po un ju sugjeroj ti merrni nga modeli.
+Kur ta vendosi njeri cfar metode do behet pls shenojeni te file "testing analysis.txt"
+Per secilen nga pikat duhet ta dokumentoni punen dhe rezultatin, krijoni nje google docs Testing_Analysis_Emri
+dhe kur ta mbaroni hidheni te folderi Testing Analysis Docs.
+
+3. Unit testing, integration testing, system testing
+unit testing do behet duke shkruajtur junit tests per gjith classes ne nji package, pervec view:
+Packages - Member:
+Model - Jurgen & Xhois
+Controller - Sidrit
+DAO - Orgest & Enea
+(punen ndajeni bashk si ta keni me mir)
+
+Me integration testing do merremi pasi te jen mbaruar kto te tjerat, po pak a shum do bejm ca mock classes dhe do testojm controller dhe model bashk, ose controller dhe view.
+Per system testing do bejm screen record demonstrating functionalities. psh:
+Krijo fatur,
+Printo fatur,
+Shto item,
+Hiq item,
+Krijo employee,
+Hiq employee etj.
+
+
+

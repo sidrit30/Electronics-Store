@@ -79,7 +79,6 @@ public class CreateBillController {
             if (selectedItem == null) {
                 showAlert("Error", "No item selected!");
             }
-            System.out.println(selectedItem.getItemCategory());
             int quantity = Integer.parseInt(view.getQuantityField().getText());
             if(quantity <= 0) {
                 showAlert("Error", "Quantity must be greater than 0!");
