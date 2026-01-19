@@ -1,0 +1,63 @@
+Project-wide (Java module / JavaFX configuration):
+- [SonarLint] Multiple View and Controller classes report warnings such as:
+  "The type <X> from module javafx.controls/javafx.graphics may not be accessible to clients due to missing 'requires transitive'".
+  This indicates incomplete JavaFX module declarations in module-info.java.
+  Suggested fix: review module-info.java and add appropriate 'requires' or 'requires transitive' statements for JavaFX modules.
+
+-Controller package-
+
+src/main/java/Controller/LoginController.java:
+- [SonarLint] Line 17: The import 'java.io.File' is never used.
+- [SonarLint] Line 19: The import 'Main.Launcher.PATH' is never used.
+
+src/main/java/Controller/ManageBillController.java:
+- [SonarLint] Line 24: The value of the field 'employeeDAO' is never used.
+
+- Main / Model - 
+src/main/java/Main/Launcher.java:
+- [SonarLint] Line 19: The type 'Rectangle2D' from module javafx.graphics may not be accessible due to missing 'requires transitive'.
+- [SonarLint] Line 101: The type 'Stage' from module javafx.graphics may not be accessible due to missing 'requires transitive'.
+
+src/main/java/Model/Users/Employee.java:
+- [SonarLint] Line 158: Type safety issue – unchecked cast from Object to EnumSet<Permission>.
+
+-View package- (Enea & Jurgen)
+
+src/main/java/View/Buttons.java:
+- [SonarLint] Line 7: The import 'java.io.File' is never used.
+- [SonarLint] Line 11: The import 'Main.Launcher.PATH' is never used.
+
+src/main/java/View/CreateBillView.java:
+- [SonarLint] Line 62: Type safety issue – a generic array of TableColumn<Item, ?> is created for a varargs parameter.
+- [SonarLint] Line 105: Type safety issue – a generic array of TableColumn<CreateBillView.BillItem, ?> is created for a varargs parameter.
+
+src/main/java/View/HomePage.java:
+- [SonarLint] Line 12: The value of the field 'employee' is never used.
+
+src/main/java/View/LoginPage.java:
+- [SonarLint] Line 15: The import 'java.io.File' is never used.
+- [SonarLint] Line 17: The import 'Main.Launcher.PATH' is never used.
+
+src/main/java/View/ManageBillView.java:
+- [SonarLint] Line 34: The value of the field 'employee' is never used.
+- [SonarLint] Line 40: The field 'TableView.CONSTRAINED_RESIZE_POLICY' is deprecated since Java 20.
+
+src/main/java/View/ManageEmployeeTableView.java:
+- [SonarLint] Line 67: The field 'TableView.CONSTRAINED_RESIZE_POLICY' is deprecated since Java 20.
+- [SonarLint] Line 217: The method 'clearFormFields()' is never used locally.
+
+src/main/java/View/ManageInventoryView.java:
+- [SonarLint] Line 51: The field 'TableView.CONSTRAINED_RESIZE_POLICY' is deprecated since Java 20.
+- [SonarLint] Line 173: The method 'clearFormFields()' is never used locally.
+
+src/main/java/View/PerformanceView.java:
+- [SonarLint] Line 70: The type 'DatePicker' from module javafx.controls may not be accessible due to missing 'requires transitive'.
+  (Covered by project-wide module warning.)
+
+src/main/java/View/ProfileView.java:
+- [SonarLint] Multiple TextField components may not be accessible due to missing 'requires transitive'.
+  (Covered by project-wide module warning.)
+
+src/main/java/View/WelcomeView.java:
+- [SonarLint] Line 12: The import 'java.io.File' is never used.
+- [SonarLint] Line 14: The import 'Main.Launcher.PATH' is never used.
