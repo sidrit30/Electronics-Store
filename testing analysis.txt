@@ -18,6 +18,15 @@ Selected methods:
 
 
 Orgest:
+Selected Methods:
+       1) Class: Model.Bill
+          Method: calculateCost()
+
+       2) Class: Model.Bill
+          Method: calculateRevenue()
+
+       3) Class: Model.Bill
+          Method: calculateProfit()
 
 Sidrit:
 
