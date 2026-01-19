@@ -1,6 +1,21 @@
 Enea:
 
 Jurgen:
+Selected methods:
+       1) Class: Model.Bill
+          Method: addItem(Model.Items.Item item, int quantity)
+
+       2) Class: Model.Bill
+          Method: removeItem(Model.Items.Item item)
+
+       3) Class: Model.UniqueIDGenerator
+          Method: getUniqueId()
+
+       Testing mapping:
+       - Boundary Value Testing -> Bill.addItem(...)
+       - Equivalence Class Testing -> Bill.removeItem(...) + Bill.addItem(...)
+       - Code Coverage -> UniqueIDGenerator.getUniqueId() + Bill.addItem(...) branches
+
 
 Orgest:
 
