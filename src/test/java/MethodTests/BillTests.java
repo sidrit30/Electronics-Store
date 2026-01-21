@@ -1,5 +1,7 @@
-package Model;
+//Jurgen Hila
+package MethodTests;
 
+import Model.Bill;
 import Model.Exceptions.InsufficientStockException;
 import Model.Items.Item;
 import Model.Users.Cashier;

@@ -1,5 +1,7 @@
-package Model;
+//Jurgen Hila
+package MethodTests;
 
+import Model.UniqueIDGenerator;
 import org.junit.jupiter.api.Test;
 
 import java.time.LocalDateTime;
@@ -72,7 +74,7 @@ class UniqueIDGeneratorTests {
             // Tight loop: generate many IDs quickly
             for (int i = 0; i < 3000; i++) {
                 String id = UniqueIDGenerator.getUniqueId();
-                String prefix = id.substring(0, 12);kk
+                String prefix = id.substring(0, 12);
                 int suffix = Integer.parseInt(id.substring(12));
 
                 Integer last = lastSuffixSeenByPrefix.put(prefix, suffix);

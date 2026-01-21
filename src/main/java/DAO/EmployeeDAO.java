@@ -34,21 +34,8 @@ public class EmployeeDAO {
     }
 
     public boolean createEmployee(Employee employee){
-        try (FileOutputStream outputStream = new FileOutputStream(EMPLOYEES_FILE, true)) {
-            ObjectOutputStream writer;
-
-            if(EMPLOYEES_FILE.length() > 0) {
-                writer = new HeaderlessObjectOutputStream(outputStream);
-            } else {
-                writer = new ObjectOutputStream(outputStream);
-            }
-
-            writer.writeObject(employee);
-            employees.add(employee);
-            return true;
-        } catch (IOException e) {
-            return false;
-        }
+        employees.add(employee);
+        return UpdateAll();
     }
 
     public Employee getEmployeebyID(String id){
