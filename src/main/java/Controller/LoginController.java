@@ -7,19 +7,23 @@ import Model.Exceptions.InvalidUsernameException;
 import Model.Users.Employee;
 import Model.Users.Manager;
 import View.LoginPage;
-import javafx.event.ActionEvent;
 import javafx.scene.Scene;
 import javafx.scene.image.Image;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.stage.Stage;
 
-import java.io.File;
+import java.util.logging.Logger;
 
-import static Main.Launcher.PATH;
 import static Main.Launcher.VISUAL_BOUNDS;
 
 public class LoginController {
+
+    private static final Logger LOGGER =
+            Logger.getLogger(LoginController.class.getName());
+
+    private static final String LOG_LOGIN_SUCCESS = "Login Successful";
+
     private EmployeeDAO employeeDAO;
     private LoginPage loginPage;
 
@@ -30,19 +34,19 @@ public class LoginController {
     public LoginController() {
         loginPage = new LoginPage();
         employeeDAO = new EmployeeDAO();
-        loginPage.getPasswordField().setOnKeyPressed(e->onLoginEnter(e));
-        loginPage.getUsernameField().setOnKeyPressed(e->onLoginEnter(e));
-        loginPage.getUnmaskedPasswordField().setOnKeyPressed(e->onLoginEnter(e));
-        loginPage.getLoginButton().setOnAction(e -> onLoginButton(e));
+
+        loginPage.getPasswordField().setOnKeyPressed(this::onLoginEnter);
+        loginPage.getUsernameField().setOnKeyPressed(this::onLoginEnter);
+        loginPage.getUnmaskedPasswordField().setOnKeyPressed(this::onLoginEnter);
+        loginPage.getLoginButton().setOnAction(e -> onLoginButton());
     }
 
-    private void onLoginButton(ActionEvent e) {
+    private void onLoginButton() {
         login();
-
     }
 
     private void onLoginEnter(KeyEvent e) {
-        if(e.getCode() == KeyCode.ENTER) {
+        if (e.getCode() == KeyCode.ENTER) {
             login();
         }
     }
@@ -54,10 +58,12 @@ public class LoginController {
 
         try {
             emp = employeeDAO.authLogin(username, password);
-            System.out.println("Login Successful");
+            LOGGER.info(LOG_LOGIN_SUCCESS);
+
             Scene homeScene = new Scene(new HomePageController(emp).getHomePage());
             Stage oldStage = (Stage) loginPage.getScene().getWindow();
             oldStage.close();
+
             Stage primaryStage = new Stage();
             primaryStage.setScene(homeScene);
             primaryStage.setTitle("Jupiter Electronics");
@@ -65,19 +71,18 @@ public class LoginController {
             primaryStage.setY(VISUAL_BOUNDS.getMinY());
             primaryStage.setWidth(VISUAL_BOUNDS.getWidth());
             primaryStage.setHeight(VISUAL_BOUNDS.getHeight());
-            primaryStage.getIcons().add(new Image(Launcher.class.getResourceAsStream("/images/appIcon.jpg")));
+            primaryStage.getIcons().add(
+                    new Image(Launcher.class.getResourceAsStream("/images/appIcon.jpg"))
+            );
             primaryStage.show();
 
-            if(emp instanceof Manager) {
+            if (emp instanceof Manager) {
                 new ManagerController(emp);
             }
-        }
-        catch (InvalidUsernameException | InvalidPasswordException e1) {
-            loginPage.getErrorLabel().setVisible(true);
-            loginPage.getErrorLabel().setText(e1.getMessage());
 
+        } catch (InvalidUsernameException | InvalidPasswordException ex) {
+            loginPage.getErrorLabel().setVisible(true);
+            loginPage.getErrorLabel().setText(ex.getMessage());
         }
     }
-
-
 }

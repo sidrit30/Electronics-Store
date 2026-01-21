@@ -16,8 +16,19 @@ import javafx.stage.Stage;
 
 import java.util.EnumSet;
 import java.util.Optional;
+import java.util.logging.Logger;
+
 
 public class ManageEmployeeController {
+
+    private static final int MIN_CREDENTIAL_LENGTH = 4;
+    private static final int MAX_CREDENTIAL_LENGTH = 20;
+    private static final String TITLE_PERMISSIONS = "Permissions";
+    private static final String TITLE_SECTOR = "Sector";
+
+    private static final Logger LOGGER =
+            Logger.getLogger(ManageEmployeeController.class.getName());
+
     private EmployeeDAO employeeDAO;
     private ManageEmployeeTableView employeeTableView;
     private Employee selectedEmployee;
@@ -32,7 +43,6 @@ public class ManageEmployeeController {
         selectedEmployee = employee;
 
 
-        //employeeDAO.getEmployees().remove(employee);
         employeeTableView.getTable().setItems(employeeDAO.getEmployees());
         setSearchListener();
 
@@ -62,7 +72,7 @@ public class ManageEmployeeController {
         Employee emp = employeeTableView.getTable().getSelectionModel().getSelectedItem();
         if(emp == null) {
             Alert alert = new Alert(Alert.AlertType.WARNING);
-            alert.setTitle("Sector");
+            alert.setTitle(TITLE_SECTOR);
             alert.setHeaderText("Select An Employee First!");
             alert.show();
             return;
@@ -70,7 +80,7 @@ public class ManageEmployeeController {
 
         if(emp instanceof Admin) {
             Alert alert = new Alert(Alert.AlertType.WARNING);
-            alert.setTitle("Sector");
+            alert.setTitle(TITLE_SECTOR);
             alert.setHeaderText("You Cannot Edit Admin Sectors!");
             alert.show();
             return;
@@ -99,7 +109,7 @@ public class ManageEmployeeController {
         grid.setHgap(10);
         grid.setVgap(10);
         grid.setPadding(new Insets(20, 10, 10, 10));
-        popup.setTitle("Sector");
+        popup.setTitle(TITLE_SECTOR);
         popup.setResizable(false);
         popup.setScene(new Scene(grid));
         popup.show();
@@ -121,9 +131,7 @@ public class ManageEmployeeController {
             popup.close();
         });
 
-        cancel.setOnAction(e -> {
-            popup.close();
-        });
+        cancel.setOnAction(e -> popup.close());
 
     }
 
@@ -138,15 +146,13 @@ public class ManageEmployeeController {
             employeeTableView.getSectorList().getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
         }
         if(Role.CASHIER.equals(role)) {
-            System.out.println(hBox.getChildren().size());
+            LOGGER.info(() -> "HBox children count: " + hBox.getChildren().size());
             if(hBox.getChildren().size() < 6)
                 hBox.getChildren().add(employeeTableView.getSectorBox());
             employeeTableView.getSectorList().getSelectionModel().setSelectionMode(SelectionMode.SINGLE);
         }
-        if(Role.ADMIN.equals(role)) {
-            if(hBox.getChildren().size() >= 6) {
-                hBox.getChildren().remove(hBox.getChildren().size() -1);
-            }
+        if(Role.ADMIN.equals(role) && hBox.getChildren().size() >= 6) {
+            hBox.getChildren().remove(hBox.getChildren().size() - 1);
         }
     }
 
@@ -202,9 +208,9 @@ public class ManageEmployeeController {
             if (newEmp != null) {
                 employeeDAO.createEmployee(newEmp);
                 employeeTableView.getTable().refresh();
-                System.out.println(newEmp);
-                System.out.println(newEmp.getSectorName());
-                System.out.println(newEmp.getPermissions());
+                LOGGER.info(newEmp.toString());
+                LOGGER.info(String.valueOf(newEmp.getSectorName()));
+                LOGGER.info(String.valueOf(newEmp.getPermissions()));
                 Alert alert = new Alert(Alert.AlertType.INFORMATION);
                 alert.setTitle("Added Employee");
                 alert.setHeaderText("New Employee Added Successfully!");
@@ -237,7 +243,7 @@ public class ManageEmployeeController {
         }
 
         //check username
-        if(employeeTableView.getAddUsername().getText().length() < 4 || employeeTableView.getAddUsername().getText().length() > 20) {
+        if(employeeTableView.getAddUsername().getText().length() < MIN_CREDENTIAL_LENGTH || employeeTableView.getAddUsername().getText().length() > MAX_CREDENTIAL_LENGTH) {
             employeeTableView.showErrorAlert("Username must be between 4 and 20 characters.");
             return false;
         }
@@ -247,7 +253,7 @@ public class ManageEmployeeController {
         }
 
         //check password
-        if(employeeTableView.getAddPassword().getText().length() < 4 || employeeTableView.getAddPassword().getText().length() > 20) {
+        if(employeeTableView.getAddPassword().getText().length() < MIN_CREDENTIAL_LENGTH || employeeTableView.getAddPassword().getText().length() > MIN_CREDENTIAL_LENGTH) {
             employeeTableView.showErrorAlert("Password must be between 4 and 20 characters.");
             return false;
         }
@@ -380,9 +386,6 @@ public class ManageEmployeeController {
         String criteria = this.employeeTableView.getSearchBy().getSelectionModel().getSelectedItem();
 
         if(criteria.equals("Full Name")) {
-            //not used anymore
-            //used to make table not editable
-//            employeeTableView.getTable().setEditable((searchString.isEmpty()));
             for (Employee employee : employeeDAO.getEmployees()) {
                 if (employee.getFullName().toLowerCase().contains(searchString.toLowerCase())) {
                     filteredEmployees.add(employee);
@@ -390,23 +393,25 @@ public class ManageEmployeeController {
             }
         } else {
             for (Employee employee : employeeDAO.getEmployees()) {
-                if(employee.getSectorName() == null || employee.getSectorName().isEmpty())
-                    continue;
-                if(employee instanceof Admin)
-                    continue;
-                if(employee instanceof Manager) {
-                    for(String sector : ((Manager)employee).getSectors()) {
-                        if(sector.toLowerCase().contains(searchString.toLowerCase())) {
-                            filteredEmployees.add(employee);
+
+                if (!(employee instanceof Admin)
+                        && employee.getSectorName() != null
+                        && !employee.getSectorName().isEmpty()) {
+
+                    if (employee instanceof Manager) {
+                        for (String sector : ((Manager) employee).getSectors()) {
+                            if (sector.toLowerCase().contains(searchString.toLowerCase())) {
+                                filteredEmployees.add(employee);
+                            }
                         }
-                    }
-                }
-                if(employee instanceof Cashier) {
-                    if(((Cashier)employee).getSectorName().toLowerCase().contains(searchString.toLowerCase())) {
-                        filteredEmployees.add(employee);
+                    } else if (employee instanceof Cashier && ((Cashier) employee).getSectorName()
+                            .toLowerCase()
+                            .contains(searchString.toLowerCase())) {
+                            filteredEmployees.add(employee);
                     }
                 }
             }
+
         }
 
         this.employeeTableView.getTable().getSelectionModel().clearSelection();
@@ -419,14 +424,14 @@ public class ManageEmployeeController {
         Employee emp = employeeTableView.getTable().getSelectionModel().getSelectedItem();
         if(emp == null) {
             Alert alert = new Alert(Alert.AlertType.WARNING);
-            alert.setTitle("Permissions");
+            alert.setTitle(TITLE_PERMISSIONS);
             alert.setHeaderText("Select An Employee First!");
             alert.show();
             return;
         }
         if(emp instanceof Admin) {
             Alert alert = new Alert(Alert.AlertType.WARNING);
-            alert.setTitle("Permissions");
+            alert.setTitle(TITLE_PERMISSIONS);
             alert.setHeaderText("You Cannot Edit Admin Permissions!");
             alert.show();
             return;
@@ -451,7 +456,7 @@ public class ManageEmployeeController {
         grid.setHgap(10);
         grid.setVgap(10);
         grid.setPadding(new Insets(20, 10, 10, 10));
-        popup.setTitle("Permissions");
+        popup.setTitle(TITLE_PERMISSIONS);
         popup.setResizable(false);
         popup.setScene(new Scene(grid));
         popup.show();
@@ -466,12 +471,11 @@ public class ManageEmployeeController {
                 permissions = EnumSet.copyOf(permissionsList);
                 emp.setPermissions(permissions);
             } catch (IllegalArgumentException ignored) {
+                // No permissions selected – leave unchanged intentionally
             }
             popup.close();
         });
 
-        cancel.setOnAction(e -> {
-            popup.close();
-        });
+        cancel.setOnAction(e -> popup.close());
     }
 }

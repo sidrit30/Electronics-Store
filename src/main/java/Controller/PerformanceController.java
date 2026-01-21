@@ -56,13 +56,15 @@ public class PerformanceController {
             ObservableList<Bill> filteredBills = FXCollections.observableArrayList();
             //reused form manageBillController
             for (Bill bill : billDAO.getBillsByEmployee(emp)) {
-                if(bill.getBillTime().getYear() >= dateFrom.getYear())
-                    if(bill.getBillTime().getMonthValue() >= dateFrom.getMonthValue())
-                        if(bill.getBillTime().getDayOfMonth() >= dateFrom.getDayOfMonth())
-                            if(bill.getBillTime().getYear() <= dateTo.getYear())
-                                if(bill.getBillTime().getMonthValue() <= dateTo.getMonthValue())
-                                    if(bill.getBillTime().getDayOfMonth() <= dateTo.getDayOfMonth())
-                                        filteredBills.add(bill);
+                if (bill.getBillTime().getYear() >= dateFrom.getYear()
+                        && bill.getBillTime().getMonthValue() >= dateFrom.getMonthValue()
+                        && bill.getBillTime().getDayOfMonth() >= dateFrom.getDayOfMonth()
+                        && bill.getBillTime().getYear() <= dateTo.getYear()
+                        && bill.getBillTime().getMonthValue() <= dateTo.getMonthValue()
+                        && bill.getBillTime().getDayOfMonth() <= dateTo.getDayOfMonth()) {
+
+                    filteredBills.add(bill);
+                }
             }
 
             performanceView.getTotalBillsTextField().setText(String.valueOf(filteredBills.size()));

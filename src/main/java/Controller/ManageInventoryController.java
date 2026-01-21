@@ -25,24 +25,18 @@ public class ManageInventoryController {
 
         if(employee instanceof Admin) {
             inventoryView.getTable().setItems(itemDAO.getItems());
-//            inventoryView.getSortSector().getItems().add("All Sectors");
-//            inventoryView.getSortSector().getItems().addAll(itemDAO.getSectorNames());
             inventoryView.getSelectSector().getItems().addAll(itemDAO.getSectorNames());
         }
 
         if(employee instanceof Manager) {
             inventoryView.getTable().setItems(itemDAO.getItemsBySectors(((Manager)employee).getSectors()));
-//            inventoryView.getSortSector().getItems().addAll(((Manager)employee).getSectors());
             inventoryView.getSelectSector().getItems().addAll(((Manager)employee).getSectors());
         }
 
         if(employee instanceof Cashier) {
             inventoryView.getTable().setItems(itemDAO.getItemsBySector(employee.getSectorName()));
-//            inventoryView.getSortSector().getItems().add(employee.getSectorName());
             inventoryView.getSelectSector().getItems().add(employee.getSectorName());
         }
-
-        //setSearchListener();
 
         if(selectedEmployee.hasPermission(Permission.EDIT_ITEM)) {
             inventoryView.getTable().setEditable(true);
@@ -78,7 +72,7 @@ public class ManageInventoryController {
             String itemSupplier = inventoryView.getAddSupplierName().getText();
             Double itemPurchasePrice = Double.valueOf(inventoryView.getAddPurchasePrice().getText());
             Double itemSellingPrice = Double.valueOf(inventoryView.getAddSellPrice().getText());
-            int itemQuantity = Integer.valueOf(inventoryView.getAddQuantity().getText());
+            int itemQuantity = Integer.parseInt(inventoryView.getAddQuantity().getText());
             String itemDescription = inventoryView.getAddItemDescription().getText();
             itemDAO.createItem(new Item(itemName, itemCategory, itemSellingPrice, itemPurchasePrice, itemQuantity, itemSupplier, itemDescription, itemSector));
 
@@ -207,14 +201,4 @@ public class ManageInventoryController {
             inventoryView.getTable().refresh();
         });
     }
-
-//    private void setSearchListener() {
-//        this.inventoryView.getSearchButton().setOnAction(e -> searchEmployee());
-//    }
-//
-//    private void searchEmployee() {
-//
-//    }
-
-
 }
