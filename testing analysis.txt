@@ -1,4 +1,19 @@
 Enea:
+Selected methods:
+    1) Class: DAO.ItemDAO
+       Method: validItemName(String name)
+
+    2) Class: DAO.ItemDAO
+       Method: getItemsBySectors(ObservableList<String> sectors)
+
+    3) Class: DAO.ItemDAO
+       Method: getItemByID(String id)
+
+Testing mapping:
+    - Boundary Value Testing -> ItemDAO.getItemByID(...) + ItemDAO.getItemsBySectors(...)
+    - Equivalence Class Testing -> ItemDAO.validItemName(...) + ItemDAO.getItemByID(...)
+    - Code Coverage -> ItemDAO (focus on branches in getItemsBySectors(...) and validation logic)
+
 
 Jurgen:
 Selected methods:
@@ -31,3 +46,10 @@ Selected Methods:
 Sidrit:
 
 Xhois:
+Selected methods for testing analysis:
+ 1) Class: Model.Bill
+    Method: printBill()
+ 2) Class: Model.Items.Item
+    Method: setQuantity(int quantity)
+ 3) Class: Model.Items.Item
+    Method: getSellingPrice()
