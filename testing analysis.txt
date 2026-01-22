@@ -31,3 +31,10 @@ Selected Methods:
 Sidrit:
 
 Xhois:
+Selected methods for testing analysis:
+ 1) Class: Model.Bill
+    Method: printBill()
+ 2) Class: Model.Items.Item
+    Method: setQuantity(int quantity)
+ 3) Class: Model.Items.Item
+    Method: getSellingPrice()
