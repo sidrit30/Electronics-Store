@@ -65,11 +65,6 @@ public class CreateBillView extends BorderPane {
         HBox addItemBox = new HBox();
         addItemBox.setSpacing(8);
 
-//        addItemButton.setOnAction(event -> {
-//            Item selectedItem = itemTable.getSelectionModel().getSelectedItem();
-//            int quantity = Integer.parseInt(quantityField.getText());
-//            controller.addItemToBill(selectedItem, quantity);
-//        });
         quantityField = new TextField();
         quantityField.setPromptText("Quantity");
 
@@ -81,7 +76,6 @@ public class CreateBillView extends BorderPane {
         VBox rightSection = new VBox();
         rightSection.setPadding(new Insets(10));
         rightSection.setSpacing(8);
-        //rightSection.setStyle("-fx-background-color: orange;");
 
         // Bills TextArea
         billsTextArea = new TextArea();

@@ -11,6 +11,7 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 public class PerformanceController {
     private EmployeeDAO employeeDAO;
@@ -51,18 +52,11 @@ public class PerformanceController {
             if(emp == null) {
                 return;
             }
-            LocalDate dateFrom = performanceView.getStartDatePicker().getValue();
-            LocalDate dateTo = performanceView.getEndDatePicker().getValue();
+            LocalDateTime dateFrom = performanceView.getStartDatePicker().getValue().atStartOfDay();
+            LocalDateTime dateTo = performanceView.getEndDatePicker().getValue().atStartOfDay();
             ObservableList<Bill> filteredBills = FXCollections.observableArrayList();
-            //reused form manageBillController
             for (Bill bill : billDAO.getBillsByEmployee(emp)) {
-                if (bill.getBillTime().getYear() >= dateFrom.getYear()
-                        && bill.getBillTime().getMonthValue() >= dateFrom.getMonthValue()
-                        && bill.getBillTime().getDayOfMonth() >= dateFrom.getDayOfMonth()
-                        && bill.getBillTime().getYear() <= dateTo.getYear()
-                        && bill.getBillTime().getMonthValue() <= dateTo.getMonthValue()
-                        && bill.getBillTime().getDayOfMonth() <= dateTo.getDayOfMonth()) {
-
+                if (bill.getBillTime().isAfter(dateFrom) && bill.getBillTime().isBefore(dateTo)) {
                     filteredBills.add(bill);
                 }
             }

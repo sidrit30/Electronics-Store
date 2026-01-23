@@ -68,13 +68,20 @@ public class BillDAO {
 
 
     public void loadBills() {
-        try(ObjectInputStream input = new ObjectInputStream(new FileInputStream(BILL_FILE))) {
-            while (input.available() > 0) {
-                bills.add((Bill) input.readObject());
+        bills.clear();
+
+        if (!BILL_FILE.exists()) return;
+
+        try (ObjectInputStream input = new ObjectInputStream(new FileInputStream(BILL_FILE))) {
+            while (true) {
+                Bill bill = (Bill) input.readObject();
+                bills.add(bill);
             }
+        } catch (EOFException e) {
+            logger.info("Finished loading bills.");
         } catch (IOException | ClassNotFoundException e) {
             logger.severe("Could not read bills!");
-            logger.info(e.getMessage());
+            logger.severe(e.toString());
         }
     }
 

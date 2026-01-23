@@ -52,15 +52,24 @@ public class ItemDAO {
     }
 
     public void loadItems() {
-        try(ObjectInputStream input = new ObjectInputStream(new FileInputStream(ITEM_FILE))) {
-            while (input.available() > 0) {
-                items.add((Item) input.readObject());
+        items.clear();
+
+        if (!ITEM_FILE.exists()) return;
+
+        try (ObjectInputStream input = new ObjectInputStream(new FileInputStream(ITEM_FILE))) {
+            while (true) {
+                Item item = (Item) input.readObject();
+                items.add(item);
             }
+        } catch (EOFException e) {
+            // End of file reached normally
+            logger.info("Finished loading items.");
         } catch (IOException | ClassNotFoundException e) {
             logger.severe("Error loading items!");
-            logger.info(e.getMessage());
+            logger.severe(e.toString());
         }
     }
+
 
     public boolean createItem(Item item) {
         items.add(item);

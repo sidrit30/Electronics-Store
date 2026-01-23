@@ -70,12 +70,11 @@ public class ManageInventoryController {
             String itemSector = inventoryView.getSelectSector().getSelectionModel().getSelectedItem();
             String itemCategory = inventoryView.getSelectItemCategory().getSelectionModel().getSelectedItem();
             String itemSupplier = inventoryView.getAddSupplierName().getText();
-            Double itemPurchasePrice = Double.valueOf(inventoryView.getAddPurchasePrice().getText());
-            Double itemSellingPrice = Double.valueOf(inventoryView.getAddSellPrice().getText());
+            double itemPurchasePrice = Double.parseDouble(inventoryView.getAddPurchasePrice().getText());
+            double itemSellingPrice = Double.parseDouble(inventoryView.getAddSellPrice().getText());
             int itemQuantity = Integer.parseInt(inventoryView.getAddQuantity().getText());
             String itemDescription = inventoryView.getAddItemDescription().getText();
             itemDAO.createItem(new Item(itemName, itemCategory, itemSellingPrice, itemPurchasePrice, itemQuantity, itemSupplier, itemDescription, itemSector));
-
             inventoryView.getAddItemName().clear();
             inventoryView.getAddSupplierName().clear();
             inventoryView.getAddPurchasePrice().clear();
@@ -87,9 +86,6 @@ public class ManageInventoryController {
 
         }
     }
-
-
-
 
     private boolean isValid() {
         if (inventoryView.getAddNewItemButton().getText().isEmpty() ||
@@ -136,6 +132,48 @@ public class ManageInventoryController {
     }
 
 
+    //rewriting method for testing
+    //TESTED
+    public static boolean isValid(String itemName, String itemCategory, double itemSellingPrice, double itemPurchasePrice, int itemQuantity, String itemSupplier, String itemDescription, String itemSector, ItemDAO itemDAO) {
+        //missing details
+        if (itemName.isBlank() ||
+                itemCategory == null ||
+                itemSupplier.isBlank() ||
+                itemSellingPrice == 0 ||
+                itemPurchasePrice == 0 ||
+                itemQuantity == 0) {
+            return false;
+        }
+
+        //item name too short
+        if(itemName.length() < 6) {
+            return false;
+        }
+
+        //item name too long
+        if(itemName.length() > 256) {
+            return false;
+        }
+
+        //item name taken
+        if(!itemDAO.validItemName(itemName)) {
+            return false;
+        }
+
+        //prices are positive
+        if(itemPurchasePrice <= 0 || itemSellingPrice <=0) {
+            return false;
+        }
+
+        //quantity is positive
+        if(itemQuantity <= 0) {
+            return false;
+        }
+
+        return true;
+    }
+
+
 
     private void onItemDelete() {
 
@@ -164,6 +202,21 @@ public class ManageInventoryController {
             alert.setTitle("Confirmation");
             alert.setHeaderText("Item Deletion Cancelled!");
         }
+    }
+
+    //rewritten for testing
+    //TESTED
+    public static void onItemDelete(Item toDelete, boolean isAlertPresent, boolean isOkPressed, ItemDAO dao) {
+        if (isAlertPresent && isOkPressed) {
+            if(dao.deleteItem(toDelete)) {
+                System.out.println("Success");
+                return;
+            } else {
+                System.out.println("Fail");
+                return;
+            }
+        }
+        System.out.println("Cancelled");
     }
 
     private void setEditListeners() {

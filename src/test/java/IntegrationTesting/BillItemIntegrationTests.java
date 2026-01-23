@@ -1,4 +1,4 @@
-package UnitTesting.ModelTest;
+package IntegrationTesting;
 
 import Model.Bill;
 import Model.Items.Item;

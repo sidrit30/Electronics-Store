@@ -16,10 +16,4 @@ public class Admin extends Employee{
         return "All";
     }
 
-//    //creates a basic admin for testing purposes
-//    public Admin() {
-//        this.setUsername("admin");
-//        this.setPassword("admin");
-//        this.setPermissions(EnumSet.allOf(Permission.class));
-//    }
 }

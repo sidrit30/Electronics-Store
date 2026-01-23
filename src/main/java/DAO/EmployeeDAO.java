@@ -6,6 +6,7 @@ import Model.Users.Employee;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import java.io.*;
+import java.util.List;
 import java.util.logging.Logger;
 
 
@@ -24,16 +25,24 @@ public class EmployeeDAO {
     }
 
     private void loadEmployees() {
-        try(ObjectInputStream input = new ObjectInputStream(new FileInputStream(EMPLOYEES_FILE))) {
-            while (input.available() > 0) {
+        employees.clear();
+
+        if (!EMPLOYEES_FILE.exists()) return;
+
+        try (ObjectInputStream input = new ObjectInputStream(new FileInputStream(EMPLOYEES_FILE))) {
+            while (true) {
                 Employee employee = (Employee) input.readObject();
                 employees.add(employee);
             }
+        } catch (EOFException e) {
+            // End of file reached normally
+            logger.info("Finished loading employees.");
         } catch (IOException | ClassNotFoundException e) {
-            logger.severe("Error loading employees");
-            logger.info(e.getMessage());
+            logger.severe("Error loading employees!");
+            logger.severe(e.toString());
         }
     }
+
 
     public boolean createEmployee(Employee employee){
         employees.add(employee);
@@ -81,6 +90,24 @@ public class EmployeeDAO {
     public Employee authLogin(String username, String password) {
         Employee employee = null;
         for(Employee e : getEmployees()) {
+            if(e.getUsername().equals(username)) {
+                employee = e;
+                break;
+            }
+        }
+        if(employee == null) {
+            throw new InvalidUsernameException("Invalid Username");
+        }
+        if(employee.getPassword().equals(password)) {
+            return employee;
+        }
+        throw new InvalidPasswordException("Incorrect Password");
+    }
+
+    //rewritten for testing analysis
+    public static Employee authLogin(String username, String password, List<Employee> employees) {
+        Employee employee = null;
+        for(Employee e : employees) {
             if(e.getUsername().equals(username)) {
                 employee = e;
                 break;

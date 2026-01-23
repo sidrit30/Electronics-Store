@@ -24,18 +24,15 @@ class LoginUiSystemTest extends ApplicationTest {
 
     @Test
     void invalidLogin_shouldShowSomeErrorMessage() {
-        // 1) Find username field (first TextField)
         TextField username = lookup(node -> node instanceof TextField && !(node instanceof PasswordField))
                 .queryAs(TextField.class);
         assertNotNull(username, "Could not find a TextField for username");
 
-        // 2) Find password field (PasswordField)
         PasswordField password = lookup(node -> node instanceof PasswordField).queryAs(PasswordField.class);
         assertNotNull(password, "Could not find a PasswordField");
 
-        // 3) Type invalid credentials
-        clickOn(username).write("wrongUser");
-        clickOn(password).write("wrongPass");
+        clickOn(username).write("wrg");
+        clickOn(password).write("wrgPass");
 
         // 4) Click a button that contains the word "Login"
         Set<Node> buttons = lookup(node -> node instanceof Button).queryAll();
@@ -48,9 +45,8 @@ class LoginUiSystemTest extends ApplicationTest {
         assertNotNull(loginBtn, "Could not find a Login button (text containing 'Login')");
         clickOn(loginBtn);
 
-        // 5) Verify an error appears: we look for any visible label with non-empty text
-        // (This is safe and won't fail if the exact error text changes.)
-        Set<Node> labels = lookup(node -> node instanceof Label).queryAll();
+
+        Set<Node> labels = lookup(Label.class::isInstance).queryAll();
         boolean anyVisibleErrorLabel = labels.stream()
                 .map(n -> (Label) n)
                 .anyMatch(l -> l.isVisible() && l.getText() != null && !l.getText().trim().isEmpty()

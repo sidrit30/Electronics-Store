@@ -15,6 +15,10 @@ import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.LinkedList;
+import java.util.List;
 import java.util.logging.Logger;
 
 public class ManageBillController {
@@ -30,6 +34,13 @@ public class ManageBillController {
 
     public ManageBillView getManageBillView() {
         return manageBillView;
+    }
+
+    //testing constructor
+    public ManageBillController(Employee employee, BillDAO billDAO, ItemDAO itemDAO) {
+        this.employee = employee;
+        this.billDAO = billDAO;
+        this.itemDAO = itemDAO;
     }
 
     public ManageBillController(Employee employee) {
@@ -62,8 +73,8 @@ public class ManageBillController {
     }
 
     private void searchDate() {
-        LocalDate dateFrom = manageBillView.getDateFrom().getValue();
-        LocalDate dateTo = manageBillView.getDateTo().getValue();
+        LocalDateTime dateFrom = manageBillView.getDateFrom().getValue().atStartOfDay();
+        LocalDateTime dateTo = manageBillView.getDateTo().getValue().atStartOfDay();
 
         filterSector();
 
@@ -73,13 +84,8 @@ public class ManageBillController {
         manageBillView.getTable().getItems().clear();
 
         for (Bill bill : billsInTable) {
-            if (bill.getBillTime().getYear() >= dateFrom.getYear()
-                    && bill.getBillTime().getMonthValue() >= dateFrom.getMonthValue()
-                    && bill.getBillTime().getDayOfMonth() >= dateFrom.getDayOfMonth()
-                    && bill.getBillTime().getYear() <= dateTo.getYear()
-                    && bill.getBillTime().getMonthValue() <= dateTo.getMonthValue()
-                    && bill.getBillTime().getDayOfMonth() <= dateTo.getDayOfMonth()) {
-
+            if (bill.getBillTime().isAfter(dateFrom) &&
+                bill.getBillTime().isBefore(dateTo)) {
                 manageBillView.getTable().getItems().add(bill);
             }
         }
@@ -146,6 +152,25 @@ public class ManageBillController {
             );
             manageBillView.getSectorFilter().setDisable(true);
         }
+    }
+
+    //rewritten for testing
+    //TESTED
+    public List<Bill> loadData(Employee employee) {
+        List<Bill> billTest = null;
+        if (employee instanceof Admin) {
+            billTest = billDAO.getBills().stream().toList();
+        }
+
+        if (employee instanceof Manager) {
+            billTest = billDAO.getBillsBySectors(((Manager) employee).getSectors()).stream().toList();
+        }
+
+        if (employee instanceof Cashier) {
+            billTest = billDAO.getBillsByEmployee(employee).stream().toList();
+
+        }
+        return billTest;
     }
 }
 

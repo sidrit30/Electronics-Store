@@ -253,7 +253,7 @@ public class ManageEmployeeController {
         }
 
         //check password
-        if(employeeTableView.getAddPassword().getText().length() < MIN_CREDENTIAL_LENGTH || employeeTableView.getAddPassword().getText().length() > MIN_CREDENTIAL_LENGTH) {
+        if(employeeTableView.getAddPassword().getText().length() < MIN_CREDENTIAL_LENGTH || employeeTableView.getAddPassword().getText().length() > MAX_CREDENTIAL_LENGTH) {
             employeeTableView.showErrorAlert("Password must be between 4 and 20 characters.");
             return false;
         }
@@ -269,6 +269,30 @@ public class ManageEmployeeController {
             employeeTableView.showErrorAlert("Salary must be a positive number.");
             return false;
         }
+
+        return true;
+
+    }
+
+    //rewriting method for testing
+    //TESTED
+    public static boolean isValid(String firstName, String lastName, String username, String password, Role role, double salary, EmployeeDAO dao) {
+        if(firstName.isBlank() ||
+        lastName.isBlank() ||
+        username.isBlank() ||
+        password.isBlank() ||
+        role == null)
+            return false;
+
+        if(username.length() < 4 || username.length() > 20)
+            return false;
+        if(!dao.validUsername(username))
+            return false;
+        if(password.length() < 4 || password.length() > 20)
+            return false;
+
+        if(salary <= 0)
+            return false;
 
         return true;
 
@@ -326,6 +350,32 @@ public class ManageEmployeeController {
             }
 
         }
+    }
+
+    //rewritten for testing
+    //TESTED
+    public static void onEmployeeDelete(Employee toDelete, Employee currentUser,
+                                     boolean isAlerted, boolean isOkPressed,
+                                     boolean dao) {
+        // Branch 1: Self-deletion check
+        if (toDelete.equals(currentUser)) {
+            System.out.println("Can't delete self!");
+            return ;
+        }
+
+        // Branch 2: User confirmation check
+        if (isAlerted && isOkPressed) {
+            if (dao) {
+                System.out.println("User deleted successfully!");
+                return ;
+            } else {
+                System.out.println("Error deleting user!");
+                return ;
+            }
+        }
+
+        // Branch 4: Canceled
+        System.out.println("Deletion cancelled!");
     }
 
     private void setEditListeners() {

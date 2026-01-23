@@ -22,7 +22,7 @@ public class CreateBillController {
     private static final String MSG_QUANTITY_GT_ZERO = "Quantity must be greater than 0!";
     private static final String MSG_BILL_SAVED = "Bill saved and printed successfully";
 
-    private final CreateBillView view;
+    private CreateBillView view;
     private BillDAO billDAO;
     private Employee employee;
     private ItemDAO itemDAO;
@@ -119,6 +119,25 @@ public class CreateBillController {
         }
     }
 
+    //rewritten for testing
+    //TESTED
+    public static void addItemToBill(Item item, Bill bill, String quantityString) {
+        try {
+            int quantity = Integer.parseInt(quantityString);
+            if (quantity <= 0) {
+                System.out.println(MSG_QUANTITY_GT_ZERO);
+                return;
+            }
+
+            bill.addItem(item, quantity);
+
+        } catch (InsufficientStockException e) {
+            System.out.println("There is insufficient stock!");
+        } catch (NumberFormatException e) {
+            System.out.println(MSG_INVALID_QUANTITY);
+        }
+    }
+
     public void saveBillToFile() {
         if (view.getBillTable().getItems().isEmpty()) {
             showAlert(TITLE_ERROR, MSG_NO_ITEM_SELECTED);
@@ -146,6 +165,16 @@ public class CreateBillController {
             view.getItemTable().refresh();
         } else {
             showAlert(TITLE_ERROR, MSG_NO_ITEM_SELECTED);
+        }
+    }
+
+    //rewritten for testing
+    //TESTED
+    public void removeItem(CreateBillView.BillItem billItem) {
+        if (billItem != null) {
+            bill.removeItem(billItem.getItem());
+        } else {
+            System.out.println(MSG_NO_ITEM_SELECTED);
         }
     }
 
