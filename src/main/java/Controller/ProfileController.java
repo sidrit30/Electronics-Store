@@ -14,7 +14,7 @@ public class ProfileController {
         return view;
     }
 
-    ProfileController(Employee employee) {
+    public ProfileController(Employee employee) {
         this.employee = employee;
         this.view = new ProfileView(employee);
 
@@ -50,6 +50,7 @@ public class ProfileController {
             employee.setPassword(view.getPasswordField().getText());
             employee.setAddress(view.getAddressField().getText());
             employee.setPhone(view.getPhoneField().getText());
+            new EmployeeDAO().UpdateAll();
             Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
             alert.setTitle("Confirmation");
             alert.setHeaderText("Changed Saved!");

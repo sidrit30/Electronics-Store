@@ -36,11 +36,13 @@ public class CreateBillView extends BorderPane {
     private Button removeItemButton = new Button("Remove from Bill");
 
     public CreateBillView() {
+        itemTable.setId("item-table");
+        billTable.setId("bill-table");
+
         // Left Section
         VBox leftSection = new VBox();
         leftSection.setPadding(new Insets(10));
         leftSection.setSpacing(8);
-        //leftSection.setStyle("-fx-background-color: orange;");
 
         // Search Bar
         searchBar.setPromptText("Search...");

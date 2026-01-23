@@ -20,10 +20,12 @@ public class WelcomeView extends VBox {
         this.setPadding(new Insets(80, 0, 0, 0));
 
         Label titleLabel = new Label("Hello, " + employee.getFullName());
+
         titleLabel.setFont(new Font("Verdana", 28));
         titleLabel.setStyle("-fx-font-weight: bold; -fx-text-fill: #404436;");
 
         Label titleLabel1 = new Label("Welcome to Jupiter");
+        titleLabel1.setId("welcome_label");
         titleLabel1.setFont(new Font("Verdana", 28));
         titleLabel1.setStyle("-fx-font-weight: bold; -fx-text-fill: #404436;");
 

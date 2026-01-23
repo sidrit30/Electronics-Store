@@ -29,6 +29,8 @@ public class ProfileView extends GridPane {
         this.setVgap(30);
         this.setHgap(10);
 
+
+
         firstNameField = new TextField();
         firstNameField.setText(employee.getFirstName());
         firstNameField.setMaxWidth(100);
@@ -79,6 +81,14 @@ public class ProfileView extends GridPane {
         this.add(addressLabel, 0, 7);
         this.add(addressField, 1, 7);
         this.add(button, 1, 8);
+
+        firstNameField.setId("first_name");
+        lastNameField.setId("last_name");
+        emailField.setId("email_field");
+        passwordField.setId("pass_field");
+        addressField.setId("address_field");
+        phoneField.setId("phone_field");
+
 
     }
 

@@ -27,6 +27,7 @@ public class CreateBillController {
     private Employee employee;
     private ItemDAO itemDAO;
     private Bill bill;
+    private ObservableList<Item> originalItems;
 
     public CreateBillView getCreateBillView() {
         return view;
@@ -55,6 +56,12 @@ public class CreateBillController {
                         itemDAO.getItemsBySector(employee.getSectorName())
                 );
 
+        originalItems = FXCollections.observableArrayList(
+                itemDAO.getItemsBySector(employee.getSectorName())
+        );
+
+        view.getItemTable().setItems(originalItems);
+
         if (items != null) {
             view.getItemTable().setItems(items);
         }
@@ -74,19 +81,18 @@ public class CreateBillController {
     }
 
     public void filterItems() {
-        String query = view.getSearchBar().getText();
-        ObservableList<Item> filteredItems = FXCollections.observableArrayList();
+        String query = view.getSearchBar().getText().toLowerCase().trim();
 
-        for (Item item : view.getItems()) {
-            if (item.getItemName().toLowerCase().contains(query.toLowerCase())) {
-                filteredItems.add(item);
+        ObservableList<Item> filtered = FXCollections.observableArrayList();
+
+        for (Item item : originalItems) {
+            if (item.getItemName().toLowerCase().contains(query)) {
+                filtered.add(item);
             }
         }
 
-        view.getItemTable().getItems().clear();
-        view.getItemTable().getItems().addAll(filteredItems);
+        view.getItemTable().setItems(filtered);
     }
-
     public void addItemToBill() {
         Item selectedItem = view.getItemTable().getSelectionModel().getSelectedItem();
 
