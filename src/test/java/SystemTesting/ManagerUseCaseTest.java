@@ -4,7 +4,6 @@ package SystemTesting;
 
 
 import Main.Launcher;
-import Model.Users.Employee;
 import javafx.scene.Node;
 import javafx.scene.control.*;
 import javafx.scene.layout.VBox;
@@ -14,11 +13,10 @@ import org.testfx.api.FxRobot;
 import org.testfx.framework.junit5.ApplicationTest;
 
 import java.util.Set;
-import java.util.concurrent.TimeoutException;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-public class ManagerUseCaseDiagram extends ApplicationTest {
+public class ManagerUseCaseTest extends ApplicationTest {
 
     @Override
     public void start(Stage stage) throws Exception {
